@@ -7,7 +7,18 @@
 //
 
 import XCTest
+import Firebase
 @testable import Ballcap
+
+class FirebaseTest {
+
+    static let shared: FirebaseTest = FirebaseTest()
+
+    init () {
+        FirebaseApp.configure()
+    }
+
+}
 
 class BallcapTests: XCTestCase {
 

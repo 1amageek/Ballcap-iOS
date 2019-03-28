@@ -7,9 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12074316224CE2C600C26AD3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12074315224CE2C600C26AD3 /* GoogleService-Info.plist */; };
 		12839423224B6A31000383EB /* Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12839419224B6A31000383EB /* Ballcap.framework */; };
 		12839428224B6A31000383EB /* BallcapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839427224B6A31000383EB /* BallcapTests.swift */; };
 		1283942A224B6A31000383EB /* Ballcap.h in Headers */ = {isa = PBXBuildFile; fileRef = 1283941C224B6A31000383EB /* Ballcap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1283943B224B6AA5000383EB /* DocumentReference+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839433224B6AA0000383EB /* DocumentReference+Codable.swift */; };
+		1283943C224B6AA5000383EB /* CodablePassThroughTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839434224B6AA1000383EB /* CodablePassThroughTypes.swift */; };
+		1283943D224B6AA5000383EB /* Codable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839435224B6AA2000383EB /* Codable+.swift */; };
+		1283943E224B6AA5000383EB /* FirestoreDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839436224B6AA2000383EB /* FirestoreDecoder.swift */; };
+		1283943F224B6AA5000383EB /* CodableErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839437224B6AA3000383EB /* CodableErrors.swift */; };
+		12839440224B6AA5000383EB /* Timestamp+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839438224B6AA3000383EB /* Timestamp+Codable.swift */; };
+		12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839439224B6AA4000383EB /* FirestoreEncoder.swift */; };
+		12839442224B6AA5000383EB /* GeoPoint+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */; };
+		12839444224B6AC4000383EB /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839443224B6AC4000383EB /* Document.swift */; };
+		12839446224B6B5B000383EB /* Referencable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839445224B6B5B000383EB /* Referencable.swift */; };
+		12839448224B6C6C000383EB /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839447224B6C6C000383EB /* Store.swift */; };
+		1283944A224B7068000383EB /* CodableDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839449224B7068000383EB /* CodableDocumentTests.swift */; };
+		12839457224BA761000383EB /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839456224BA761000383EB /* Object.swift */; };
+		9A7F053558477A52831BBABA /* Pods_BallcapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */; };
+		F67696CBBA5B1BBD7C18AA2C /* Pods_Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +39,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0259AA41774BDDE02031ABCB /* Pods-Ballcap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.debug.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.debug.xcconfig"; sourceTree = "<group>"; };
+		12074315224CE2C600C26AD3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12839419224B6A31000383EB /* Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1283941C224B6A31000383EB /* Ballcap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ballcap.h; sourceTree = "<group>"; };
 		1283941D224B6A31000383EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12839422224B6A31000383EB /* BallcapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BallcapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		12839427224B6A31000383EB /* BallcapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallcapTests.swift; sourceTree = "<group>"; };
 		12839429224B6A31000383EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		12839433224B6AA0000383EB /* DocumentReference+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentReference+Codable.swift"; sourceTree = "<group>"; };
+		12839434224B6AA1000383EB /* CodablePassThroughTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodablePassThroughTypes.swift; sourceTree = "<group>"; };
+		12839435224B6AA2000383EB /* Codable+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Codable+.swift"; sourceTree = "<group>"; };
+		12839436224B6AA2000383EB /* FirestoreDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreDecoder.swift; sourceTree = "<group>"; };
+		12839437224B6AA3000383EB /* CodableErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableErrors.swift; sourceTree = "<group>"; };
+		12839438224B6AA3000383EB /* Timestamp+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Timestamp+Codable.swift"; sourceTree = "<group>"; };
+		12839439224B6AA4000383EB /* FirestoreEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreEncoder.swift; sourceTree = "<group>"; };
+		1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GeoPoint+Codable.swift"; sourceTree = "<group>"; };
+		12839443224B6AC4000383EB /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		12839445224B6B5B000383EB /* Referencable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referencable.swift; sourceTree = "<group>"; };
+		12839447224B6C6C000383EB /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		12839449224B7068000383EB /* CodableDocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableDocumentTests.swift; sourceTree = "<group>"; };
+		12839456224BA761000383EB /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BallcapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallcapTests.debug.xcconfig"; path = "Target Support Files/Pods-BallcapTests/Pods-BallcapTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.release.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.release.xcconfig"; sourceTree = "<group>"; };
+		98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7906A3E7F7F3CE7F194B0BF /* Pods-BallcapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallcapTests.release.xcconfig"; path = "Target Support Files/Pods-BallcapTests/Pods-BallcapTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F67696CBBA5B1BBD7C18AA2C /* Pods_Ballcap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +81,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12839423224B6A31000383EB /* Ballcap.framework in Frameworks */,
+				9A7F053558477A52831BBABA /* Pods_BallcapTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +94,8 @@
 				1283941B224B6A31000383EB /* Ballcap */,
 				12839426224B6A31000383EB /* BallcapTests */,
 				1283941A224B6A31000383EB /* Products */,
+				D44FFD108684D3059315383A /* Pods */,
+				9C527F98ECEAF05B7C3B4F39 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,6 +112,18 @@
 			isa = PBXGroup;
 			children = (
 				1283941C224B6A31000383EB /* Ballcap.h */,
+				12839443224B6AC4000383EB /* Document.swift */,
+				12839447224B6C6C000383EB /* Store.swift */,
+				12839445224B6B5B000383EB /* Referencable.swift */,
+				12839456224BA761000383EB /* Object.swift */,
+				12839435224B6AA2000383EB /* Codable+.swift */,
+				12839437224B6AA3000383EB /* CodableErrors.swift */,
+				12839434224B6AA1000383EB /* CodablePassThroughTypes.swift */,
+				12839436224B6AA2000383EB /* FirestoreDecoder.swift */,
+				12839439224B6AA4000383EB /* FirestoreEncoder.swift */,
+				1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */,
+				12839438224B6AA3000383EB /* Timestamp+Codable.swift */,
+				12839433224B6AA0000383EB /* DocumentReference+Codable.swift */,
 				1283941D224B6A31000383EB /* Info.plist */,
 			);
 			path = Ballcap;
@@ -80,10 +132,32 @@
 		12839426224B6A31000383EB /* BallcapTests */ = {
 			isa = PBXGroup;
 			children = (
+				12074315224CE2C600C26AD3 /* GoogleService-Info.plist */,
 				12839427224B6A31000383EB /* BallcapTests.swift */,
+				12839449224B7068000383EB /* CodableDocumentTests.swift */,
 				12839429224B6A31000383EB /* Info.plist */,
 			);
 			path = BallcapTests;
+			sourceTree = "<group>";
+		};
+		9C527F98ECEAF05B7C3B4F39 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */,
+				29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D44FFD108684D3059315383A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0259AA41774BDDE02031ABCB /* Pods-Ballcap.debug.xcconfig */,
+				6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */,
+				35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */,
+				B7906A3E7F7F3CE7F194B0BF /* Pods-BallcapTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,6 +178,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1283942D224B6A31000383EB /* Build configuration list for PBXNativeTarget "Ballcap" */;
 			buildPhases = (
+				D9A456E339BD2EF8DAD59C0E /* [CP] Check Pods Manifest.lock */,
 				12839414224B6A31000383EB /* Headers */,
 				12839415224B6A31000383EB /* Sources */,
 				12839416224B6A31000383EB /* Frameworks */,
@@ -122,9 +197,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12839430224B6A31000383EB /* Build configuration list for PBXNativeTarget "BallcapTests" */;
 			buildPhases = (
+				CE61A1A0174D985C0F96060F /* [CP] Check Pods Manifest.lock */,
 				1283941E224B6A31000383EB /* Sources */,
 				1283941F224B6A31000383EB /* Frameworks */,
 				12839420224B6A31000383EB /* Resources */,
+				EB437CE20A2FEF62953AD8C4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,9 +225,11 @@
 				TargetAttributes = {
 					12839418224B6A31000383EB = {
 						CreatedOnToolsVersion = 10.2;
+						LastSwiftMigration = 1020;
 					};
 					12839421224B6A31000383EB = {
 						CreatedOnToolsVersion = 10.2;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -160,6 +239,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 1283940F224B6A31000383EB;
 			productRefGroup = 1283941A224B6A31000383EB /* Products */;
@@ -184,16 +264,112 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12074316224CE2C600C26AD3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CE61A1A0174D985C0F96060F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BallcapTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D9A456E339BD2EF8DAD59C0E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ballcap-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EB437CE20A2FEF62953AD8C4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BallcapTests/Pods-BallcapTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BallcapTests/Pods-BallcapTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		12839415224B6A31000383EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1283943B224B6AA5000383EB /* DocumentReference+Codable.swift in Sources */,
+				12839446224B6B5B000383EB /* Referencable.swift in Sources */,
+				12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */,
+				1283943C224B6AA5000383EB /* CodablePassThroughTypes.swift in Sources */,
+				12839442224B6AA5000383EB /* GeoPoint+Codable.swift in Sources */,
+				1283943E224B6AA5000383EB /* FirestoreDecoder.swift in Sources */,
+				12839448224B6C6C000383EB /* Store.swift in Sources */,
+				12839444224B6AC4000383EB /* Document.swift in Sources */,
+				1283943F224B6AA5000383EB /* CodableErrors.swift in Sources */,
+				1283943D224B6AA5000383EB /* Codable+.swift in Sources */,
+				12839457224BA761000383EB /* Object.swift in Sources */,
+				12839440224B6AA5000383EB /* Timestamp+Codable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12839428224B6A31000383EB /* BallcapTests.swift in Sources */,
+				1283944A224B7068000383EB /* CodableDocumentTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +517,9 @@
 		};
 		1283942E224B6A31000383EB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0259AA41774BDDE02031ABCB /* Pods-Ballcap.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -358,6 +537,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = team.stamp.Ballcap;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -365,7 +545,9 @@
 		};
 		1283942F224B6A31000383EB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -390,7 +572,10 @@
 		};
 		12839431224B6A31000383EB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WWCKBW8CKN;
 				INFOPLIST_FILE = BallcapTests/Info.plist;
@@ -401,6 +586,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = team.stamp.BallcapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -408,7 +594,10 @@
 		};
 		12839432224B6A31000383EB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7906A3E7F7F3CE7F194B0BF /* Pods-BallcapTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WWCKBW8CKN;
 				INFOPLIST_FILE = BallcapTests/Info.plist;
