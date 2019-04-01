@@ -1,9 +1,9 @@
 //
 //  Disposer.swift
-//  Pring
+//  Ballcap
 //
-//  Created by suguru-kishimoto on 2017/08/21.
-//  Copyright © 2017年 Stamp. All rights reserved.
+//  Created by 1amageek on 2019/03/27.
+//  Copyright © 2019 Stamp Inc. All rights reserved.
 //
 
 import FirebaseFirestore
