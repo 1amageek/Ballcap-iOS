@@ -17,7 +17,7 @@ public protocol ReferenceObservationDisposable {
 
 /// Disposer
 /// Handle removing observer using handle_id (and child_id) on `deinit` automatically.
-public final class Disposer<T: Document>: ReferenceObservationDisposable {
+public final class Disposer: ReferenceObservationDisposable {
     public enum ObserveType {
         case none
         case array(ListenerRegistration)
