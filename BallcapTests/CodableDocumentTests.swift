@@ -29,10 +29,11 @@ class CodableDocumentTests: XCTestCase {
 
     func testDocument() {
         struct Model: Codable, Equatable, Documentable {
-            let x: Int = 42
+            let number: Int = 0
+            let string: String = "Ballcap"
         }
         let document: Document<Model> = Document()
-        let dict = ["x": 42]
+        let dict: [String: Any] = ["number": 0, "string": "Ballcap"]
         assertRoundTrip(model: document.data!, encoded: dict)
     }
 }

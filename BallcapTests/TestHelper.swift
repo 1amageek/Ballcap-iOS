@@ -29,7 +29,6 @@ func assertEncodes<X: Equatable & Codable>(_ model: X, encoded: [String: Any]) -
 func assertDecodes<X: Equatable & Codable>(_ model: [String: Any], encoded: X) -> Void {
     do {
         let decoded = try Firestore.Decoder().decode(X.self, from: model)
-        print("!!!!", decoded)
         XCTAssertEqual(decoded, encoded)
     } catch {
         XCTFail("Failed to decode \(X.self): \(error)")
