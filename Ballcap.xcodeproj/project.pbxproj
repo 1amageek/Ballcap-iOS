@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		12074316224CE2C600C26AD3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12074315224CE2C600C26AD3 /* GoogleService-Info.plist */; };
+		12074318224F16D700C26AD3 /* Disposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074317224F16D600C26AD3 /* Disposer.swift */; };
+		1207431A224F18A500C26AD3 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074319224F18A500C26AD3 /* File.swift */; };
+		1207431C224F23CC00C26AD3 /* File+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207431B224F23CC00C26AD3 /* File+Codable.swift */; };
 		12839423224B6A31000383EB /* Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12839419224B6A31000383EB /* Ballcap.framework */; };
 		12839428224B6A31000383EB /* BallcapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839427224B6A31000383EB /* BallcapTests.swift */; };
 		1283942A224B6A31000383EB /* Ballcap.h in Headers */ = {isa = PBXBuildFile; fileRef = 1283941C224B6A31000383EB /* Ballcap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,6 +26,25 @@
 		12839448224B6C6C000383EB /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839447224B6C6C000383EB /* Store.swift */; };
 		1283944A224B7068000383EB /* CodableDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839449224B7068000383EB /* CodableDocumentTests.swift */; };
 		12839457224BA761000383EB /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839456224BA761000383EB /* Object.swift */; };
+		12D75C6B2251F98A004D1AC4 /* CodableFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */; };
+		12D75C6E2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
+		12D75C6F2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
+		12D75C702251FF95004D1AC4 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839443224B6AC4000383EB /* Document.swift */; };
+		12D75C712251FF95004D1AC4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839447224B6C6C000383EB /* Store.swift */; };
+		12D75C722251FF95004D1AC4 /* Referencable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839445224B6B5B000383EB /* Referencable.swift */; };
+		12D75C732251FF95004D1AC4 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839456224BA761000383EB /* Object.swift */; };
+		12D75C742251FF95004D1AC4 /* Disposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074317224F16D600C26AD3 /* Disposer.swift */; };
+		12D75C752251FF95004D1AC4 /* Codable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839435224B6AA2000383EB /* Codable+.swift */; };
+		12D75C762251FF95004D1AC4 /* CodableErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839437224B6AA3000383EB /* CodableErrors.swift */; };
+		12D75C772251FF95004D1AC4 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074319224F18A500C26AD3 /* File.swift */; };
+		12D75C782251FF95004D1AC4 /* CodablePassThroughTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839434224B6AA1000383EB /* CodablePassThroughTypes.swift */; };
+		12D75C792251FF95004D1AC4 /* FirestoreDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839436224B6AA2000383EB /* FirestoreDecoder.swift */; };
+		12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839439224B6AA4000383EB /* FirestoreEncoder.swift */; };
+		12D75C7B2251FF95004D1AC4 /* GeoPoint+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */; };
+		12D75C7C2251FF95004D1AC4 /* File+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207431B224F23CC00C26AD3 /* File+Codable.swift */; };
+		12D75C7D2251FF95004D1AC4 /* Timestamp+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839438224B6AA3000383EB /* Timestamp+Codable.swift */; };
+		12D75C7E2251FF95004D1AC4 /* DocumentReference+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839433224B6AA0000383EB /* DocumentReference+Codable.swift */; };
+		12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C7F22520147004D1AC4 /* TestHelper.swift */; };
 		9A7F053558477A52831BBABA /* Pods_BallcapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */; };
 		F67696CBBA5B1BBD7C18AA2C /* Pods_Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */; };
 /* End PBXBuildFile section */
@@ -40,7 +61,9 @@
 
 /* Begin PBXFileReference section */
 		0259AA41774BDDE02031ABCB /* Pods-Ballcap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.debug.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.debug.xcconfig"; sourceTree = "<group>"; };
-		12074315224CE2C600C26AD3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		12074317224F16D600C26AD3 /* Disposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposer.swift; sourceTree = "<group>"; };
+		12074319224F18A500C26AD3 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		1207431B224F23CC00C26AD3 /* File+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Codable.swift"; sourceTree = "<group>"; };
 		12839419224B6A31000383EB /* Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1283941C224B6A31000383EB /* Ballcap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ballcap.h; sourceTree = "<group>"; };
 		1283941D224B6A31000383EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,6 +83,9 @@
 		12839447224B6C6C000383EB /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		12839449224B7068000383EB /* CodableDocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableDocumentTests.swift; sourceTree = "<group>"; };
 		12839456224BA761000383EB /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFileTests.swift; sourceTree = "<group>"; };
+		12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		12D75C7F22520147004D1AC4 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
 		29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BallcapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallcapTests.debug.xcconfig"; path = "Target Support Files/Pods-BallcapTests/Pods-BallcapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.release.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.release.xcconfig"; sourceTree = "<group>"; };
@@ -116,12 +142,15 @@
 				12839447224B6C6C000383EB /* Store.swift */,
 				12839445224B6B5B000383EB /* Referencable.swift */,
 				12839456224BA761000383EB /* Object.swift */,
+				12074317224F16D600C26AD3 /* Disposer.swift */,
 				12839435224B6AA2000383EB /* Codable+.swift */,
 				12839437224B6AA3000383EB /* CodableErrors.swift */,
+				12074319224F18A500C26AD3 /* File.swift */,
 				12839434224B6AA1000383EB /* CodablePassThroughTypes.swift */,
 				12839436224B6AA2000383EB /* FirestoreDecoder.swift */,
 				12839439224B6AA4000383EB /* FirestoreEncoder.swift */,
 				1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */,
+				1207431B224F23CC00C26AD3 /* File+Codable.swift */,
 				12839438224B6AA3000383EB /* Timestamp+Codable.swift */,
 				12839433224B6AA0000383EB /* DocumentReference+Codable.swift */,
 				1283941D224B6A31000383EB /* Info.plist */,
@@ -132,9 +161,11 @@
 		12839426224B6A31000383EB /* BallcapTests */ = {
 			isa = PBXGroup;
 			children = (
-				12074315224CE2C600C26AD3 /* GoogleService-Info.plist */,
+				12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */,
 				12839427224B6A31000383EB /* BallcapTests.swift */,
+				12D75C7F22520147004D1AC4 /* TestHelper.swift */,
 				12839449224B7068000383EB /* CodableDocumentTests.swift */,
+				12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */,
 				12839429224B6A31000383EB /* Info.plist */,
 			);
 			path = BallcapTests;
@@ -257,6 +288,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12D75C6E2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +296,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12074316224CE2C600C26AD3 /* GoogleService-Info.plist in Resources */,
+				12D75C6F2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,13 +393,16 @@
 				1283943B224B6AA5000383EB /* DocumentReference+Codable.swift in Sources */,
 				12839446224B6B5B000383EB /* Referencable.swift in Sources */,
 				12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */,
+				12074318224F16D700C26AD3 /* Disposer.swift in Sources */,
 				1283943C224B6AA5000383EB /* CodablePassThroughTypes.swift in Sources */,
 				12839442224B6AA5000383EB /* GeoPoint+Codable.swift in Sources */,
 				1283943E224B6AA5000383EB /* FirestoreDecoder.swift in Sources */,
 				12839448224B6C6C000383EB /* Store.swift in Sources */,
 				12839444224B6AC4000383EB /* Document.swift in Sources */,
+				1207431A224F18A500C26AD3 /* File.swift in Sources */,
 				1283943F224B6AA5000383EB /* CodableErrors.swift in Sources */,
 				1283943D224B6AA5000383EB /* Codable+.swift in Sources */,
+				1207431C224F23CC00C26AD3 /* File+Codable.swift in Sources */,
 				12839457224BA761000383EB /* Object.swift in Sources */,
 				12839440224B6AA5000383EB /* Timestamp+Codable.swift in Sources */,
 			);
@@ -377,8 +412,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12D75C712251FF95004D1AC4 /* Store.swift in Sources */,
+				12D75C7B2251FF95004D1AC4 /* GeoPoint+Codable.swift in Sources */,
+				12D75C7C2251FF95004D1AC4 /* File+Codable.swift in Sources */,
+				12D75C702251FF95004D1AC4 /* Document.swift in Sources */,
+				12D75C752251FF95004D1AC4 /* Codable+.swift in Sources */,
+				12D75C762251FF95004D1AC4 /* CodableErrors.swift in Sources */,
+				12D75C7D2251FF95004D1AC4 /* Timestamp+Codable.swift in Sources */,
+				12D75C742251FF95004D1AC4 /* Disposer.swift in Sources */,
 				12839428224B6A31000383EB /* BallcapTests.swift in Sources */,
+				12D75C732251FF95004D1AC4 /* Object.swift in Sources */,
+				12D75C792251FF95004D1AC4 /* FirestoreDecoder.swift in Sources */,
+				12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */,
+				12D75C782251FF95004D1AC4 /* CodablePassThroughTypes.swift in Sources */,
+				12D75C722251FF95004D1AC4 /* Referencable.swift in Sources */,
+				12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */,
 				1283944A224B7068000383EB /* CodableDocumentTests.swift in Sources */,
+				12D75C7E2251FF95004D1AC4 /* DocumentReference+Codable.swift in Sources */,
+				12D75C772251FF95004D1AC4 /* File.swift in Sources */,
+				12D75C6B2251F98A004D1AC4 /* CodableFileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

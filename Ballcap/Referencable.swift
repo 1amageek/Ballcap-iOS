@@ -7,6 +7,7 @@
 //
 
 import FirebaseFirestore
+import FirebaseStorage
 
 public protocol Referencable {
 
@@ -22,5 +23,7 @@ public protocol Referencable {
 
     var path: String { get }
 
-    var reference: DocumentReference! { get set }
+    var documentReference: DocumentReference! { get }
+
+    var storageReference: StorageReference { get }
 }
