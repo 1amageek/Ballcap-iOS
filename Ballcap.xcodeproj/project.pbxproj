@@ -142,17 +142,9 @@
 				12839447224B6C6C000383EB /* Store.swift */,
 				12839445224B6B5B000383EB /* Referencable.swift */,
 				12074317224F16D600C26AD3 /* Disposer.swift */,
-				12839435224B6AA2000383EB /* Codable+.swift */,
 				12D75C822252169D004D1AC4 /* WriteBatch+.swift */,
-				12839437224B6AA3000383EB /* CodableErrors.swift */,
 				12074319224F18A500C26AD3 /* File.swift */,
-				12839434224B6AA1000383EB /* CodablePassThroughTypes.swift */,
-				12839436224B6AA2000383EB /* FirestoreDecoder.swift */,
-				12839439224B6AA4000383EB /* FirestoreEncoder.swift */,
-				1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */,
-				1207431B224F23CC00C26AD3 /* File+Codable.swift */,
-				12839438224B6AA3000383EB /* Timestamp+Codable.swift */,
-				12839433224B6AA0000383EB /* DocumentReference+Codable.swift */,
+				12D75C85225300AB004D1AC4 /* Codable */,
 				1283941D224B6A31000383EB /* Info.plist */,
 			);
 			path = Ballcap;
@@ -169,6 +161,22 @@
 				12839429224B6A31000383EB /* Info.plist */,
 			);
 			path = BallcapTests;
+			sourceTree = "<group>";
+		};
+		12D75C85225300AB004D1AC4 /* Codable */ = {
+			isa = PBXGroup;
+			children = (
+				12839436224B6AA2000383EB /* FirestoreDecoder.swift */,
+				12839439224B6AA4000383EB /* FirestoreEncoder.swift */,
+				12839435224B6AA2000383EB /* Codable+.swift */,
+				12839437224B6AA3000383EB /* CodableErrors.swift */,
+				12839434224B6AA1000383EB /* CodablePassThroughTypes.swift */,
+				1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */,
+				1207431B224F23CC00C26AD3 /* File+Codable.swift */,
+				12839438224B6AA3000383EB /* Timestamp+Codable.swift */,
+				12839433224B6AA0000383EB /* DocumentReference+Codable.swift */,
+			);
+			path = Codable;
 			sourceTree = "<group>";
 		};
 		9C527F98ECEAF05B7C3B4F39 /* Frameworks */ = {
