@@ -9,15 +9,28 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Documentable {
+public protocol Documentable: Referencable {
     init()
 }
 
-//extension Documentable {
-//    init() {
-//        self.init()
-//    }
-//}
+public extension Documentable {
+
+    static var modelVersion: String {
+        return "1"
+    }
+
+    static var modelName: String {
+        return String(describing: Mirror(reflecting: self).subjectType).components(separatedBy: ".").first!.lowercased()
+    }
+
+    static var path: String {
+        return "version/\(self.modelVersion)/\(self.modelName)"
+    }
+
+    static var collectionReference: CollectionReference {
+        return Firestore.firestore().collection(self.path)
+    }
+}
 
 public enum DocumentError: Error {
     case invalidReference
@@ -33,7 +46,7 @@ public enum DocumentError: Error {
     }
 }
 
-public class Document<T: Codable & Documentable>: NSObject, Referencable {
+public class Document<Model: Codable & Documentable>: NSObject {
 
     public enum SourceType {
         case `default`
@@ -41,27 +54,11 @@ public class Document<T: Codable & Documentable>: NSObject, Referencable {
         case networkOnly
     }
 
-    open class var modelVersion: String {
-        return "1"
-    }
-
-    open class var modelName: String {
-        return String(describing: Mirror(reflecting: T.self).subjectType).components(separatedBy: ".").first!.lowercased()
-    }
-
-    open class var path: String {
-        return "version/\(self.modelVersion)/\(self.modelName)"
-    }
-
-    open class var reference: CollectionReference {
-        return Firestore.firestore().collection(self.path)
-    }
-
-    open var id: String {
+    var id: String {
         return self.documentReference.documentID
     }
 
-    open var path: String {
+    var path: String {
         return self.documentReference.path
     }
 
@@ -73,52 +70,53 @@ public class Document<T: Codable & Documentable>: NSObject, Referencable {
         return Storage.storage().reference().child(self.path)
     }
 
-    public var data: T?
+    public var data: Model?
 
     public override init() {
-        self.data = T()
+        self.data = Model()
         super.init()
-        self.documentReference = type(of: self).reference.document()
+        self.documentReference = Model.collectionReference.document()
     }
 
     public init(id: String) {
-        self.data = T()
+        self.data = Model()
         super.init()
-        self.documentReference = type(of: self).reference.document(id)
+        self.documentReference = Model.collectionReference.document(id)
     }
 
-    public init(id: String, from data: T) {
+    public init(id: String, from data: Model) {
         self.data = data
         super.init()
-        self.documentReference = type(of: self).reference.document(id)
+        self.documentReference = Model.collectionReference.document(id)
     }
 
     public required init?(id: String, from data: [String: Any]) {
         do {
-            self.data = try Firestore.Decoder().decode(T.self, from: data)
+            self.data = try Firestore.Decoder().decode(Model.self, from: data)
         } catch (let error) {
             print(error)
             return nil
         }
         super.init()
-        self.documentReference = type(of: self).reference.document(id)
+        self.documentReference = Model.collectionReference.document(id)
     }
 
     public init?(snapshot: DocumentSnapshot) {
         guard let data: [String: Any] = snapshot.data() else {
             super.init()
             self.snapshot = snapshot
-            self.documentReference = type(of: self).reference.document(snapshot.documentID)
+            self.documentReference = Model.collectionReference.document(snapshot.documentID)
             return
         }
         do {
-            self.data = try Firestore.Decoder().decode(T.self, from: data)
+            self.data = try Firestore.Decoder().decode(Model.self, from: data)
         } catch (let error) {
             print(error)
             return nil
         }
         super.init()
-        self.documentReference = type(of: self).reference.document(id)
+        self.snapshot = snapshot
+        self.documentReference = Model.collectionReference.document(id)
     }
 }
 
@@ -142,7 +140,7 @@ public extension Document {
             if let document: Document = self.get(id: id) {
                 completion(document, nil)
             }
-            self.reference.document(id).getDocument { (snapshot, error) in
+            Model.collectionReference.document(id).getDocument { (snapshot, error) in
                 if let error = error {
                     completion(nil, error)
                     return
@@ -157,7 +155,7 @@ public extension Document {
             if let document: Document = self.get(id: id) {
                 completion(document, nil)
             }
-            self.reference.document(id).getDocument(source: FirestoreSource.cache) { (snapshot, error) in
+            Model.collectionReference.document(id).getDocument(source: FirestoreSource.cache) { (snapshot, error) in
                 if let error = error {
                     completion(nil, error)
                     return
@@ -172,7 +170,7 @@ public extension Document {
             if let document: Document = self.get(id: id) {
                 completion(document, nil)
             }
-            self.reference.document(id).getDocument { (snapshot, error) in
+            Model.collectionReference.document(id).getDocument { (snapshot, error) in
                 if let error = error {
                     completion(nil, error)
                     return
@@ -191,7 +189,7 @@ public extension Document {
     }
 
     class func listen(id: String, includeMetadataChanges: Bool = true, completion: @escaping ((Document?, Error?) -> Void)) -> Disposer {
-        let listenr: ListenerRegistration = self.reference.document(id).addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
+        let listenr: ListenerRegistration = Model.collectionReference.document(id).addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
