@@ -77,6 +77,7 @@ public final class Batch {
             self?.storage.forEach({ key, data in
                 Store.shared.set(key: key, data: data)
             })
+            self?.storage = [:]
             completion?(nil)
         }
     }
