@@ -11,9 +11,14 @@ import FirebaseStorage
 
 public protocol Documentable: Referencable {
     init()
+    static var autoTimestamp: Bool { get }
 }
 
 public extension Documentable {
+
+    static var isIncludedInTimestamp: Bool {
+        return true
+    }
 
     static var modelVersion: String {
         return "1"
@@ -52,6 +57,10 @@ public class Document<Model: Codable & Documentable>: NSObject {
         case `default`
         case cacheOnly
         case networkOnly
+    }
+
+    var isIncludedInTimestamp: Bool {
+        return Model.isIncludedInTimestamp
     }
 
     var id: String {
@@ -134,7 +143,9 @@ public class Document<Model: Codable & Documentable>: NSObject {
 public extension Document {
 
     func save(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
-        Store.shared.set(self, reference: reference, completion: completion)
+        let batch: WriteBatch = Firestore.firestore().batch()
+        batch.save(document: self)
+        batch.commit(completion: completion)
     }
 }
 

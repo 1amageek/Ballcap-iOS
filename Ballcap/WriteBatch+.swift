@@ -11,20 +11,29 @@ import FirebaseFirestore
 public extension WriteBatch {
 
     @discardableResult
-    func set<T: Encodable>(document: Document<T>) -> WriteBatch {
+    func save<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
+        let reference: DocumentReference = reference ?? document.documentReference
         do {
-            let data = try Firestore.Encoder().encode(document.data!)
-            return self.setData(data, forDocument: document.documentReference, merge: true)
+            var data: [String: Any] = try Firestore.Encoder().encode(document.data!)
+            if document.isIncludedInTimestamp {
+                data["createdAt"] = FieldValue.serverTimestamp()
+                data["updatedAt"] = FieldValue.serverTimestamp()
+            }
+            return self.setData(data, forDocument: reference)
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
         }
     }
 
     @discardableResult
-    func update<T: Encodable>(document: Document<T>) -> WriteBatch {
+    func update<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
+        let reference: DocumentReference = reference ?? document.documentReference
         do {
-            let data = try Firestore.Encoder().encode(document.data!)
-            return self.updateData(data, forDocument: document.documentReference)
+            var data = try Firestore.Encoder().encode(document.data!)
+            if document.isIncludedInTimestamp {
+                data["updatedAt"] = FieldValue.serverTimestamp()
+            }
+            return self.updateData(data, forDocument: reference)
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
         }

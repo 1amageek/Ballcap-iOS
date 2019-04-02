@@ -29,5 +29,4 @@ public final class Store {
         let data: [String: Any] = try! Firestore.Encoder().encode(document.data)
         reference.setData(data, merge: true, completion: completion)
     }
-
 }
