@@ -314,12 +314,13 @@ public final class File: Equatable {
             "    "
         return "\n    File {\n\(base)}"
     }
+
+    public static func == (lhs: File, rhs: File) -> Bool {
+        return
+            lhs.path == rhs.path &&
+                lhs.name == rhs.name &&
+                lhs.url == rhs.url &&
+                lhs.mimeType == rhs.mimeType
+    }
 }
 
-public func == (lhs: File, rhs: File) -> Bool {
-    return
-        lhs.path == rhs.path &&
-        lhs.name == rhs.name &&
-        lhs.url == rhs.url &&
-        lhs.mimeType == rhs.mimeType
-}

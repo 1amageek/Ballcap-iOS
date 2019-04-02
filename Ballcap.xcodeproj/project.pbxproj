@@ -142,11 +142,11 @@
 			children = (
 				1283941C224B6A31000383EB /* Ballcap.h */,
 				12839443224B6AC4000383EB /* Document.swift */,
-				12839447224B6C6C000383EB /* Store.swift */,
 				12839445224B6B5B000383EB /* Referencable.swift */,
 				12074317224F16D600C26AD3 /* Disposer.swift */,
 				12D75C822252169D004D1AC4 /* WriteBatch+.swift */,
 				12074319224F18A500C26AD3 /* File.swift */,
+				12839447224B6C6C000383EB /* Store.swift */,
 				12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */,
 				12D75C85225300AB004D1AC4 /* Codable */,
 				1283941D224B6A31000383EB /* Info.plist */,
