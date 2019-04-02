@@ -58,6 +58,34 @@ class CodableDocumentTests: XCTestCase {
         assertRoundTrip(model: model, encoded: dict)
     }
 
+    func testString() {
+        struct Model: Codable, Equatable {
+            let x: String
+        }
+        let model = Model(x: "s")
+        let dict = ["x": "s"]
+        assertRoundTrip(model: model, encoded: dict)
+    }
+
+    func testEncodeTimestamp() {
+        struct Model: Codable, Equatable {
+            let x: ServerTimestamp
+            let s: ServerTimestamp
+        }
+        let model = Model(x: .pending, s: .resolved(Timestamp(seconds: 0, nanoseconds: 0)))
+        let dict = ["x": FieldValue.serverTimestamp(), "s": Timestamp(seconds: 0, nanoseconds: 0)]
+        assertEncodes(model, encoded: dict)
+    }
+
+    func testDecodeTimestamp() {
+        struct Model: Codable, Equatable {
+            let s: ServerTimestamp
+        }
+        let model = Model(s: .resolved(Timestamp(seconds: 0, nanoseconds: 0)))
+        let dict: [String: Any] = ["s": Timestamp(seconds: 0, nanoseconds: 0)]
+        assertDecodes(dict, encoded: model)
+    }
+
     func testDocument() {
         struct Model: Codable, Equatable, Modelable {
             let number: Int = 0
@@ -66,6 +94,140 @@ class CodableDocumentTests: XCTestCase {
         let document: Document<Model> = Document()
         let dict: [String: Any] = ["number": 0, "string": "Ballcap"]
         assertRoundTrip(model: document.data!, encoded: dict)
+    }
+
+    // Inspired by https://github.com/firebase/firebase-android-sdk/blob/master/firebase-firestore/src/test/java/com/google/firebase/firestore/util/MapperTest.java
+    func testBeans() {
+        struct Model: Codable, Equatable {
+            let s: String
+            let d: Double
+            let f: Float
+            let l: CLongLong
+            let i: Int
+            let b: Bool
+            let sh: CShort
+            let byte: CChar
+            let uchar: CUnsignedChar
+            let ai: [Int]
+            let si: [String]
+            let caseSensitive: String
+            let casESensitive: String
+            let casESensitivE: String
+        }
+        let model = Model(
+            s: "abc",
+            d: 123,
+            f: -4,
+            l: 1_234_567_890_123,
+            i: -4444,
+            b: false,
+            sh: 123,
+            byte: 45,
+            uchar: 44,
+            ai: [1, 2, 3, 4],
+            si: ["abc", "def"],
+            caseSensitive: "aaa",
+            casESensitive: "bbb",
+            casESensitivE: "ccc"
+        )
+        let dict = [
+            "s": "abc",
+            "d": 123,
+            "f": -4,
+            "l": 1_234_567_890_123,
+            "i": -4444,
+            "b": false,
+            "sh": 123,
+            "byte": 45,
+            "uchar": 44,
+            "ai": [1, 2, 3, 4],
+            "si": ["abc", "def"],
+            "caseSensitive": "aaa",
+            "casESensitive": "bbb",
+            "casESensitivE": "ccc",
+            ] as [String: Any]
+
+        assertRoundTrip(model: model, encoded: dict)
+    }
+
+    func testCodingKeys() {
+        struct Model: Codable, Equatable {
+            var s: String
+            var ms: String
+            var d: Double
+            var md: Double
+            var i: Int
+            var mi: Int
+            var b: Bool
+            var mb: Bool
+
+            // Use CodingKeys to only encode part of the struct.
+            enum CodingKeys: String, CodingKey {
+                case s
+                case d
+                case i
+                case b
+            }
+
+            public init(from decoder: Decoder) throws {
+                let values = try decoder.container(keyedBy: CodingKeys.self)
+                s = try values.decode(String.self, forKey: .s)
+                d = try values.decode(Double.self, forKey: .d)
+                i = try values.decode(Int.self, forKey: .i)
+                b = try values.decode(Bool.self, forKey: .b)
+                ms = "filler"
+                md = 42.42
+                mi = -9
+                mb = false
+            }
+
+            public init(ins: String, inms: String, ind: Double, inmd: Double, ini: Int, inmi: Int, inb: Bool, inmb: Bool) {
+                s = ins
+                d = ind
+                i = ini
+                b = inb
+                ms = inms
+                md = inmd
+                mi = inmi
+                mb = inmb
+            }
+        }
+        let model = Model(
+            ins: "abc",
+            inms: "dummy",
+            ind: 123.3,
+            inmd: 0,
+            ini: -4444,
+            inmi: 0,
+            inb: true,
+            inmb: true
+        )
+        let dict = [
+            "s": "abc",
+            "d": 123.3,
+            "i": -4444,
+            "b": true,
+            ] as [String: Any]
+
+        let model2 = try! Firestore.Decoder().decode(Model.self, from: dict)
+        XCTAssertEqual(model.s, model2.s)
+        XCTAssertEqual(model.d, model2.d)
+        XCTAssertEqual(model.i, model2.i)
+        XCTAssertEqual(model.b, model2.b)
+        XCTAssertEqual(model2.ms, "filler")
+        XCTAssertEqual(model2.md, 42.42)
+        XCTAssertEqual(model2.mi, -9)
+        XCTAssertEqual(model2.mb, false)
+
+        let encodedDict = try! Firestore.Encoder().encode(model)
+        XCTAssertEqual(encodedDict["s"] as! String, "abc")
+        XCTAssertEqual(encodedDict["d"] as! Double, 123.3)
+        XCTAssertEqual(encodedDict["i"] as! Int, -4444)
+        XCTAssertEqual(encodedDict["b"] as! Bool, true)
+        XCTAssertNil(encodedDict["ms"])
+        XCTAssertNil(encodedDict["md"])
+        XCTAssertNil(encodedDict["mi"])
+        XCTAssertNil(encodedDict["mb"])
     }
 
     func testDocumentSubScriptValueRead() {

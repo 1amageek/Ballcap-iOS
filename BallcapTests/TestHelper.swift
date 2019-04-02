@@ -15,6 +15,7 @@ func assertRoundTrip<X: Equatable & Codable>(model: X, encoded: [String: Any]) -
     assertDecodes(enc, encoded: model)
 }
 
+@discardableResult
 func assertEncodes<X: Equatable & Codable>(_ model: X, encoded: [String: Any]) -> [String: Any] {
     do {
         let enc = try Firestore.Encoder().encode(model)
