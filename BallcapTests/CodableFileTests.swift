@@ -134,13 +134,25 @@ class CodableFileTests: XCTestCase {
         assertRoundTrip(model: file, encoded: dict as [String : Any])
     }
 
-    func testFileSave() {
+    func testFileSaveGetDelete() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
         let ref: StorageReference = Storage.storage().reference().child("/a")
         let data: Data = "test".data(using: .utf8)!
         let file: File = File(ref, data: data, name: "n", mimeType: .plain)
-
         file.save { (metadata, error) in
-
+            XCTAssertEqual(metadata?.contentType!, File.MIMEType.plain.rawValue)
+            XCTAssertEqual(metadata?.path!, "a")
+            file.getData(completion: { (data, error) in
+                let text: String = String(data: data!, encoding: .utf8)!
+                XCTAssertEqual(text, "test")
+                file.delete({ (error) in
+                    file.getData(completion: { (data, error) in
+                        XCTAssertNil(data)
+                        exp.fulfill()
+                    })
+                })
+            })
         }
+        self.wait(for: [exp], timeout: 30)
     }
 }

@@ -177,6 +177,8 @@ public final class File: Equatable {
         let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
         self.name = fileName
         self.mimeType = mimeType
+        self.uploadTask = StorageTaskStore.shared.get(upload: self.path)
+        self.downloadTask = StorageTaskStore.shared.get(download: self.path)
     }
 
     convenience init(_ storageReference: StorageReference,
@@ -225,6 +227,7 @@ public final class File: Equatable {
 
     // MARK: - SAVE
 
+    @discardableResult
     func save(_ completion: ((StorageMetadata?, Error?) -> Void)?) -> StorageUploadTask? {
 
         let reference: StorageReference = self.storageReference
@@ -232,7 +235,7 @@ public final class File: Equatable {
         metadata.contentType = mimeType.rawValue
 
         if let data: Data = self.data {
-            self.uploadTask = reference.putData(data, metadata: metadata) { (metadata, error) in
+            let task: StorageUploadTask = reference.putData(data, metadata: metadata) { (metadata, error) in
                 self.metadata = metadata
                 if let error = error {
                     completion?(metadata, error)
@@ -247,9 +250,11 @@ public final class File: Equatable {
                     completion?(metadata, error)
                 })
             }
+            StorageTaskStore.shared.set(upload: self.path, task: task)
+            self.uploadTask = task
             return self.uploadTask
         } else if let url: URL = self.originalURL {
-            self.uploadTask = reference.putFile(from: url, metadata: metadata) { (metadata, error) in
+            let task: StorageUploadTask = reference.putFile(from: url, metadata: metadata) { (metadata, error) in
                 self.metadata = metadata
                 if let error = error {
                     completion?(metadata, error)
@@ -264,6 +269,8 @@ public final class File: Equatable {
                     completion?(metadata, error)
                 })
             }
+            StorageTaskStore.shared.set(upload: self.path, task: task)
+            self.uploadTask = task
             return self.uploadTask
         } else {
             let error: FileError = .invalidData
@@ -283,12 +290,14 @@ public final class File: Equatable {
     // MARK: - RETRIEVE
 
     /// Default 100MB
+    @discardableResult
     func getData(_ size: Int64 = Int64(10e8), completion: @escaping (Data?, Error?) -> Void) -> StorageDownloadTask? {
         self.downloadTask?.cancel()
-        let task: StorageDownloadTask? = self.storageReference.getData(maxSize: size, completion: { (data, error) in
+        let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
             self.downloadTask = nil
             completion(data, error as Error?)
         })
+        StorageTaskStore.shared.set(download: self.path, task: task)
         self.downloadTask = task
         return task
     }
