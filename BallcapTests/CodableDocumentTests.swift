@@ -86,6 +86,28 @@ class CodableDocumentTests: XCTestCase {
         assertDecodes(dict, encoded: model)
     }
 
+    func testEncodeIncrement() {
+        struct Model: Codable, Equatable {
+            let x: IncrementableInt = .value(Int64(0))
+            var s: IncrementableInt = .value(Int64(0))
+        }
+        var model = Model()
+        model.s = .increment(1)
+        let enc = try! Firestore.Encoder().encode(model)
+        let dict = ["x": 0, "s": FieldValue.increment(Int64(0))] as [String : Any]
+        XCTAssertEqual(enc["x"] as! Int, dict["x"] as! Int)
+        XCTAssert(enc["s"].self! is FieldValue)
+    }
+
+    func testDecodeIncrement() {
+        struct Model: Codable, Equatable {
+            let x: IncrementableInt = .value(0)
+        }
+        let model = Model()
+        let dict = ["x": 0]
+        assertDecodes(dict, encoded: model)
+    }
+
     func testDocument() {
         struct Model: Codable, Equatable, Modelable {
             let number: Int = 0

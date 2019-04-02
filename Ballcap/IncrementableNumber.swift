@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-public enum IncrementableInt: Codable {
+public enum IncrementableInt: Codable, Hashable {
     case increment(Int64)
     case value(Int64)
 
@@ -53,4 +53,3 @@ public enum IncrementableDouble: Codable {
         }
     }
 }
-
