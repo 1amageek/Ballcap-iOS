@@ -9,12 +9,12 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Documentable: Referencable {
+public protocol Modelabl: Referencable {
     init()
     static var autoTimestamp: Bool { get }
 }
 
-public extension Documentable {
+public extension Modelabl {
 
     static var isIncludedInTimestamp: Bool {
         return true
@@ -37,6 +37,14 @@ public extension Documentable {
     }
 }
 
+public protocol Documentable {
+    associatedtype Model
+
+    var id: String { get }
+
+    var path: String { get }
+}
+
 public enum DocumentError: Error {
     case invalidReference
     case invalidData
@@ -51,55 +59,57 @@ public enum DocumentError: Error {
     }
 }
 
-public class Document<Model: Codable & Documentable>: NSObject {
+public class Document<Model: Codable & Modelabl>: NSObject, Documentable {
 
-    public enum SourceType {
-        case `default`
+    public typealias Model = Model
+
+    public enum CachePolicy {
+        case `default`          // cache then network
         case cacheOnly
         case networkOnly
     }
 
-    var isIncludedInTimestamp: Bool {
+    public var isIncludedInTimestamp: Bool {
         return Model.isIncludedInTimestamp
     }
 
-    var id: String {
+    public var id: String {
         return self.documentReference.documentID
     }
 
-    var path: String {
+    public var path: String {
         return self.documentReference.path
     }
 
-    public private(set) var snapshot: DocumentSnapshot?
+    private(set) var snapshot: DocumentSnapshot?
 
-    public private(set) var documentReference: DocumentReference!
+    private(set) var documentReference: DocumentReference!
 
-    open var storageReference: StorageReference {
+    var storageReference: StorageReference {
         return Storage.storage().reference().child(self.path)
     }
 
-    public var data: Model?
+    var data: Model?
 
-    public override init() {
+    override init() {
         self.data = Model()
         super.init()
         self.documentReference = Model.collectionReference.document()
     }
 
-    public init(id: String) {
+    init(id: String) {
         self.data = Model()
         super.init()
         self.documentReference = Model.collectionReference.document(id)
     }
 
-    public init(id: String, from data: Model) {
+    init(id: String, from data: Model) {
         self.data = data
         super.init()
         self.documentReference = Model.collectionReference.document(id)
     }
 
-    public required init?(id: String, from data: [String: Any]) {
+    required init?(id: String, from data: [String: Any]) {
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
         } catch (let error) {
@@ -110,7 +120,7 @@ public class Document<Model: Codable & Documentable>: NSObject {
         self.documentReference = Model.collectionReference.document(id)
     }
 
-    public init?(snapshot: DocumentSnapshot) {
+    init?(snapshot: DocumentSnapshot) {
         guard let data: [String: Any] = snapshot.data() else {
             super.init()
             self.snapshot = snapshot
@@ -147,15 +157,27 @@ public extension Document {
         batch.save(document: self)
         batch.commit(completion: completion)
     }
+
+    func update(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
+        let batch: WriteBatch = Firestore.firestore().batch()
+        batch.update(document: self)
+        batch.commit(completion: completion)
+    }
+
+    func delete(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
+        let batch: WriteBatch = Firestore.firestore().batch()
+        batch.delete(document: self)
+        batch.commit(completion: completion)
+    }
 }
 
 // MARK: -
 
 public extension Document {
 
-    class func get(id: String, sourceType: SourceType = .default, completion: @escaping ((Document?, Error?) -> Void)) {
+    class func get(id: String, cachePolicy: CachePolicy = .default, completion: @escaping ((Document?, Error?) -> Void)) {
 
-        switch sourceType {
+        switch cachePolicy {
         case .default:
             if let document: Document = self.get(id: id) {
                 completion(document, nil)
@@ -187,10 +209,7 @@ public extension Document {
                 completion(document, nil)
             }
         case .networkOnly:
-            if let document: Document = self.get(id: id) {
-                completion(document, nil)
-            }
-            Model.collectionReference.document(id).getDocument { (snapshot, error) in
+            Model.collectionReference.document(id).getDocument(source: FirestoreSource.server) { (snapshot, error) in
                 if let error = error {
                     completion(nil, error)
                     return
@@ -221,5 +240,140 @@ public extension Document {
             completion(document, nil)
         }
         return Disposer(.value(listenr))
+    }
+}
+
+public extension Document {
+
+    static var query: DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference)
+    }
+
+    static func `where`(_ keyPath: PartialKeyPath<Model>, isEqualTo: Any) -> DataSource<Model>.Query {
+        guard let key: String = keyPath._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.where(key, isEqualTo: isEqualTo)
+    }
+
+    static func `where`(_ keyPath: PartialKeyPath<Model>, isLessThan: Any) -> DataSource<Model>.Query {
+        guard let key: String = keyPath._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.where(key, isLessThan: isLessThan)
+    }
+
+    static func `where`(_ keyPath: PartialKeyPath<Model>, isLessThanOrEqualTo: Any) -> DataSource<Model>.Query {
+        guard let key: String = keyPath._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.where(key, isLessThanOrEqualTo: isLessThanOrEqualTo)
+    }
+
+    static func `where`(_ keyPath: PartialKeyPath<Model>, isGreaterThan: Any) -> DataSource<Model>.Query {
+        guard let key: String = keyPath._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.where(key, isGreaterThan: isGreaterThan)
+    }
+
+    static func `where`(_ keyPath: PartialKeyPath<Model>, isGreaterThanOrEqualTo: Any) -> DataSource<Model>.Query {
+        guard let key: String = keyPath._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.where(key, isGreaterThanOrEqualTo: isGreaterThanOrEqualTo)
+    }
+
+    static func `where`(_ keyPath: PartialKeyPath<Model>, arrayContains: Any) -> DataSource<Model>.Query {
+        guard let key: String = keyPath._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.where(key, arrayContains: arrayContains)
+    }
+
+    static func order(by: PartialKeyPath<Model>) -> DataSource<Model>.Query {
+        guard let key: String = by._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.order(by: key)
+    }
+
+    static func order(by: PartialKeyPath<Model>, descending: Bool) -> DataSource<Model>.Query {
+        guard let key: String = by._kvcKeyPathString else {
+            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
+        }
+        return self.order(by: key, descending: descending)
+    }
+
+    // MARK:
+
+    static func `where`(_ field: String, isEqualTo: Any) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.whereField(field, isEqualTo: isEqualTo), reference: Model.collectionReference)
+    }
+
+    static func `where`(_ field: String, isLessThan: Any) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.whereField(field, isLessThan: isLessThan), reference: Model.collectionReference)
+    }
+
+    static func `where`(_ field: String, isLessThanOrEqualTo: Any) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.whereField(field, isLessThanOrEqualTo: isLessThanOrEqualTo), reference: Model.collectionReference)
+    }
+
+    static func `where`(_ field: String, isGreaterThan: Any) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.whereField(field, isGreaterThan: isGreaterThan), reference: Model.collectionReference)
+    }
+
+    static func `where`(_ field: String, isGreaterThanOrEqualTo: Any) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.whereField(field, isGreaterThanOrEqualTo: isGreaterThanOrEqualTo), reference: Model.collectionReference)
+    }
+
+    static func `where`(_ field: String, arrayContains: Any) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.whereField(field, arrayContains: arrayContains), reference: Model.collectionReference)
+    }
+
+    static func order(by: String) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.order(by: by), reference: Model.collectionReference)
+    }
+
+    static func order(by: String, descending: Bool) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.order(by: by, descending: descending), reference: Model.collectionReference)
+    }
+
+    // MARK: -
+
+    static func limit(to: Int) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.limit(to: to), reference: Model.collectionReference)
+    }
+
+    static func start(at: [Any]) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.start(at: at), reference: Model.collectionReference)
+    }
+
+    static func start(after: [Any]) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.start(after: after), reference: Model.collectionReference)
+    }
+
+    static func start(atDocument: DocumentSnapshot) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.start(atDocument: atDocument), reference: Model.collectionReference)
+    }
+
+    static func start(afterDocument: DocumentSnapshot) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.start(afterDocument: afterDocument), reference: Model.collectionReference)
+    }
+
+    static func end(at: [Any]) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.end(at: at), reference: Model.collectionReference)
+    }
+
+    static func end(atDocument: DocumentSnapshot) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.end(atDocument: atDocument), reference: Model.collectionReference)
+    }
+
+    static func end(before: [Any]) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.end(before: before), reference: Model.collectionReference)
+    }
+
+    static func end(beforeDocument: DocumentSnapshot) -> DataSource<Model>.Query {
+        return DataSource.Query(Model.collectionReference.end(beforeDocument: beforeDocument), reference: Model.collectionReference)
     }
 }
