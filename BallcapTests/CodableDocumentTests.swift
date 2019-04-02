@@ -20,18 +20,18 @@ class CodableDocumentTests: XCTestCase {
 
     // 
     func testModelCollectionReference() {
-        struct Model: Codable, Documentable {}
+        struct Model: Codable, Modelable {}
         XCTAssertEqual(Model.collectionReference.path, "version/1/model")
     }
 
     func testModelDocumentReference() {
-        struct Model: Codable, Documentable {}
+        struct Model: Codable, Modelable {}
         let document: Document<Model> = Document(id: "foo")
         XCTAssertEqual(document.documentReference.path, "version/1/model/foo")
     }
 
     func testModelOverrideCollectionReference() {
-        struct Model: Codable, Documentable {
+        struct Model: Codable, Modelable {
             static var path: String {
                 return "foo"
             }
@@ -40,7 +40,7 @@ class CodableDocumentTests: XCTestCase {
     }
 
     func testModelOverrideDocumentReference() {
-        struct Model: Codable, Documentable {
+        struct Model: Codable, Modelable {
             static var path: String {
                 return "foo"
             }
@@ -59,7 +59,7 @@ class CodableDocumentTests: XCTestCase {
     }
 
     func testDocument() {
-        struct Model: Codable, Equatable, Documentable {
+        struct Model: Codable, Equatable, Modelable {
             let number: Int = 0
             var string: String = "Ballcap"
         }
@@ -69,7 +69,7 @@ class CodableDocumentTests: XCTestCase {
     }
 
     func testDocumentSubScriptValueRead() {
-        struct Model: Codable, Equatable, Documentable {
+        struct Model: Codable, Equatable, Modelable {
             var number: Int = 0
             var string: String = "Ballcap"
         }
@@ -78,7 +78,7 @@ class CodableDocumentTests: XCTestCase {
     }
 
     func testDocumentSubScriptValueWrite() {
-        struct Model: Codable, Equatable, Documentable {
+        struct Model: Codable, Equatable, Modelable {
             var number: Int = 0
             var string: String = "Ballcap"
         }
@@ -89,7 +89,7 @@ class CodableDocumentTests: XCTestCase {
     }
 
     func testDocumentSubScriptRefRead() {
-        struct Model: Codable, Equatable, Documentable {
+        struct Model: Codable, Equatable, Modelable {
             var ref: DocumentReference = Firestore.firestore().document("a/a")
         }
         let document: Document<Model> = Document()
@@ -97,7 +97,7 @@ class CodableDocumentTests: XCTestCase {
     }
 
     func testDocumentSubScriptRefWrite() {
-        struct Model: Codable, Equatable, Documentable {
+        struct Model: Codable, Equatable, Modelable {
             var ref: DocumentReference = Firestore.firestore().document("a/a")
         }
         let document: Document<Model> = Document()

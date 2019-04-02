@@ -160,6 +160,10 @@ public final class File: Equatable {
     /// File metadata
     var metadata: StorageMetadata?
 
+    var isUploaded: Bool {
+        return self.metadata?.updated != nil
+    }
+
     ///
     var additionalData: [String: String]?
 
@@ -283,6 +287,7 @@ public final class File: Equatable {
 
     func delete(_ completion: ((Error?) -> Void)?) {
         self.storageReference.delete { (error) in
+            self.metadata = nil
             completion?(error)
         }
     }

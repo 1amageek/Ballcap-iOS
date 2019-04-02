@@ -9,12 +9,12 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Modelabl: Referencable {
+public protocol Modelable: Referencable {
     init()
-    static var autoTimestamp: Bool { get }
+    static var isIncludedInTimestamp: Bool { get }
 }
 
-public extension Modelabl {
+public extension Modelable {
 
     static var isIncludedInTimestamp: Bool {
         return true
@@ -59,7 +59,7 @@ public enum DocumentError: Error {
     }
 }
 
-public class Document<Model: Codable & Modelabl>: NSObject, Documentable {
+public class Document<Model: Codable & Modelable>: NSObject, Documentable {
 
     public typealias Model = Model
 

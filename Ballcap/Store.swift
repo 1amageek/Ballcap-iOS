@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-public final class Store {
+internal final class Store {
 
     static let shared: Store = Store()
 
