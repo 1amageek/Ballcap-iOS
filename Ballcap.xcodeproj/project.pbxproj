@@ -59,6 +59,8 @@
 		12D75C9D225369F9004D1AC4 /* ServerTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */; };
 		12D75C9F22536CD2004D1AC4 /* IncrementableNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */; };
 		12D75CA022536CD2004D1AC4 /* IncrementableNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */; };
+		12D75CA222538284004D1AC4 /* Ballcap.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 12D75CA122538284004D1AC4 /* Ballcap.podspec */; };
+		12D75CA322538284004D1AC4 /* Ballcap.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 12D75CA122538284004D1AC4 /* Ballcap.podspec */; };
 		9A7F053558477A52831BBABA /* Pods_BallcapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */; };
 		F67696CBBA5B1BBD7C18AA2C /* Pods_Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */; };
 /* End PBXBuildFile section */
@@ -108,6 +110,7 @@
 		12D75C9822536864004D1AC4 /* FieldValue+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FieldValue+Codable.swift"; sourceTree = "<group>"; };
 		12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTimestamp.swift; sourceTree = "<group>"; };
 		12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncrementableNumber.swift; sourceTree = "<group>"; };
+		12D75CA122538284004D1AC4 /* Ballcap.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ballcap.podspec; sourceTree = "<group>"; };
 		29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BallcapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallcapTests.debug.xcconfig"; path = "Target Support Files/Pods-BallcapTests/Pods-BallcapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.release.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 		1283940F224B6A31000383EB = {
 			isa = PBXGroup;
 			children = (
+				12D75CA122538284004D1AC4 /* Ballcap.podspec */,
 				1283941B224B6A31000383EB /* Ballcap */,
 				12839426224B6A31000383EB /* BallcapTests */,
 				1283941A224B6A31000383EB /* Products */,
@@ -326,6 +330,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12D75CA222538284004D1AC4 /* Ballcap.podspec in Resources */,
 				12D75C6E2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -334,6 +339,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12D75CA322538284004D1AC4 /* Ballcap.podspec in Resources */,
 				12D75C6F2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
