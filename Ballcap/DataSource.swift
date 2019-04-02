@@ -10,24 +10,20 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public struct DataSourceError: Error {
-    public enum ErrorKind {
-        case invalidReference
-        case empty
-        case timeout
-    }
 
-    public let kind: ErrorKind
+public enum DataSourceError: Error {
+    case invalidReference
+    case empty
+    case timeout
 
-    public var description: String {
-        switch self.kind {
+    var description: String {
+        switch self {
         case .invalidReference: return "The value you are trying to reference is invalid."
         case .empty: return "There was no value."
         case .timeout: return "DataSource fetch timed out."
         }
     }
 }
-
 
 public typealias Change = (deletions: [Int], insertions: [Int], modifications: [Int])
 
@@ -52,34 +48,12 @@ public enum CollectionChange {
     }
 }
 
-/**
- Options class
- */
-public final class Options {
-
-    /// Fetch timeout
-    public var timeout: Int = 10    // Default Timeout 10s
-
-    ///
-    public var includeMetadataChanges: Bool = true
-
-    /// 
-    public var listeningChangeTypes: [DocumentChangeType] = [.added, .modified, .removed]
-
-    /// Predicate
-    public var predicate: NSPredicate?
-
-    /// Sort order
-    public var sortDescriptors: [NSSortDescriptor] = []
-
-    public init() { }
-}
 
 /// DataSource class.
 /// Observe at a Firebase DataSource location.
-public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
+public final class DataSource<Model: Codable & Modelabl>: ExpressibleByArrayLiteral {
 
-    public typealias ArrayLiteralElement = T
+    public typealias ArrayLiteralElement = Document<Model>
 
     public typealias Element = ArrayLiteralElement
 
@@ -91,24 +65,51 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
 
     public typealias ErrorBlock = (QuerySnapshot?, DataSourceError) -> Void
 
+    /**
+     Options class
+     */
+    public final class Option {
+
+        /// Fetch timeout
+        var timeout: Int = 10    // Default Timeout 10s
+
+        ///
+        var includeMetadataChanges: Bool = true
+
+        ///
+        var listeningChangeTypes: [DocumentChangeType] = [.added, .modified, .removed]
+
+        /// Predicate
+        var predicate: NSPredicate?
+
+        /// Sort order
+        var sortDescriptors: [NSSortDescriptor] = []
+
+        var shouldFetchReference: Bool = true
+
+        init() { }
+    }
+
+
+
     /// Objects held in the client
-    public var documents: [Element] = []
+    var documents: [Element] = []
 
     /// Count
     public var count: Int { return documents.count }
 
     /// True if we have the last Document of the data source
-    public private(set) var isLast: Bool = false
+    private(set) var isLast: Bool = false
 
-    public var completedBlocks: [CompletedBlock] = []
+    var completedBlocks: [CompletedBlock] = []
 
     /// Reference of element
     private(set) var query: Query
 
-    /// Options
-    private(set) var options: Options
+    /// DataSource Option
+    private(set) var option: Option
 
-    private let fetchQueue: DispatchQueue = DispatchQueue(label: "Pring.datasource.fetch.queue")
+    private let fetchQueue: DispatchQueue = DispatchQueue(label: "ballcap.datasource.fetch.queue")
 
     private var listenr: ListenerRegistration?
 
@@ -124,7 +125,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
 
     /// Applies the NSPredicate specified by option.
     private func filtered() -> [Element] {
-        if let predicate: NSPredicate = self.options.predicate {
+        if let predicate: NSPredicate = self.option.predicate {
             return (self.documents as NSArray).filtered(using: predicate) as! [Element]
         }
         return self.documents
@@ -142,9 +143,9 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
      - parameter options: DataSource Options
      - parameter block: A block which is called to process Firebase change evnet.
      */
-    public init(reference: Query, options: Options = Options(), block: ChangeBlock? = nil) {
+    init(reference: Query, option: Option = Option(), block: ChangeBlock? = nil) {
         self.query = reference
-        self.options = options
+        self.option = option
         self.changedBlock = block
     }
 
@@ -154,27 +155,27 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
     }
 
     /// Initializing the DataSource
-    public init(_ documents: [Element]) {
+    init(_ documents: [Element]) {
         self.query = Element.query
-        self.options = Options()
+        self.option = Option()
         self.documents = documents
     }
 
     /// Set the Block to receive the change of the DataSource.
     @discardableResult
-    public func on(_ block: ChangeBlock?) -> Self {
+    func on(_ block: ChangeBlock?) -> Self {
         self.changedBlock = block
         return self
     }
 
     @discardableResult
-    public func on(parse block: ParseBlock?) -> Self {
+    func on(parse block: ParseBlock?) -> Self {
         self.parseBlock = block
         return self
     }
 
     @discardableResult
-    public func onCompleted(_ block: CompletedBlock?) -> Self {
+    func onCompleted(_ block: CompletedBlock?) -> Self {
         if let block: CompletedBlock = block {
             self.completedBlocks.append(block)
         }
@@ -182,18 +183,18 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
     }
 
     @discardableResult
-    public func onError(_ block: ErrorBlock?) -> Self {
+    func onError(_ block: ErrorBlock?) -> Self {
         self.errorBlock = block
         return self
     }
 
     /// Start monitoring data source.
     @discardableResult
-    public func listen() -> Self {
+    func listen() -> Self {
         let changeBlock: ChangeBlock? = self.changedBlock
         let completedBlocks: [CompletedBlock] = self.completedBlocks
         var isFirst: Bool = true
-        self.listenr = self.query.listen(includeMetadataChanges: self.options.includeMetadataChanges, listener: { [weak self] (snapshot, error) in
+        self.listenr = self.query.listen(includeMetadataChanges: self.option.includeMetadataChanges, listener: { [weak self] (snapshot, error) in
             guard let `self` = self else { return }
             guard let snapshot: QuerySnapshot = snapshot else {
                 changeBlock?(nil, CollectionChange(change: nil, error: error))
@@ -221,7 +222,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
     }
 
     /// Stop monitoring the data source.
-    public func stop() {
+    func stop() {
         self.listenr?.remove()
     }
 
@@ -253,11 +254,11 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
 
         self.fetchQueue.async {
             let group: DispatchGroup = DispatchGroup()
-            snapshot.documentChanges(includeMetadataChanges: self.options.includeMetadataChanges).forEach({ (change) in
+            snapshot.documentChanges(includeMetadataChanges: self.option.includeMetadataChanges).forEach({ (change) in
                 let id: String = change.document.documentID
                 switch change.type {
                 case .added:
-                    guard self.options.listeningChangeTypes.contains(.added) else { return }
+                    guard self.option.listeningChangeTypes.contains(.added) else { return }
                     guard !self.documents.contains(where: { return $0.id == id}) else {
                         return
                     }
@@ -265,7 +266,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                     self.get(with: change, block: { (document, error) in
                         guard let document: Element = document else {
                             if !isFirst {
-                                let error: Error = error ?? DataSourceError(kind: .invalidReference)
+                                let error: Error = error ?? DataSourceError.invalidReference
                                 let collectionChange: CollectionChange = CollectionChange.error(error)
                                 mainThreadCall {
                                     changeBlock?(snapshot, collectionChange)
@@ -277,9 +278,9 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                         if let parseBlock: ParseBlock = parseBlock {
                             parseBlock(snapshot, document, { document in
                                 self.documents.append(document)
-                                self.documents = self.filtered().sort(sortDescriptors: self.options.sortDescriptors)
+                                self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
                                 if !isFirst {
-                                    if let i: Int = self.documents.index(of: document) {
+                                    if let i: Int = self.documents.firstIndex(of: document) {
                                         mainThreadCall {
                                             changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
                                         }
@@ -289,9 +290,9 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                             })
                         } else {
                             self.documents.append(document)
-                            self.documents = self.filtered().sort(sortDescriptors: self.options.sortDescriptors)
+                            self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
                             if !isFirst {
-                                if let i: Int = self.documents.index(of: document) {
+                                if let i: Int = self.documents.firstIndex(of: document) {
                                     mainThreadCall {
                                         changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
                                     }
@@ -301,14 +302,14 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                         }
                     })
                 case .modified:
-                    guard self.options.listeningChangeTypes.contains(.modified) else { return }
+                    guard self.option.listeningChangeTypes.contains(.modified) else { return }
                     guard self.documents.contains(where: { return $0.id == id}) else {
                         return
                     }
                     group.enter()
                     self.get(with: change, block: { (document, error) in
                         guard let document: Element = document else {
-                            let error: Error = error ?? DataSourceError(kind: .invalidReference)
+                            let error: Error = error ?? DataSourceError.invalidReference
                             let collectionChange: CollectionChange = CollectionChange.error(error)
                             mainThreadCall {
                                 changeBlock?(snapshot, collectionChange)
@@ -322,7 +323,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                                     self.documents.remove(at: i)
                                     self.documents.insert(document, at: i)
                                 }
-                                self.documents = self.filtered().sort(sortDescriptors: self.options.sortDescriptors)
+                                self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
                                 if let i: Int = self.documents.index(of: document) {
                                     mainThreadCall {
                                         changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [], modifications: [i]), error: nil))
@@ -335,7 +336,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                                 self.documents.remove(at: i)
                                 self.documents.insert(document, at: i)
                             }
-                            self.documents = self.filtered().sort(sortDescriptors: self.options.sortDescriptors)
+                            self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
                             if let i: Int = self.documents.index(of: document) {
                                 mainThreadCall {
                                     changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [], modifications: [i]), error: nil))
@@ -345,7 +346,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                         }
                     })
                 case .removed:
-                    guard self.options.listeningChangeTypes.contains(.removed) else { return }
+                    guard self.option.listeningChangeTypes.contains(.removed) else { return }
                     guard self.documents.contains(where: { return $0.id == id}) else {
                         return
                     }
@@ -357,6 +358,8 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                         }
                         group.leave()
                     }
+                @unknown default:
+                    fatalError()
                 }
             })
             group.notify(queue: DispatchQueue.main, execute: {
@@ -367,10 +370,10 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
                     block(snapshot, self.documents)
                 })
             })
-            switch group.wait(timeout: .now() + .seconds(self.options.timeout)) {
+            switch group.wait(timeout: .now() + .seconds(self.option.timeout)) {
             case .success: break
             case .timedOut:
-                let error: DataSourceError = DataSourceError(kind: .timeout)
+                let error: DataSourceError = DataSourceError.timeout
                 mainThreadCall {
                     errorBlock?(snapshot, error)
                 }
@@ -379,7 +382,19 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
     }
 
     private func get(with change: DocumentChange, block: @escaping (Element?, Error?) -> Void) {
-        if self.query.hasRealities {
+        if self.option.shouldFetchReference {
+            let id: String = change.document.documentID
+            if let document: Element = Store.shared.get(documentType: Element.self, id: id) {
+                block(document, nil)
+            } else {
+                Element.get(id: id) { (document, error) in
+                    if let error = error {
+                        block(nil, error)
+                        return
+                    }
+                }
+            }
+        } else {
             guard let document: Element = Element(snapshot: change.document) else {
                 block(nil, nil)
                 return
@@ -387,22 +402,11 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
             DispatchQueue.main.async {
                 block(document, nil)
             }
-        } else {
-            let id: String = change.document.documentID
-            Element.get(id, block: { (document, error) in
-                if let error = error {
-                    block(nil, error)
-                    return
-                }
-                document?.createdAt = (change.document.data(with: .estimate)["createdAt"] as! Timestamp)
-                document?.updatedAt = (change.document.data(with: .estimate)["updatedAt"] as! Timestamp)
-                block(document, nil)
-            })
         }
     }
 
     @discardableResult
-    public func get() -> Self {
+    func get() -> Self {
         self.next()
         return self
     }
@@ -411,7 +415,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
     /// - Parameters:
     ///     - block: It returns `isLast` as an argument.
     @discardableResult
-    public func next(_ block: ((Bool) -> Void)? = nil) -> Self {
+    func next(_ block: ((Bool) -> Void)? = nil) -> Self {
         self.query.get(completion: { (snapshot, error) in
             self._operate(with: snapshot, isFirst: false, error: error)
             guard let lastSnapshot = snapshot?.documents.last else {
@@ -432,7 +436,7 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
      - parameter parent: Also deletes the data of the reference case of `true`.
      - parameter block: block The block that should be called. If there is an error it returns an error.
      */
-    public func removeDocument(at index: Int, block: ((String, Error?) -> Void)? = nil) {
+    func removeDocument(at index: Int, block: ((String, Error?) -> Void)? = nil) {
         let document: Element = self.documents[index]
         let id: String = document.id
         document.delete { (error) in
@@ -447,23 +451,42 @@ public final class DataSource<T: Document>: ExpressibleByArrayLiteral {
      - parameter block: block The block that should be called.  It is passed the data as a Tsp.
      - see removeObserver
      */
-    public func observeObject(at index: Int, block: @escaping (Element?, Error?) -> Void) -> Disposer<Element> {
+    func observeObject(at index: Int, block: @escaping (Element?, Error?) -> Void) -> Disposer {
         let element: Element = self[index]
         var isFirst: Bool = true
         block(element, nil)
-        return Element.listen(element.id, block: { (elemnt, error) in
+        return Element.listen(id: element.id) { (elemnt, error) in
             if isFirst {
                 isFirst = false
                 return
             }
             block(element, nil)
-        })
+        }
     }
 
     // MARK: - deinit
 
     deinit {
         self.listenr?.remove()
+    }
+}
+
+extension Array where Element: Documentable {
+
+    public var keys: [String] {
+        return self.compactMap { return $0.id }
+    }
+
+    public func index(of key: String) -> Int? {
+        return self.keys.firstIndex(of: key)
+    }
+
+    public func index(of document: Element) -> Int? {
+        return self.keys.firstIndex(of: document.id)
+    }
+
+    public func sort(sortDescriptors: [NSSortDescriptor]) -> [Element] {
+        return (self as NSArray).sortedArray(using: sortDescriptors) as! [Element]
     }
 }
 
@@ -484,12 +507,12 @@ extension DataSource: Collection {
         return i + 1
     }
 
-    public func index(where predicate: (T) throws -> Bool) rethrows -> Int? {
+    public func index(where predicate: (Element) throws -> Bool) rethrows -> Int? {
         if self.documents.isEmpty { return nil }
-        return try self.documents.index(where: predicate)
+        return try self.documents.firstIndex(where: predicate)
     }
 
-    public func index(of element: T) -> Int? {
+    public func index(of element: Element) -> Int? {
         if self.documents.isEmpty { return nil }
         return self.documents.index(of: element.id)
     }
@@ -520,26 +543,7 @@ extension DataSource: Collection {
         return self.documents[index]
     }
 
-    public func forEach(_ body: (T) throws -> Void) rethrows {
+    public func forEach(_ body: (Element) throws -> Void) rethrows {
         return try self.documents.forEach(body)
-    }
-}
-
-extension Array where Element: Document {
-
-    public var keys: [String] {
-        return self.compactMap { return $0.id }
-    }
-
-    public func index(of key: String) -> Int? {
-        return self.keys.index(of: key)
-    }
-
-    public func index(of document: Element) -> Int? {
-        return self.keys.index(of: document.id)
-    }
-
-    public func sort(sortDescriptors: [NSSortDescriptor]) -> [Element] {
-        return (self as NSArray).sortedArray(using: sortDescriptors) as! [Element]
     }
 }
