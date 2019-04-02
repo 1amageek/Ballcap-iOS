@@ -5,6 +5,7 @@ Pod::Spec.new do |s|
   s.version      = "0.1.0"
   s.summary      = "Firestore design framework"
   s.description  = <<-DESC
+  s.swift_version = "5"
 Ballcap is a framework for operating Cloud Firestore Document.
                    DESC
   s.homepage     = "https://github.com/1amageek/Ballcap-iOS"
@@ -16,7 +17,7 @@ Ballcap is a framework for operating Cloud Firestore Document.
   # s.osx.deployment_target = "10.7"
   # s.watchos.deployment_target = "2.0"
   # s.tvos.deployment_target = "9.0"
-  s.source       = { :git => "https://github.com/1amageek/Ballcap.git", :tag => "#{s.version}" }
+  s.source       = { :git => "git@github.com:1amageek/Ballcap-iOS.git", :tag => "#{s.version}" }
   s.source_files  = "Ballcap/**/*.swift"
   s.requires_arc = true
   s.static_framework = true

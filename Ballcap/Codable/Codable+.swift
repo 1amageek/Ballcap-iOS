@@ -1,5 +1,4 @@
 import FirebaseFirestore
-import Firebase
 
 private func encodeOrDie<T: Encodable>(_ value: T) -> [String: Any] {
     do {
