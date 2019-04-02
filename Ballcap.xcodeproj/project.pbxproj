@@ -25,14 +25,12 @@
 		12839446224B6B5B000383EB /* Referencable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839445224B6B5B000383EB /* Referencable.swift */; };
 		12839448224B6C6C000383EB /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839447224B6C6C000383EB /* Store.swift */; };
 		1283944A224B7068000383EB /* CodableDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839449224B7068000383EB /* CodableDocumentTests.swift */; };
-		12839457224BA761000383EB /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839456224BA761000383EB /* Object.swift */; };
 		12D75C6B2251F98A004D1AC4 /* CodableFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */; };
 		12D75C6E2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
 		12D75C6F2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
 		12D75C702251FF95004D1AC4 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839443224B6AC4000383EB /* Document.swift */; };
 		12D75C712251FF95004D1AC4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839447224B6C6C000383EB /* Store.swift */; };
 		12D75C722251FF95004D1AC4 /* Referencable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839445224B6B5B000383EB /* Referencable.swift */; };
-		12D75C732251FF95004D1AC4 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839456224BA761000383EB /* Object.swift */; };
 		12D75C742251FF95004D1AC4 /* Disposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074317224F16D600C26AD3 /* Disposer.swift */; };
 		12D75C752251FF95004D1AC4 /* Codable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839435224B6AA2000383EB /* Codable+.swift */; };
 		12D75C762251FF95004D1AC4 /* CodableErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839437224B6AA3000383EB /* CodableErrors.swift */; };
@@ -84,7 +82,6 @@
 		12839445224B6B5B000383EB /* Referencable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referencable.swift; sourceTree = "<group>"; };
 		12839447224B6C6C000383EB /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		12839449224B7068000383EB /* CodableDocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableDocumentTests.swift; sourceTree = "<group>"; };
-		12839456224BA761000383EB /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFileTests.swift; sourceTree = "<group>"; };
 		12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D75C7F22520147004D1AC4 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
@@ -144,7 +141,6 @@
 				12839443224B6AC4000383EB /* Document.swift */,
 				12839447224B6C6C000383EB /* Store.swift */,
 				12839445224B6B5B000383EB /* Referencable.swift */,
-				12839456224BA761000383EB /* Object.swift */,
 				12074317224F16D600C26AD3 /* Disposer.swift */,
 				12839435224B6AA2000383EB /* Codable+.swift */,
 				12D75C822252169D004D1AC4 /* WriteBatch+.swift */,
@@ -408,7 +404,6 @@
 				1283943F224B6AA5000383EB /* CodableErrors.swift in Sources */,
 				1283943D224B6AA5000383EB /* Codable+.swift in Sources */,
 				1207431C224F23CC00C26AD3 /* File+Codable.swift in Sources */,
-				12839457224BA761000383EB /* Object.swift in Sources */,
 				12839440224B6AA5000383EB /* Timestamp+Codable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,7 +422,6 @@
 				12D75C742251FF95004D1AC4 /* Disposer.swift in Sources */,
 				12D75C842252169D004D1AC4 /* WriteBatch+.swift in Sources */,
 				12839428224B6A31000383EB /* BallcapTests.swift in Sources */,
-				12D75C732251FF95004D1AC4 /* Object.swift in Sources */,
 				12D75C792251FF95004D1AC4 /* FirestoreDecoder.swift in Sources */,
 				12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */,
 				12D75C782251FF95004D1AC4 /* CodablePassThroughTypes.swift in Sources */,
