@@ -153,21 +153,21 @@ public class Document<Model: Codable & Modelabl>: NSObject, Documentable {
 public extension Document {
 
     func save(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
-        let batch: WriteBatch = Firestore.firestore().batch()
+        let batch: Batch = Batch()
         batch.save(document: self)
-        batch.commit(completion: completion)
+        batch.commit(completion)
     }
 
     func update(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
-        let batch: WriteBatch = Firestore.firestore().batch()
+        let batch: Batch = Batch()
         batch.update(document: self)
-        batch.commit(completion: completion)
+        batch.commit(completion)
     }
 
     func delete(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
-        let batch: WriteBatch = Firestore.firestore().batch()
+        let batch: Batch = Batch()
         batch.delete(document: self)
-        batch.commit(completion: completion)
+        batch.commit(completion)
     }
 }
 

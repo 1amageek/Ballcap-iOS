@@ -51,9 +51,9 @@ extension Transaction {
     }
 }
 
-extension WriteBatch {
-    public func setData<T: Encodable>(from encodable: T, forDocument: DocumentReference) {
-        let encoded = encodeOrDie(encodable)
-        setData(encoded, forDocument: forDocument)
-    }
-}
+//extension WriteBatch {
+//    public func setData<T: Encodable>(from encodable: T, forDocument: DocumentReference) {
+//        let encoded = encodeOrDie(encodable)
+//        setData(encoded, forDocument: forDocument)
+//    }
+//}

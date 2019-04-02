@@ -24,9 +24,17 @@ public final class Store {
         return documentType.init(id: id, from: data as! [String : Any])
     }
 
-    func set<T: Document<U>, U: Codable>(_ document: T, reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
-        let reference: DocumentReference = reference ?? document.documentReference
-        let data: [String: Any] = try! Firestore.Encoder().encode(document.data)
-        reference.setData(data, merge: true, completion: completion)
+    func set<T: Document<U>, U: Codable & Documentable>(_ document: T, reference: DocumentReference? = nil) throws {
+        do {
+            let data: [String: Any] = try Firestore.Encoder().encode(document.data)
+            let reference: DocumentReference = reference ?? document.documentReference
+            self.set(key: reference.path, data: data)
+        } catch (let error) {
+            throw error
+        }
+    }
+
+    func set(key: String, data: [String: Any]) {
+        self.cache.setObject(data as NSDictionary, forKey: key as NSString)
     }
 }

@@ -43,8 +43,8 @@
 		12D75C7D2251FF95004D1AC4 /* Timestamp+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839438224B6AA3000383EB /* Timestamp+Codable.swift */; };
 		12D75C7E2251FF95004D1AC4 /* DocumentReference+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839433224B6AA0000383EB /* DocumentReference+Codable.swift */; };
 		12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C7F22520147004D1AC4 /* TestHelper.swift */; };
-		12D75C832252169D004D1AC4 /* WriteBatch+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* WriteBatch+.swift */; };
-		12D75C842252169D004D1AC4 /* WriteBatch+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* WriteBatch+.swift */; };
+		12D75C832252169D004D1AC4 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
+		12D75C842252169D004D1AC4 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
 		12D75C8722530F58004D1AC4 /* StorageTaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */; };
 		12D75C8822530F58004D1AC4 /* StorageTaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */; };
 		12D75C8B22533297004D1AC4 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8922533296004D1AC4 /* Query.swift */; };
@@ -91,7 +91,7 @@
 		12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFileTests.swift; sourceTree = "<group>"; };
 		12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D75C7F22520147004D1AC4 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
-		12D75C822252169D004D1AC4 /* WriteBatch+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WriteBatch+.swift"; sourceTree = "<group>"; };
+		12D75C822252169D004D1AC4 /* Batch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Batch.swift; sourceTree = "<group>"; };
 		12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageTaskStore.swift; sourceTree = "<group>"; };
 		12D75C8922533296004D1AC4 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		12D75C8A22533296004D1AC4 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 				12839443224B6AC4000383EB /* Document.swift */,
 				12839445224B6B5B000383EB /* Referencable.swift */,
 				12074317224F16D600C26AD3 /* Disposer.swift */,
-				12D75C822252169D004D1AC4 /* WriteBatch+.swift */,
+				12D75C822252169D004D1AC4 /* Batch.swift */,
 				12074319224F18A500C26AD3 /* File.swift */,
 				12D75C8A22533296004D1AC4 /* DataSource.swift */,
 				12D75C8922533296004D1AC4 /* Query.swift */,
@@ -414,7 +414,7 @@
 				12839446224B6B5B000383EB /* Referencable.swift in Sources */,
 				12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */,
 				12074318224F16D700C26AD3 /* Disposer.swift in Sources */,
-				12D75C832252169D004D1AC4 /* WriteBatch+.swift in Sources */,
+				12D75C832252169D004D1AC4 /* Batch.swift in Sources */,
 				1283943C224B6AA5000383EB /* CodablePassThroughTypes.swift in Sources */,
 				12839442224B6AA5000383EB /* GeoPoint+Codable.swift in Sources */,
 				1283943E224B6AA5000383EB /* FirestoreDecoder.swift in Sources */,
@@ -445,7 +445,7 @@
 				12D75C762251FF95004D1AC4 /* CodableErrors.swift in Sources */,
 				12D75C7D2251FF95004D1AC4 /* Timestamp+Codable.swift in Sources */,
 				12D75C742251FF95004D1AC4 /* Disposer.swift in Sources */,
-				12D75C842252169D004D1AC4 /* WriteBatch+.swift in Sources */,
+				12D75C842252169D004D1AC4 /* Batch.swift in Sources */,
 				12839428224B6A31000383EB /* BallcapTests.swift in Sources */,
 				12D75C792251FF95004D1AC4 /* FirestoreDecoder.swift in Sources */,
 				12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */,
