@@ -18,6 +18,18 @@ class CodableDocumentTests: XCTestCase {
         _ = FirebaseTest.shared
     }
 
+    // 
+    func testModelCollectionReference() {
+        struct Model: Codable, Documentable {}
+        XCTAssertEqual(Model.collectionReference.path, "version/1/model")
+    }
+
+    func testModelDocumentReference() {
+        struct Model: Codable, Documentable {}
+        let document: Document<Model> = Document(id: "foo")
+        XCTAssertEqual(document.documentReference.path, "version/1/model/foo")
+    }
+
     func testInt() {
         struct Model: Codable, Equatable {
             let x: Int
@@ -30,10 +42,11 @@ class CodableDocumentTests: XCTestCase {
     func testDocument() {
         struct Model: Codable, Equatable, Documentable {
             let number: Int = 0
-            let string: String = "Ballcap"
+            var string: String = "Ballcap"
         }
         let document: Document<Model> = Document()
         let dict: [String: Any] = ["number": 0, "string": "Ballcap"]
+        print("!!!", document.data!)
         assertRoundTrip(model: document.data!, encoded: dict)
     }
 }
