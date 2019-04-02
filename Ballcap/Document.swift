@@ -118,6 +118,15 @@ public class Document<Model: Codable & Documentable>: NSObject {
         self.snapshot = snapshot
         self.documentReference = Model.collectionReference.document(id)
     }
+
+    subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {
+        get {
+            return self.data?[keyPath: keyPath]
+        }
+        set {
+            self.data![keyPath: keyPath] = newValue!
+        }
+    }
 }
 
 // MARK: -
