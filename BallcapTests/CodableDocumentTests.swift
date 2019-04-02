@@ -65,7 +65,6 @@ class CodableDocumentTests: XCTestCase {
         }
         let document: Document<Model> = Document()
         let dict: [String: Any] = ["number": 0, "string": "Ballcap"]
-        print("!!!", document.data!)
         assertRoundTrip(model: document.data!, encoded: dict)
     }
 }
