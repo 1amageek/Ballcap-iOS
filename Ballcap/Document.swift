@@ -91,6 +91,8 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
 
     var data: Model?
 
+    var fieldValues: [String: FieldValue] = [:]
+
     override init() {
         self.data = Model()
         super.init()
@@ -143,7 +145,7 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
             return self.data?[keyPath: keyPath]
         }
         set {
-            self.data![keyPath: keyPath] = newValue!
+            self.data?[keyPath: keyPath] = newValue!
         }
     }
 }

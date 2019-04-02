@@ -51,6 +51,14 @@
 		12D75C8C22533297004D1AC4 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8922533296004D1AC4 /* Query.swift */; };
 		12D75C8D22533297004D1AC4 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8A22533296004D1AC4 /* DataSource.swift */; };
 		12D75C8E22533297004D1AC4 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8A22533296004D1AC4 /* DataSource.swift */; };
+		12D75C9122535B06004D1AC4 /* DataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8F22535B06004D1AC4 /* DataSourceTests.swift */; };
+		12D75C9422535B4E004D1AC4 /* QueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9222535B4E004D1AC4 /* QueryTests.swift */; };
+		12D75C9922536864004D1AC4 /* FieldValue+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9822536864004D1AC4 /* FieldValue+Codable.swift */; };
+		12D75C9A22536864004D1AC4 /* FieldValue+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9822536864004D1AC4 /* FieldValue+Codable.swift */; };
+		12D75C9C225369F9004D1AC4 /* ServerTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */; };
+		12D75C9D225369F9004D1AC4 /* ServerTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */; };
+		12D75C9F22536CD2004D1AC4 /* IncrementableNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */; };
+		12D75CA022536CD2004D1AC4 /* IncrementableNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */; };
 		9A7F053558477A52831BBABA /* Pods_BallcapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */; };
 		F67696CBBA5B1BBD7C18AA2C /* Pods_Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */; };
 /* End PBXBuildFile section */
@@ -95,6 +103,11 @@
 		12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageTaskStore.swift; sourceTree = "<group>"; };
 		12D75C8922533296004D1AC4 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		12D75C8A22533296004D1AC4 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		12D75C8F22535B06004D1AC4 /* DataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceTests.swift; sourceTree = "<group>"; };
+		12D75C9222535B4E004D1AC4 /* QueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTests.swift; sourceTree = "<group>"; };
+		12D75C9822536864004D1AC4 /* FieldValue+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FieldValue+Codable.swift"; sourceTree = "<group>"; };
+		12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTimestamp.swift; sourceTree = "<group>"; };
+		12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncrementableNumber.swift; sourceTree = "<group>"; };
 		29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BallcapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallcapTests.debug.xcconfig"; path = "Target Support Files/Pods-BallcapTests/Pods-BallcapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.release.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.release.xcconfig"; sourceTree = "<group>"; };
@@ -148,6 +161,8 @@
 			children = (
 				1283941C224B6A31000383EB /* Ballcap.h */,
 				12839443224B6AC4000383EB /* Document.swift */,
+				12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */,
+				12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */,
 				12839445224B6B5B000383EB /* Referencable.swift */,
 				12074317224F16D600C26AD3 /* Disposer.swift */,
 				12D75C822252169D004D1AC4 /* Batch.swift */,
@@ -170,6 +185,8 @@
 				12D75C7F22520147004D1AC4 /* TestHelper.swift */,
 				12839449224B7068000383EB /* CodableDocumentTests.swift */,
 				12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */,
+				12D75C8F22535B06004D1AC4 /* DataSourceTests.swift */,
+				12D75C9222535B4E004D1AC4 /* QueryTests.swift */,
 				12839429224B6A31000383EB /* Info.plist */,
 			);
 			path = BallcapTests;
@@ -186,6 +203,7 @@
 				1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */,
 				1207431B224F23CC00C26AD3 /* File+Codable.swift */,
 				12839438224B6AA3000383EB /* Timestamp+Codable.swift */,
+				12D75C9822536864004D1AC4 /* FieldValue+Codable.swift */,
 				12839433224B6AA0000383EB /* DocumentReference+Codable.swift */,
 			);
 			path = Codable;
@@ -417,6 +435,7 @@
 				12D75C832252169D004D1AC4 /* Batch.swift in Sources */,
 				1283943C224B6AA5000383EB /* CodablePassThroughTypes.swift in Sources */,
 				12839442224B6AA5000383EB /* GeoPoint+Codable.swift in Sources */,
+				12D75C9922536864004D1AC4 /* FieldValue+Codable.swift in Sources */,
 				1283943E224B6AA5000383EB /* FirestoreDecoder.swift in Sources */,
 				12839448224B6C6C000383EB /* Store.swift in Sources */,
 				12839444224B6AC4000383EB /* Document.swift in Sources */,
@@ -425,9 +444,11 @@
 				12D75C8D22533297004D1AC4 /* DataSource.swift in Sources */,
 				1283943F224B6AA5000383EB /* CodableErrors.swift in Sources */,
 				1283943D224B6AA5000383EB /* Codable+.swift in Sources */,
+				12D75C9F22536CD2004D1AC4 /* IncrementableNumber.swift in Sources */,
 				1207431C224F23CC00C26AD3 /* File+Codable.swift in Sources */,
 				12D75C8B22533297004D1AC4 /* Query.swift in Sources */,
 				12839440224B6AA5000383EB /* Timestamp+Codable.swift in Sources */,
+				12D75C9C225369F9004D1AC4 /* ServerTimestamp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,8 +459,12 @@
 				12D75C712251FF95004D1AC4 /* Store.swift in Sources */,
 				12D75C8C22533297004D1AC4 /* Query.swift in Sources */,
 				12D75C7B2251FF95004D1AC4 /* GeoPoint+Codable.swift in Sources */,
+				12D75C9122535B06004D1AC4 /* DataSourceTests.swift in Sources */,
 				12D75C8822530F58004D1AC4 /* StorageTaskStore.swift in Sources */,
+				12D75C9A22536864004D1AC4 /* FieldValue+Codable.swift in Sources */,
 				12D75C7C2251FF95004D1AC4 /* File+Codable.swift in Sources */,
+				12D75CA022536CD2004D1AC4 /* IncrementableNumber.swift in Sources */,
+				12D75C9D225369F9004D1AC4 /* ServerTimestamp.swift in Sources */,
 				12D75C702251FF95004D1AC4 /* Document.swift in Sources */,
 				12D75C752251FF95004D1AC4 /* Codable+.swift in Sources */,
 				12D75C762251FF95004D1AC4 /* CodableErrors.swift in Sources */,
@@ -454,6 +479,7 @@
 				12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */,
 				1283944A224B7068000383EB /* CodableDocumentTests.swift in Sources */,
 				12D75C7E2251FF95004D1AC4 /* DocumentReference+Codable.swift in Sources */,
+				12D75C9422535B4E004D1AC4 /* QueryTests.swift in Sources */,
 				12D75C772251FF95004D1AC4 /* File.swift in Sources */,
 				12D75C8E22533297004D1AC4 /* DataSource.swift in Sources */,
 				12D75C6B2251F98A004D1AC4 /* CodableFileTests.swift in Sources */,
