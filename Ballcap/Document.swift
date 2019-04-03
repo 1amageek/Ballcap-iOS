@@ -93,6 +93,10 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
 
     public var data: Model?
 
+    public private(set) var createdAt: Timestamp = Timestamp(date: Date())
+
+    public private(set) var updatedAt: Timestamp = Timestamp(date: Date())
+
     public override init() {
         self.data = Model()
         super.init()
@@ -120,6 +124,8 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
     public required init?(id: String, from data: [String: Any], collectionReference: CollectionReference? = nil) {
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
+            self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+            self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
         } catch (let error) {
             print(error)
             return nil
@@ -137,6 +143,8 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
         }
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
+            self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+            self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
         } catch (let error) {
             print(error)
             return nil

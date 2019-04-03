@@ -68,7 +68,7 @@ public final class DataSourceOption {
     /// Sort order
     public var sortDescriptors: [NSSortDescriptor] = []
 
-    public var shouldFetchReference: Bool = true
+    public var shouldFetchReference: Bool = false
 
     public init() { }
 }
@@ -391,6 +391,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
                         block(nil, error)
                         return
                     }
+                    block(document, nil)
                 }
             }
         } else {
