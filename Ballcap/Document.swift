@@ -249,62 +249,6 @@ public extension Document {
         return DataSource.Query(Model.collectionReference)
     }
 
-    static func `where`(_ keyPath: PartialKeyPath<Model>, isEqualTo: Any) -> DataSource<Model>.Query {
-        guard let key: String = keyPath._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.where(key, isEqualTo: isEqualTo)
-    }
-
-    static func `where`(_ keyPath: PartialKeyPath<Model>, isLessThan: Any) -> DataSource<Model>.Query {
-        guard let key: String = keyPath._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.where(key, isLessThan: isLessThan)
-    }
-
-    static func `where`(_ keyPath: PartialKeyPath<Model>, isLessThanOrEqualTo: Any) -> DataSource<Model>.Query {
-        guard let key: String = keyPath._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.where(key, isLessThanOrEqualTo: isLessThanOrEqualTo)
-    }
-
-    static func `where`(_ keyPath: PartialKeyPath<Model>, isGreaterThan: Any) -> DataSource<Model>.Query {
-        guard let key: String = keyPath._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.where(key, isGreaterThan: isGreaterThan)
-    }
-
-    static func `where`(_ keyPath: PartialKeyPath<Model>, isGreaterThanOrEqualTo: Any) -> DataSource<Model>.Query {
-        guard let key: String = keyPath._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.where(key, isGreaterThanOrEqualTo: isGreaterThanOrEqualTo)
-    }
-
-    static func `where`(_ keyPath: PartialKeyPath<Model>, arrayContains: Any) -> DataSource<Model>.Query {
-        guard let key: String = keyPath._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.where(key, arrayContains: arrayContains)
-    }
-
-    static func order(by: PartialKeyPath<Model>) -> DataSource<Model>.Query {
-        guard let key: String = by._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.order(by: key)
-    }
-
-    static func order(by: PartialKeyPath<Model>, descending: Bool) -> DataSource<Model>.Query {
-        guard let key: String = by._kvcKeyPathString else {
-            fatalError("[Pring.Document] 'keyPath' is not used except for OjbC.")
-        }
-        return self.order(by: key, descending: descending)
-    }
-
     // MARK:
 
     static func `where`(_ field: String, isEqualTo: Any) -> DataSource<Model>.Query {
