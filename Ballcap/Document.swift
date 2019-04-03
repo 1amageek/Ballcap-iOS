@@ -154,6 +154,16 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
             self.data?[keyPath: keyPath] = newValue!
         }
     }
+
+    public func collection<SubCollectionModel: Modelable & Codable>(key: String) -> DataSource<SubCollectionModel>.Query {
+        let collectionReference: CollectionReference = self.documentReference.collection(key)
+        return DataSource.Query(collectionReference)
+    }
+
+    public func collection<SubCollectionModel: Modelable & Codable>(key: String, type: SubCollectionModel.Type) -> DataSource<SubCollectionModel>.Query {
+        let collectionReference: CollectionReference = self.documentReference.collection(key)
+        return DataSource.Query(collectionReference)
+    }
 }
 
 // MARK: -
