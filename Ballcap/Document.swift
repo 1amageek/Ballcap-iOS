@@ -99,19 +99,25 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
         self.documentReference = Model.collectionReference.document()
     }
 
-    public init(id: String) {
+    public init(collectionReference: CollectionReference) {
         self.data = Model()
         super.init()
-        self.documentReference = Model.collectionReference.document(id)
+        self.documentReference = collectionReference.document()
     }
 
-    public init(id: String, from data: Model) {
+    public init(id: String, collectionReference: CollectionReference? = nil) {
+        self.data = Model()
+        super.init()
+        self.documentReference = collectionReference?.document(id) ?? Model.collectionReference.document(id)
+    }
+
+    public init(id: String, from data: Model, collectionReference: CollectionReference? = nil) {
         self.data = data
         super.init()
-        self.documentReference = Model.collectionReference.document(id)
+        self.documentReference = collectionReference?.document(id) ?? Model.collectionReference.document(id)
     }
 
-    public required init?(id: String, from data: [String: Any]) {
+    public required init?(id: String, from data: [String: Any], collectionReference: CollectionReference? = nil) {
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
         } catch (let error) {
@@ -119,14 +125,14 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
             return nil
         }
         super.init()
-        self.documentReference = Model.collectionReference.document(id)
+        self.documentReference = collectionReference?.document(id) ?? Model.collectionReference.document(id)
     }
 
     public init?(snapshot: DocumentSnapshot) {
         guard let data: [String: Any] = snapshot.data() else {
             super.init()
             self.snapshot = snapshot
-            self.documentReference = Model.collectionReference.document(snapshot.documentID)
+            self.documentReference = snapshot.reference
             return
         }
         do {
@@ -248,6 +254,11 @@ public extension Document {
 public extension Document where Model.CollectionPaths: RawRepresentable, Model.CollectionPaths.RawValue == String {
 
     func collection<SubCollectionModel: Modelable & Codable>(path: Model.CollectionPaths, type: SubCollectionModel.Type) -> DataSource<SubCollectionModel>.Query {
+        let collectionReference: CollectionReference = self.documentReference.collection(path.rawValue)
+        return DataSource.Query(collectionReference)
+    }
+
+    func collection<SubCollectionModel: Modelable & Codable>(path: Model.CollectionPaths) -> DataSource<SubCollectionModel>.Query {
         let collectionReference: CollectionReference = self.documentReference.collection(path.rawValue)
         return DataSource.Query(collectionReference)
     }
