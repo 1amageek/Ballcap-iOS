@@ -247,7 +247,7 @@ public extension Document {
 
 public extension Document where Model.CollectionPaths: RawRepresentable, Model.CollectionPaths.RawValue == String {
 
-    func collection(path: Model.CollectionPaths) -> DataSource<Model>.Query {
+    func collection<SubCollectionModel: Modelable & Codable>(path: Model.CollectionPaths, type: SubCollectionModel.Type) -> DataSource<SubCollectionModel>.Query {
         let collectionReference: CollectionReference = self.documentReference.collection(path.rawValue)
         return DataSource.Query(collectionReference)
     }

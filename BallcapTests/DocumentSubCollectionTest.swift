@@ -27,10 +27,13 @@ class DocumentSubCollectionTest: XCTestCase {
                 case s
             }
         }
+        struct SubCollectionModel: Codable, Modelable {
+
+        }
         XCTAssertEqual(Model.collectionReference.path, "version/1/model")
         let document: Document<Model> = Document(id: "foo")
         XCTAssertEqual(document.documentReference.path, "version/1/model/foo")
-        XCTAssertEqual(document.collection(path: .s).reference.path, "version/1/model/foo/s")
-        XCTAssertEqual(document.collection(path: .t).reference.path, "version/1/model/foo/t")
+        XCTAssertEqual(document.collection(path: .s, type: SubCollectionModel.self).reference.path, "version/1/model/foo/s")
+        XCTAssertEqual(document.collection(path: .t, type: SubCollectionModel.self).reference.path, "version/1/model/foo/t")
     }
 }
