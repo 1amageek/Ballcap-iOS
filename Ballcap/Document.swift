@@ -12,6 +12,8 @@ import FirebaseStorage
 public protocol Modelable: Referencable {
     init()
     static var isIncludedInTimestamp: Bool { get }
+
+    associatedtype CollectionPaths = Void
 }
 
 public extension Modelable {
@@ -240,6 +242,14 @@ public extension Document {
             completion(document, nil)
         }
         return Disposer(.value(listenr))
+    }
+}
+
+public extension Document where Model.CollectionPaths: RawRepresentable, Model.CollectionPaths.RawValue == String {
+
+    func collection(path: Model.CollectionPaths) -> DataSource<Model>.Query {
+        let collectionReference: CollectionReference = self.documentReference.collection(path.rawValue)
+        return DataSource.Query(collectionReference)
     }
 }
 
