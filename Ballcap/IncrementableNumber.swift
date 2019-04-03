@@ -8,9 +8,16 @@
 
 import FirebaseFirestore
 
-public enum IncrementableInt: Codable, Hashable {
+public enum IncrementableInt: Codable, Hashable, ExpressibleByIntegerLiteral {
+
     case increment(Int64)
     case value(Int64)
+
+    public typealias IntegerLiteralType = Int64
+
+    public init(integerLiteral value: Int64) {
+        self = .value(value)
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -31,9 +38,16 @@ public enum IncrementableInt: Codable, Hashable {
     }
 }
 
-public enum IncrementableDouble: Codable {
+public enum IncrementableDouble: Codable, Hashable, ExpressibleByFloatLiteral {
+
     case increment(Double)
     case value(Double)
+
+    public typealias IntegerLiteralType = Double
+
+    public init(floatLiteral value: Double) {
+        self = .value(value)
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
