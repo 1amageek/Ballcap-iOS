@@ -81,9 +81,9 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
         return self.documentReference.path
     }
 
-    private(set) var snapshot: DocumentSnapshot?
+    public private(set) var snapshot: DocumentSnapshot?
 
-    private(set) var documentReference: DocumentReference!
+    public private(set) var documentReference: DocumentReference!
 
     public var storageReference: StorageReference {
         return Storage.storage().reference().child(self.path)
