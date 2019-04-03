@@ -6,4 +6,31 @@
 //  Copyright © 2019 Stamp Inc. All rights reserved.
 //
 
-import Foundation
+
+import XCTest
+import FirebaseFirestore
+//@testable import Ballcap
+
+
+class DocumentSubCollectionTest: XCTestCase {
+
+    override func setUp() {
+        super.setUp()
+        _ = FirebaseTest.shared
+    }
+
+    //
+    func testModelSubCollectionReference() {
+        struct Model: Codable, Modelable {
+            enum CollectionPaths: String {
+                case t
+                case s
+            }
+        }
+        XCTAssertEqual(Model.collectionReference.path, "version/1/model")
+        let document: Document<Model> = Document(id: "foo")
+        XCTAssertEqual(document.documentReference.path, "version/1/model/foo")
+        XCTAssertEqual(document.collection(path: .s).reference.path, "version/1/model/foo/s")
+        XCTAssertEqual(document.collection(path: .t).reference.path, "version/1/model/foo/t")
+    }
+}
