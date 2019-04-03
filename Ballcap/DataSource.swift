@@ -98,7 +98,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     public var count: Int { return documents.count }
 
     /// True if we have the last Document of the data source
-    private(set) var isLast: Bool = false
+    public private(set) var isLast: Bool = false
 
     var completedBlocks: [CompletedBlock] = []
 
@@ -414,7 +414,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     /// - Parameters:
     ///     - block: It returns `isLast` as an argument.
     @discardableResult
-    func next(_ block: ((Bool) -> Void)? = nil) -> Self {
+    public func next(_ block: ((Bool) -> Void)? = nil) -> Self {
         self.query.get(completion: { (snapshot, error) in
             self._operate(with: snapshot, isFirst: false, error: error)
             guard let lastSnapshot = snapshot?.documents.last else {
