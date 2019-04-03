@@ -161,4 +161,8 @@ class CodableFileTests: XCTestCase {
         XCTAssertEqual(task, StorageTaskStore.shared.get(upload: ref.fullPath))
         self.wait(for: [exp], timeout: 30)
     }
+
+    func testIncrementableInt() {
+        // TODO: increment test
+    }
 }
