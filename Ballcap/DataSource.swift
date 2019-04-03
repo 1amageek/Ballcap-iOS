@@ -48,6 +48,31 @@ public enum CollectionChange {
     }
 }
 
+/**
+ Options class
+ */
+public final class DataSourceOption {
+
+    /// Fetch timeout
+    public var timeout: Int = 10    // Default Timeout 10s
+
+    ///
+    public var includeMetadataChanges: Bool = true
+
+    ///
+    public var listeningChangeTypes: [DocumentChangeType] = [.added, .modified, .removed]
+
+    /// Predicate
+    public var predicate: NSPredicate?
+
+    /// Sort order
+    public var sortDescriptors: [NSSortDescriptor] = []
+
+    public var shouldFetchReference: Bool = true
+
+    public init() { }
+}
+
 
 /// DataSource class.
 /// Observe at a Firebase DataSource location.
@@ -65,35 +90,9 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
 
     public typealias ErrorBlock = (QuerySnapshot?, DataSourceError) -> Void
 
-    /**
-     Options class
-     */
-    public final class Option {
-
-        /// Fetch timeout
-        var timeout: Int = 10    // Default Timeout 10s
-
-        ///
-        var includeMetadataChanges: Bool = true
-
-        ///
-        var listeningChangeTypes: [DocumentChangeType] = [.added, .modified, .removed]
-
-        /// Predicate
-        var predicate: NSPredicate?
-
-        /// Sort order
-        var sortDescriptors: [NSSortDescriptor] = []
-
-        var shouldFetchReference: Bool = true
-
-        init() { }
-    }
-
-
 
     /// Objects held in the client
-    var documents: [Element] = []
+    public var documents: [Element] = []
 
     /// Count
     public var count: Int { return documents.count }
@@ -104,10 +103,10 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     var completedBlocks: [CompletedBlock] = []
 
     /// Reference of element
-    private(set) var query: Query
+    public private(set) var query: Query
 
     /// DataSource Option
-    private(set) var option: Option
+    public private(set) var option: DataSourceOption
 
     private let fetchQueue: DispatchQueue = DispatchQueue(label: "ballcap.datasource.fetch.queue")
 
@@ -143,7 +142,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
      - parameter options: DataSource Options
      - parameter block: A block which is called to process Firebase change evnet.
      */
-    init(reference: Query, option: Option = Option(), block: ChangeBlock? = nil) {
+    public init(reference: Query, option: DataSourceOption = DataSourceOption(), block: ChangeBlock? = nil) {
         self.query = reference
         self.option = option
         self.changedBlock = block
@@ -155,27 +154,27 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     }
 
     /// Initializing the DataSource
-    init(_ documents: [Element]) {
+    public init(_ documents: [Element]) {
         self.query = Element.query
-        self.option = Option()
+        self.option = DataSourceOption()
         self.documents = documents
     }
 
     /// Set the Block to receive the change of the DataSource.
     @discardableResult
-    func on(_ block: ChangeBlock?) -> Self {
+    public func on(_ block: ChangeBlock?) -> Self {
         self.changedBlock = block
         return self
     }
 
     @discardableResult
-    func on(parse block: ParseBlock?) -> Self {
+    public func on(parse block: ParseBlock?) -> Self {
         self.parseBlock = block
         return self
     }
 
     @discardableResult
-    func onCompleted(_ block: CompletedBlock?) -> Self {
+    public func onCompleted(_ block: CompletedBlock?) -> Self {
         if let block: CompletedBlock = block {
             self.completedBlocks.append(block)
         }
@@ -183,14 +182,14 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     }
 
     @discardableResult
-    func onError(_ block: ErrorBlock?) -> Self {
+    public func onError(_ block: ErrorBlock?) -> Self {
         self.errorBlock = block
         return self
     }
 
     /// Start monitoring data source.
     @discardableResult
-    func listen() -> Self {
+    public func listen() -> Self {
         let changeBlock: ChangeBlock? = self.changedBlock
         let completedBlocks: [CompletedBlock] = self.completedBlocks
         var isFirst: Bool = true
@@ -222,7 +221,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     }
 
     /// Stop monitoring the data source.
-    func stop() {
+    public func stop() {
         self.listenr?.remove()
     }
 
@@ -406,7 +405,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     }
 
     @discardableResult
-    func get() -> Self {
+    public func get() -> Self {
         self.next()
         return self
     }
@@ -430,39 +429,39 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
         return self
     }
 
-    /**
-     Remove object
-     - parameter index: Order of the data source
-     - parameter parent: Also deletes the data of the reference case of `true`.
-     - parameter block: block The block that should be called. If there is an error it returns an error.
-     */
-    func removeDocument(at index: Int, block: ((String, Error?) -> Void)? = nil) {
-        let document: Element = self.documents[index]
-        let id: String = document.id
-        document.delete { (error) in
-            block?(id, error)
-        }
-    }
-
-    /**
-     Get an object from a data source and observe object changess
-     It is need `removeObserver`
-     - parameter index: Orderr of the data source
-     - parameter block: block The block that should be called.  It is passed the data as a Tsp.
-     - see removeObserver
-     */
-    func observeObject(at index: Int, block: @escaping (Element?, Error?) -> Void) -> Disposer {
-        let element: Element = self[index]
-        var isFirst: Bool = true
-        block(element, nil)
-        return Element.listen(id: element.id) { (elemnt, error) in
-            if isFirst {
-                isFirst = false
-                return
-            }
-            block(element, nil)
-        }
-    }
+//    /**
+//     Remove object
+//     - parameter index: Order of the data source
+//     - parameter parent: Also deletes the data of the reference case of `true`.
+//     - parameter block: block The block that should be called. If there is an error it returns an error.
+//     */
+//    func removeDocument(at index: Int, block: ((String, Error?) -> Void)? = nil) {
+//        let document: Element = self.documents[index]
+//        let id: String = document.id
+//        document.delete { (error) in
+//            block?(id, error)
+//        }
+//    }
+//
+//    /**
+//     Get an object from a data source and observe object changess
+//     It is need `removeObserver`
+//     - parameter index: Orderr of the data source
+//     - parameter block: block The block that should be called.  It is passed the data as a Tsp.
+//     - see removeObserver
+//     */
+//    func observeObject(at index: Int, block: @escaping (Element?, Error?) -> Void) -> Disposer {
+//        let element: Element = self[index]
+//        var isFirst: Bool = true
+//        block(element, nil)
+//        return Element.listen(id: element.id) { (elemnt, error) in
+//            if isFirst {
+//                isFirst = false
+//                return
+//            }
+//            block(element, nil)
+//        }
+//    }
 
     // MARK: - deinit
 
@@ -471,21 +470,21 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     }
 }
 
-extension Array where Element: Documentable {
+public extension Array where Element: Documentable {
 
-    public var keys: [String] {
+    var keys: [String] {
         return self.compactMap { return $0.id }
     }
 
-    public func index(of key: String) -> Int? {
+    func index(of key: String) -> Int? {
         return self.keys.firstIndex(of: key)
     }
 
-    public func index(of document: Element) -> Int? {
+    func index(of document: Element) -> Int? {
         return self.keys.firstIndex(of: document.id)
     }
 
-    public func sort(sortDescriptors: [NSSortDescriptor]) -> [Element] {
+    func sort(sortDescriptors: [NSSortDescriptor]) -> [Element] {
         return (self as NSArray).sortedArray(using: sortDescriptors) as! [Element]
     }
 }

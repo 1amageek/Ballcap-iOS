@@ -16,12 +16,12 @@ public final class Batch {
 
     private var isCommitted: Bool = false
 
-    init(firestore: Firestore = Firestore.firestore()) {
+    public init(firestore: Firestore = Firestore.firestore()) {
         self.writeBatch = firestore.batch()
     }
 
     @discardableResult
-    func save<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
+    public func save<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
         if isCommitted {
             fatalError("Batch is already committed")
         }
@@ -40,7 +40,7 @@ public final class Batch {
     }
 
     @discardableResult
-    func update<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
+    public func update<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
         if isCommitted {
             fatalError("Batch is already committed")
         }
@@ -58,14 +58,14 @@ public final class Batch {
     }
 
     @discardableResult
-    func delete<T: Encodable>(document: Document<T>) -> WriteBatch {
+    public func delete<T: Encodable>(document: Document<T>) -> WriteBatch {
         if isCommitted {
             fatalError("Batch is already committed")
         }
         return self.writeBatch.deleteDocument(document.documentReference)
     }
 
-    func commit(_ completion: ((Error?) -> Void)? = nil) {
+    public func commit(_ completion: ((Error?) -> Void)? = nil) {
         if isCommitted {
             fatalError("Batch is already committed")
         }

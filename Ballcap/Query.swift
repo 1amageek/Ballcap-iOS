@@ -28,7 +28,7 @@ public extension DataSource {
             self.query = query
         }
 
-        func dataSource(option: DataSource.Option = DataSource.Option()) -> DataSource<Model> {
+        func dataSource(option: DataSourceOption = DataSourceOption()) -> DataSource<Model> {
             return DataSource(reference: self, option: option)
         }
 

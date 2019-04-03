@@ -54,7 +54,7 @@ public final class File: Equatable {
         case mp4
         case custom(String, String)
 
-        var rawValue: String {
+        public var rawValue: String {
             switch self {
             case .plain:                 return "text/plain"
             case .csv:                   return "text/csv"
@@ -75,7 +75,7 @@ public final class File: Equatable {
             }
         }
 
-        var fileExtension: String {
+        public var fileExtension: String {
             switch self {
             case .plain:                 return "txt"
             case .csv:                   return "csv"
@@ -175,7 +175,7 @@ public final class File: Equatable {
 
     // MARK: - Initialize
 
-    init(_ storageReference: StorageReference, name: String? = nil, mimeType: MIMEType? = nil) {
+    public init(_ storageReference: StorageReference, name: String? = nil, mimeType: MIMEType? = nil) {
         self.storageReference = storageReference
         self.path = storageReference.fullPath
         let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
@@ -185,7 +185,7 @@ public final class File: Equatable {
         self.downloadTask = StorageTaskStore.shared.get(download: self.path)
     }
 
-    convenience init(_ storageReference: StorageReference,
+    public convenience init(_ storageReference: StorageReference,
                      data: Data,
                      name: String? = nil,
                      mimeType: MIMEType? = nil) {
@@ -193,7 +193,7 @@ public final class File: Equatable {
         self.data = data
     }
 
-    convenience init(_ storageReference: StorageReference,
+    public convenience init(_ storageReference: StorageReference,
                      url: URL,
                      name: String? = nil,
                      mimeType: MIMEType? = nil) {
@@ -232,7 +232,7 @@ public final class File: Equatable {
     // MARK: - SAVE
 
     @discardableResult
-    func save(_ completion: ((StorageMetadata?, Error?) -> Void)?) -> StorageUploadTask? {
+    public func save(_ completion: ((StorageMetadata?, Error?) -> Void)?) -> StorageUploadTask? {
 
         let reference: StorageReference = self.storageReference
         let metadata: StorageMetadata = StorageMetadata()
@@ -285,7 +285,7 @@ public final class File: Equatable {
 
     // MARK: - DELETE
 
-    func delete(_ completion: ((Error?) -> Void)?) {
+    public func delete(_ completion: ((Error?) -> Void)?) {
         self.storageReference.delete { (error) in
             self.metadata = nil
             completion?(error)
@@ -296,7 +296,7 @@ public final class File: Equatable {
 
     /// Default 100MB
     @discardableResult
-    func getData(_ size: Int64 = Int64(10e8), completion: @escaping (Data?, Error?) -> Void) -> StorageDownloadTask? {
+    public func getData(_ size: Int64 = Int64(10e8), completion: @escaping (Data?, Error?) -> Void) -> StorageDownloadTask? {
         self.downloadTask?.cancel()
         let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
             self.downloadTask = nil
@@ -309,7 +309,7 @@ public final class File: Equatable {
 
     // MARK: -
 
-    var description: String {
+    public var description: String {
         let base: String =
             "      name: \(self.name)\n" +
             "      url: \(self.url?.absoluteString ?? "")\n" +

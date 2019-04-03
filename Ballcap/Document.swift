@@ -85,33 +85,31 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
 
     private(set) var documentReference: DocumentReference!
 
-    var storageReference: StorageReference {
+    public var storageReference: StorageReference {
         return Storage.storage().reference().child(self.path)
     }
 
-    var data: Model?
+    public var data: Model?
 
-    var fieldValues: [String: FieldValue] = [:]
-
-    override init() {
+    public override init() {
         self.data = Model()
         super.init()
         self.documentReference = Model.collectionReference.document()
     }
 
-    init(id: String) {
+    public init(id: String) {
         self.data = Model()
         super.init()
         self.documentReference = Model.collectionReference.document(id)
     }
 
-    init(id: String, from data: Model) {
+    public init(id: String, from data: Model) {
         self.data = data
         super.init()
         self.documentReference = Model.collectionReference.document(id)
     }
 
-    required init?(id: String, from data: [String: Any]) {
+    public required init?(id: String, from data: [String: Any]) {
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
         } catch (let error) {
@@ -122,7 +120,7 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
         self.documentReference = Model.collectionReference.document(id)
     }
 
-    init?(snapshot: DocumentSnapshot) {
+    public init?(snapshot: DocumentSnapshot) {
         guard let data: [String: Any] = snapshot.data() else {
             super.init()
             self.snapshot = snapshot
@@ -140,7 +138,7 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
         self.documentReference = Model.collectionReference.document(id)
     }
 
-    subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {
+    public subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {
         get {
             return self.data?[keyPath: keyPath]
         }
