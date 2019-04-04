@@ -7,6 +7,8 @@
 Ballcap is the next generation Cloud Firestore design framework. It is possible to hold a Document more flexibly than [Pring](https://github.com/1amageek/Pring). 
 Ballcap is based on WriteBatch database operations. Also, like Pring, it supports DataSource and File.
 
+Inspired by https://github.com/firebase/firebase-ios-sdk/tree/pb-codable3
+
 [Please donate to continue development.](https://gum.co/lNNIn)
 
 <img src="https://github.com/1amageek/pls_donate/blob/master/kyash.jpg" width="180">
