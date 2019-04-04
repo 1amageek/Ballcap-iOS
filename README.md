@@ -133,3 +133,50 @@ struct Model: Codable, Equatable, Modelable {
 let document: Document<Model> = Document()
 document.data?.num = .increment(1)
 ```
+
+### File
+
+File is a class for accessing Firestorage.
+You can save Data in the same path as Document by the follow:
+```swift
+let document: Document<Model> = Document(id: "DOCUMENT_ID")
+let file: File = File(document.storageReference)
+```
+
+File supports multiple MIMETypes. Although File infers MIMEType from the name, it is better to input MIMEType explicitly.
+
+- [x] plain
+- [x] csv
+- [x] html
+- [x] css
+- [x] javascript
+- [x] octetStream(String?)
+- [x] pdf
+- [x] zip
+- [x] tar
+- [x] lzh
+- [x] jpeg
+- [x] pjpeg
+- [x] png
+- [x] gif
+- [x] mp4
+- [x] custom(String, String)
+
+#### Upload & Download
+
+Upload and Download each return a task. You can manage your progress by accessing tasks.
+
+```swift
+// upload
+let ref: StorageReference = Storage.storage().reference().child("/a")
+let data: Data = "test".data(using: .utf8)!
+let file: File = File(ref, data: data, name: "n", mimeType: .plain)
+let task = file.save { (metadata, error) in
+    
+}
+
+// download
+let task = file.getData(completion: { (data, error) in
+    let text: String = String(data: data!, encoding: .utf8)!
+})
+```
