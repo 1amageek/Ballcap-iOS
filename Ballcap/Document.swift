@@ -20,10 +20,6 @@ public protocol Modelable: Referencable {
 
 public extension Modelable {
 
-    init() {
-        self.init()
-    }
-
     static var isIncludedInTimestamp: Bool {
         return true
     }
