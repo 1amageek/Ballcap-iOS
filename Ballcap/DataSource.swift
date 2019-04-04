@@ -463,9 +463,7 @@ public extension DataSource {
         /// Predicate
         public var predicate: NSPredicate?
 
-        /// Sort order
-        public var sortDescriptors: [NSSortDescriptor] = []
-
+        /// Sort
         public var sortClosure: (Element, Element) throws -> Bool = { l, r in
             return l.updatedAt > r.updatedAt
         }
