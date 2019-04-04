@@ -157,7 +157,7 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
         }
         super.init()
         self.snapshot = snapshot
-        self.documentReference = Model.collectionReference.document(snapshot.documentID)
+        self.documentReference = snapshot.reference
     }
 
     public subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {
