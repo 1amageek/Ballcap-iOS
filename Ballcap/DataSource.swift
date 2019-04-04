@@ -404,44 +404,49 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
         return self
     }
 
-//    /**
-//     Remove object
-//     - parameter index: Order of the data source
-//     - parameter parent: Also deletes the data of the reference case of `true`.
-//     - parameter block: block The block that should be called. If there is an error it returns an error.
-//     */
-//    func removeDocument(at index: Int, block: ((String, Error?) -> Void)? = nil) {
-//        let document: Element = self.documents[index]
-//        let id: String = document.id
-//        document.delete { (error) in
-//            block?(id, error)
-//        }
-//    }
-//
-//    /**
-//     Get an object from a data source and observe object changess
-//     It is need `removeObserver`
-//     - parameter index: Orderr of the data source
-//     - parameter block: block The block that should be called.  It is passed the data as a Tsp.
-//     - see removeObserver
-//     */
-//    func observeObject(at index: Int, block: @escaping (Element?, Error?) -> Void) -> Disposer {
-//        let element: Element = self[index]
-//        var isFirst: Bool = true
-//        block(element, nil)
-//        return Element.listen(id: element.id) { (elemnt, error) in
-//            if isFirst {
-//                isFirst = false
-//                return
-//            }
-//            block(element, nil)
-//        }
-//    }
-
     // MARK: - deinit
 
     deinit {
         self.listenr?.remove()
+    }
+}
+
+public extension DataSource {
+
+    func add(document: Element) {
+        let changeBlock: ChangeBlock? = self.changedBlock
+        let parseBlock: ParseBlock? = self.parseBlock
+        let completedBlocks: [CompletedBlock] = self.completedBlocks
+        if let parseBlock: ParseBlock = parseBlock {
+            parseBlock(nil, document, { document in
+                self.documents.append(document)
+                self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
+                if let i: Int = self.documents.firstIndex(of: document) {
+                    changeBlock?(nil, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
+                }
+            })
+        } else {
+            self.documents.append(document)
+            self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
+            if let i: Int = self.documents.firstIndex(of: document) {
+                changeBlock?(nil, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
+            }
+        }
+        completedBlocks.forEach({ block in
+            block(nil, self.documents)
+        })
+    }
+
+    func remove(document: Element) {
+        let changeBlock: ChangeBlock? = self.changedBlock
+        let completedBlocks: [CompletedBlock] = self.completedBlocks
+        if let i: Int = self.documents.index(of: document.id) {
+            self.documents.remove(at: i)
+            changeBlock?(nil, CollectionChange(change: (deletions: [i], insertions: [], modifications: []), error: nil))
+        }
+        completedBlocks.forEach({ block in
+            block(nil, self.documents)
+        })
     }
 }
 
