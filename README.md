@@ -55,6 +55,9 @@ let document: Document<Model> = Document()
 print(document.data?.number) // 0
 print(document.data?.string) // "Ballcap"
 
+// KeyPath
+print(document[\.number]) // 0
+print(document[\.string]) // "Ballcap"
 ```
 
 ### CRUD
@@ -92,4 +95,41 @@ If you do not want to use the cache, do the following:
 Document<Model>.get(id: "DOCUMENT_ID", cachePolicy: .networkOnly) { (document, error) in
     print(document.data)
 }
+```
+
+It is also possible to access the cache without using the network.
+
+```swift
+let document: Document<Model> = Document()
+print(document.cache?.number) // 0
+print(document.cache?.string) // "Ballcap"
+```
+
+### Custom properties
+
+Ballcap is preparing custom property to correspond to FieldValue.
+
+__ServerTimestamp__
+
+Property for handling `FieldValue.serverTimestamp()`
+
+```swift
+struct Model: Codable, Equatable {
+    let serverValue: ServerTimestamp
+    let localValue: ServerTimestamp
+}
+let model = Model(serverValue: .pending,
+                  localValue: .resolved(Timestamp(seconds: 0, nanoseconds: 0)))
+```
+
+__IncrementableInt__ & __IncrementableDouble__
+
+Property for handling `FieldValue.increment()`
+
+```swift
+struct Model: Codable, Equatable, Modelable {
+    var num: IncrementableInt = 0
+}
+let document: Document<Model> = Document()
+document.data?.num = .increment(1)
 ```
