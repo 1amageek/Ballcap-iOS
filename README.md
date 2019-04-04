@@ -79,6 +79,8 @@ document.delete()
 // Batch
 let batch: Batch = Batch()
 batch.save(document: document)
+batch.update(document: document)
+batch.delete(document: document)
 batch.commit()
 ```
 
