@@ -1,5 +1,9 @@
 # Ballcap-iOS
 
+ [![Version](http://img.shields.io/cocoapods/v/Ballcap.svg)](http://cocoapods.org/?q=Pring)
+ [![Platform](http://img.shields.io/cocoapods/p/Ballcap.svg)](http://cocoapods.org/?q=Pring)
+ [![Downloads](https://img.shields.io/cocoapods/dt/Ballcap.svg?label=Total%20Downloads&colorB=28B9FE)](https://cocoapods.org/pods/Ballcap)
+
 Ballcap is the next generation Cloud Firestore design framework. It is possible to hold a Document more flexibly than [Pring](https://github.com/1amageek/Pring). 
 Ballcap is based on WriteBatch database operations. Also, like Pring, it supports DataSource and File.
 
@@ -9,29 +13,83 @@ Ballcap is based on WriteBatch database operations. Also, like Pring, it support
 
 ### Feature
 
-- [x] Swift Codable
-- [x] Local cache
-- [ ] DataSource
-- [ ] File
+☑️ Firestore's document schema with Swift Codable<br>
+☑️ Of course type safety.<br>
+☑️ It seamlessly works with Firestore and Storage.<br>
+
+## Requirements ❗️
+- iOS 10 or later
+- Swift 5.0 or later
+- [Firebase firestore](https://firebase.google.com/docs/firestore/quickstart)
+- [Firebase storage](https://firebase.google.com/docs/storage/ios/start)
+
+## Installation ⚙
+#### [CocoaPods](https://github.com/cocoapods/cocoapods)
+
+- Insert `pod 'Ballcap' ` to your Podfile.
+- Run `pod install`.
+
+If you have a Feature Request, please post an [issue](https://github.com/1amageek/Ballcap/issues/new).
+
+## Usage
+
+### Document scheme
+
+You must conform to the Codable and Modelable protocols to define Scheme.
 
 ```swift
-struct Model: Codable, Equatable, Documentable {
-    let number: Int = 0
-    let string: String = "Ballcap"
+struct Model: Codable, Equatable, Modalable {
+    var number: Int = 0
+    var string: String = "Ballcap"
 }
+```
+
+### Initialization
+
+The document is initialized as follows:
+
+```swift
 
 let document: Document<Model> = Document()
 
 print(document.data?.number) // 0
 print(document.data?.string) // "Ballcap"
 
-// MARK: - SAVE
+```
 
+### CRUD
+
+Ballcap has a cache internally.When using the cache, use `Batch` instead of `WriteBatch`.
+
+```swift
 // save
 document.save()
 
-// WriteBatch
-let writeBatch: WriteBatch = Firestore.firestore().batch()
-writeBatch.set(document: document)
-writeBatch.commit()
+// update
+document.update()
+
+// delete
+document.delete()
+
+// Batch
+let batch: Batch = Batch()
+batch.save(document: document)
+batch.commit()
+```
+
+You can get data by using the get function.
+> note: The callback may be called twice to access the cache within the get function.
+
+```swift
+Document<Model>.get(id: "DOCUMENT_ID", completion: { (document, error) in
+    print(document.data)
+})
+```
+
+If you do not want to use the cache, do the following:
+
+```swift
+Document<Model>.get(id: "DOCUMENT_ID", cachePolicy: .networkOnly) { (document, error) in
+    print(document.data)
+}
 ```
