@@ -104,7 +104,7 @@ Document<Model>.get(id: "DOCUMENT_ID", cachePolicy: .networkOnly) { (document, e
 It is also possible to access the cache without using the network.
 
 ```swift
-let document: Document<Model> = Document()
+let document: Document<Model> = Document(id: "DOCUMENT_ID")
 print(document.cache?.number) // 0
 print(document.cache?.string) // "Ballcap"
 ```
