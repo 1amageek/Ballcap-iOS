@@ -8,9 +8,23 @@
 
 import FirebaseFirestore
 
-public enum ServerTimestamp: Codable, Equatable, Hashable {
+public enum ServerTimestamp: Codable, Equatable, Hashable, RawRepresentable {
+
     case pending
     case resolved(Timestamp)
+
+    public typealias RawValue = Timestamp
+
+    public init?(rawValue: Timestamp) {
+        self = .resolved(rawValue)
+    }
+
+    public var rawValue: Timestamp {
+        switch self {
+        case .resolved(let value): return value
+        default: fatalError()
+        }
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()

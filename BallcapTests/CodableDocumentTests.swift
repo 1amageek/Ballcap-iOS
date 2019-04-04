@@ -67,6 +67,16 @@ class CodableDocumentTests: XCTestCase {
         assertRoundTrip(model: model, encoded: dict)
     }
 
+    // ServerTimestamp
+
+    func testServerTimestamp() {
+        struct Model: Codable, Equatable {
+            let x: ServerTimestamp
+        }
+        let model = Model(x: .resolved(Timestamp(seconds: 0, nanoseconds: 0)))
+        XCTAssertEqual(model.x.rawValue, Timestamp(seconds: 0, nanoseconds: 0))
+    }
+
     func testEncodeTimestamp() {
         struct Model: Codable, Equatable {
             let x: ServerTimestamp
@@ -84,6 +94,16 @@ class CodableDocumentTests: XCTestCase {
         let model = Model(s: .resolved(Timestamp(seconds: 0, nanoseconds: 0)))
         let dict: [String: Any] = ["s": Timestamp(seconds: 0, nanoseconds: 0)]
         assertDecodes(dict, encoded: model)
+    }
+
+    // Increment
+
+    func testIncrement() {
+        struct Model: Codable, Equatable {
+            var x: IncrementableInt = 64
+        }
+        let model = Model()
+        XCTAssertEqual(model.x.rawValue, 64)
     }
 
     func testEncodeIncrement() {
@@ -105,6 +125,38 @@ class CodableDocumentTests: XCTestCase {
         }
         let model = Model()
         let dict = ["x": 0]
+        assertDecodes(dict, encoded: model)
+    }
+
+    // Array
+
+    func testOperableArray() {
+        struct Model: Codable, Equatable {
+            var x: OperableArray<Int> = [0, 0]
+        }
+        let model = Model()
+        XCTAssertEqual(model.x.rawValue, [0, 0])
+    }
+
+    func testEncodeOperableArray() {
+        struct Model: Codable, Equatable {
+            var a: OperableArray<Int> = [0, 0]
+            var b: OperableArray<Int> = .arrayRemove([0])
+            var c: OperableArray<Int> = .arrayUnion([0])
+        }
+        let model = Model()
+        let enc = try! Firestore.Encoder().encode(model)
+        XCTAssertEqual(enc["a"] as! [Int], [0, 0])
+        XCTAssert(enc["b"].self! is FieldValue)
+        XCTAssert(enc["c"].self! is FieldValue)
+    }
+
+    func testDecodeOperableArray() {
+        struct Model: Codable, Equatable {
+            var a: OperableArray<Int> = [0, 0]
+        }
+        let model = Model()
+        let dict = ["a": [0, 0]]
         assertDecodes(dict, encoded: model)
     }
 
