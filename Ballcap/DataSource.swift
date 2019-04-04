@@ -357,7 +357,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     private func get(with change: DocumentChange, block: @escaping (Element?, Error?) -> Void) {
         if self.option.shouldFetchReference {
             let id: String = change.document.documentID
-            if let document: Element = Store.shared.get(documentType: Element.self, id: id) {
+            if let document: Element = Store.shared.get(documentType: Element.self, reference: change.document.reference) {
                 block(document, nil)
             } else {
                 Element.get(id: id) { (document, error) in

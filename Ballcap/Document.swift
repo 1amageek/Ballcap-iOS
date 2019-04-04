@@ -205,14 +205,13 @@ public extension Document {
 
 public extension Document {
 
-    class func get(id: String, cachePolicy: CachePolicy = .default, completion: @escaping ((Document?, Error?) -> Void)) {
-
+    class func get(documentReference: DocumentReference, cachePolicy: CachePolicy = .default, completion: @escaping ((Document?, Error?) -> Void)) {
         switch cachePolicy {
         case .default:
-            if let document: Document = self.get(id: id) {
+            if let document: Document = self.get(documentReference: documentReference) {
                 completion(document, nil)
             }
-            Model.collectionReference.document(id).getDocument { (snapshot, error) in
+            documentReference.getDocument { (snapshot, error) in
                 if let error = error {
                     completion(nil, error)
                     return
@@ -228,10 +227,10 @@ public extension Document {
                 completion(document, nil)
             }
         case .cacheOnly:
-            if let document: Document = self.get(id: id) {
+            if let document: Document = self.get(documentReference: documentReference) {
                 completion(document, nil)
             }
-            Model.collectionReference.document(id).getDocument(source: FirestoreSource.cache) { (snapshot, error) in
+            documentReference.getDocument(source: FirestoreSource.cache) { (snapshot, error) in
                 if let error = error {
                     completion(nil, error)
                     return
@@ -247,7 +246,7 @@ public extension Document {
                 completion(document, nil)
             }
         case .networkOnly:
-            Model.collectionReference.document(id).getDocument(source: FirestoreSource.server) { (snapshot, error) in
+            documentReference.getDocument(source: FirestoreSource.server) { (snapshot, error) in
                 if let error = error {
                     completion(nil, error)
                     return
@@ -265,8 +264,13 @@ public extension Document {
         }
     }
 
-    class func get(id: String) -> Document? {
-        return Store.shared.get(documentType: self, id: id)
+    class func get(id: String, cachePolicy: CachePolicy = .default, completion: @escaping ((Document?, Error?) -> Void)) {
+        let documentReference: DocumentReference = Document.init(id: id).documentReference
+        self.get(documentReference: documentReference, cachePolicy: cachePolicy, completion: completion)
+    }
+
+    class func get(documentReference: DocumentReference) -> Document? {
+        return Store.shared.get(documentType: self, reference: documentReference)
     }
 
     class func listen(id: String, includeMetadataChanges: Bool = true, completion: @escaping ((Document?, Error?) -> Void)) -> Disposer {

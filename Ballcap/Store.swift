@@ -17,11 +17,11 @@ internal final class Store {
         return cache
     }()
 
-    func get<T: Document<U>, U: Codable>(documentType: T.Type, id: String) -> T? {
-        guard let data: NSDictionary = self.cache.object(forKey: id as NSString) else {
+    func get<T: Document<U>, U: Codable>(documentType: T.Type, reference: DocumentReference) -> T? {
+        guard let data: NSDictionary = self.cache.object(forKey: reference.path as NSString) else {
             return nil
         }
-        return documentType.init(id: id, from: data as! [String : Any])
+        return documentType.init(id: reference.documentID, from: data as! [String : Any], collectionReference: reference.parent)
     }
 
     func set<T: Document<U>, U: Codable & Documentable>(_ document: T, reference: DocumentReference? = nil) throws {
