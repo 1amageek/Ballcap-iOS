@@ -97,6 +97,10 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
 
     public var data: Model?
 
+    public var cache: Model? {
+        return Store.shared.get(modelType: Model.self, reference: self.documentReference)
+    }
+
     public private(set) var createdAt: Timestamp = Timestamp(date: Date())
 
     public private(set) var updatedAt: Timestamp = Timestamp(date: Date())
