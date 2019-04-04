@@ -54,4 +54,30 @@ class DocumentTest: XCTestCase {
         XCTAssertEqual(d.documentReference.path, "a/a")
     }
 
+    func testDocumentSaveUpdateDelete() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
+        struct Model: Codable, Modelable {
+            var a: String?
+        }
+        let d: Document<Model> = Document(id: "a")
+        d[\.a] = "t"
+        d.save() { _ in
+            Document<Model>.get(id: "a", completion: { (doc, _) in
+                XCTAssertEqual(doc!.data!.a, "t")
+                doc![\.a] = "s"
+                doc?.update() { _ in
+                    Document<Model>.get(id: "a", completion: { (doc, _) in
+                        XCTAssertEqual(doc!.data!.a, "s")
+                        doc?.delete() { _ in
+                            Document<Model>.get(id: "a", completion: { (doc, _) in
+                                XCTAssertNil(doc)
+                                exp.fulfill()
+                            })
+                        }
+                    })
+                }
+            })
+        }
+        self.wait(for: [exp], timeout: 30)
+    }
 }

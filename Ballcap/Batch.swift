@@ -21,7 +21,7 @@ public final class Batch {
     }
 
     @discardableResult
-    public func save<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
+    public func save<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> Self {
         if isCommitted {
             fatalError("Batch is already committed")
         }
@@ -33,14 +33,15 @@ public final class Batch {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
             self.storage[reference.path] = data
-            return self.writeBatch.setData(data, forDocument: reference)
+            self.writeBatch.setData(data, forDocument: reference)
+            return self
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
         }
     }
 
     @discardableResult
-    public func update<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> WriteBatch {
+    public func update<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> Self {
         if isCommitted {
             fatalError("Batch is already committed")
         }
@@ -51,7 +52,8 @@ public final class Batch {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
             self.storage[reference.path] = data
-            return self.writeBatch.updateData(data, forDocument: reference)
+            self.writeBatch.updateData(data, forDocument: reference)
+            return self
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
         }
