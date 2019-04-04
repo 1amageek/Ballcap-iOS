@@ -12,7 +12,9 @@ public final class Batch {
 
     private var writeBatch: FirebaseFirestore.WriteBatch
 
-    private var storage: [String: [String: Any]] = [:]
+    private var updateStorage: [String: [String: Any]] = [:]
+
+    private var deleteStorage: [String] = []
 
     private var isCommitted: Bool = false
 
@@ -32,7 +34,7 @@ public final class Batch {
                 data["createdAt"] = FieldValue.serverTimestamp()
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.storage[reference.path] = data
+            self.updateStorage[reference.path] = data
             self.writeBatch.setData(data, forDocument: reference)
             return self
         } catch let error {
@@ -51,7 +53,7 @@ public final class Batch {
             if document.isIncludedInTimestamp {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.storage[reference.path] = data
+            self.updateStorage[reference.path] = data
             self.writeBatch.updateData(data, forDocument: reference)
             return self
         } catch let error {
@@ -60,26 +62,32 @@ public final class Batch {
     }
 
     @discardableResult
-    public func delete<T: Encodable>(document: Document<T>) -> WriteBatch {
+    public func delete<T: Encodable>(document: Document<T>) -> Self {
         if isCommitted {
             fatalError("Batch is already committed")
         }
-        return self.writeBatch.deleteDocument(document.documentReference)
+        self.deleteStorage.append(document.documentReference.path)
+        self.writeBatch.deleteDocument(document.documentReference)
+        return self
     }
 
     public func commit(_ completion: ((Error?) -> Void)? = nil) {
         if isCommitted {
             fatalError("Batch is already committed")
         }
-        self.writeBatch.commit { [weak self] (error) in
+        self.writeBatch.commit {(error) in
             if let error = error {
                 completion?(error)
                 return
             }
-            self?.storage.forEach({ key, data in
+            self.updateStorage.forEach({ key, data in
                 Store.shared.set(key: key, data: data)
             })
-            self?.storage = [:]
+            self.deleteStorage.forEach({ (key) in
+                Store.shared.delete(key: key)
+            })
+            self.updateStorage = [:]
+            self.deleteStorage = []
             completion?(nil)
         }
     }
