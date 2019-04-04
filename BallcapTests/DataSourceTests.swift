@@ -17,5 +17,27 @@ class DataSourceTests: XCTestCase {
         _ = FirebaseTest.shared
     }
 
-    // TODO: DataSource tests
+    func testSortDesc() {
+        struct Model: Codable, Modelable {}
+        let a: Document<Model> = Document()
+        let b: Document<Model> = Document()
+        let array: [Document<Model>] = [a, b]
+        let areInIncreasingOrder: (Document<Model>, Document<Model>) throws -> Bool = { l, r in
+            return true
+        }
+        let sorted = try! array.sorted(by: areInIncreasingOrder)
+        XCTAssertEqual(sorted, [b, a])
+    }
+
+    func testSortAesc() {
+        struct Model: Codable, Modelable {}
+        let a: Document<Model> = Document()
+        let b: Document<Model> = Document()
+        let array: [Document<Model>] = [a, b]
+        let areInIncreasingOrder: (Document<Model>, Document<Model>) throws -> Bool = { l, r in
+            return false
+        }
+        let sorted = try! array.sorted(by: areInIncreasingOrder)
+        XCTAssertEqual(sorted, [a, b])
+    }
 }

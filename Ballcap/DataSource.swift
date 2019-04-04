@@ -48,32 +48,6 @@ public enum CollectionChange {
     }
 }
 
-/**
- Options class
- */
-public final class DataSourceOption {
-
-    /// Fetch timeout
-    public var timeout: Int = 10    // Default Timeout 10s
-
-    ///
-    public var includeMetadataChanges: Bool = true
-
-    ///
-    public var listeningChangeTypes: [DocumentChangeType] = [.added, .modified, .removed]
-
-    /// Predicate
-    public var predicate: NSPredicate?
-
-    /// Sort order
-    public var sortDescriptors: [NSSortDescriptor] = []
-
-    public var shouldFetchReference: Bool = false
-
-    public init() { }
-}
-
-
 /// DataSource class.
 /// Observe at a Firebase DataSource location.
 public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLiteral {
@@ -106,7 +80,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     public private(set) var query: Query
 
     /// DataSource Option
-    public private(set) var option: DataSourceOption
+    public private(set) var option: Option
 
     private let fetchQueue: DispatchQueue = DispatchQueue(label: "ballcap.datasource.fetch.queue")
 
@@ -142,7 +116,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
      - parameter options: DataSource Options
      - parameter block: A block which is called to process Firebase change evnet.
      */
-    public init(reference: Query, option: DataSourceOption = DataSourceOption(), block: ChangeBlock? = nil) {
+    public init(reference: Query, option: Option = Option(), block: ChangeBlock? = nil) {
         self.query = reference
         self.option = option
         self.changedBlock = block
@@ -156,7 +130,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     /// Initializing the DataSource
     public init(_ documents: [Element]) {
         self.query = Element.query
-        self.option = DataSourceOption()
+        self.option = Option()
         self.documents = documents
     }
 
@@ -277,7 +251,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
                         if let parseBlock: ParseBlock = parseBlock {
                             parseBlock(snapshot, document, { document in
                                 self.documents.append(document)
-                                self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
+                                self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
                                 if !isFirst {
                                     if let i: Int = self.documents.firstIndex(of: document) {
                                         mainThreadCall {
@@ -289,7 +263,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
                             })
                         } else {
                             self.documents.append(document)
-                            self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
+                            self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
                             if !isFirst {
                                 if let i: Int = self.documents.firstIndex(of: document) {
                                     mainThreadCall {
@@ -322,7 +296,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
                                     self.documents.remove(at: i)
                                     self.documents.insert(document, at: i)
                                 }
-                                self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
+                                self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
                                 if let i: Int = self.documents.index(of: document) {
                                     mainThreadCall {
                                         changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [], modifications: [i]), error: nil))
@@ -335,7 +309,7 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
                                 self.documents.remove(at: i)
                                 self.documents.insert(document, at: i)
                             }
-                            self.documents = self.filtered().sort(sortDescriptors: self.option.sortDescriptors)
+                            self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
                             if let i: Int = self.documents.index(of: document) {
                                 mainThreadCall {
                                     changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [], modifications: [i]), error: nil))
@@ -471,6 +445,38 @@ public final class DataSource<Model: Codable & Modelable>: ExpressibleByArrayLit
     }
 }
 
+public extension DataSource {
+    /**
+     Options class
+     */
+    final class Option {
+
+        /// Fetch timeout
+        public var timeout: Int = 10    // Default Timeout 10s
+
+        ///
+        public var includeMetadataChanges: Bool = true
+
+        ///
+        public var listeningChangeTypes: [DocumentChangeType] = [.added, .modified, .removed]
+
+        /// Predicate
+        public var predicate: NSPredicate?
+
+        /// Sort order
+        public var sortDescriptors: [NSSortDescriptor] = []
+
+        public var sortClosure: (Element, Element) throws -> Bool = { l, r in
+            return l.updatedAt > r.updatedAt
+        }
+
+        public var shouldFetchReference: Bool = false
+
+        public init() { }
+    }
+
+}
+
 public extension Array where Element: Documentable {
 
     var keys: [String] {
@@ -483,10 +489,6 @@ public extension Array where Element: Documentable {
 
     func index(of document: Element) -> Int? {
         return self.keys.firstIndex(of: document.id)
-    }
-
-    func sort(sortDescriptors: [NSSortDescriptor]) -> [Element] {
-        return (self as NSArray).sortedArray(using: sortDescriptors) as! [Element]
     }
 }
 
