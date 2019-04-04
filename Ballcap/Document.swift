@@ -10,7 +10,9 @@ import FirebaseFirestore
 import FirebaseStorage
 
 public protocol Modelable: Referencable {
+
     init()
+
     static var isIncludedInTimestamp: Bool { get }
 
     associatedtype CollectionPaths = Void
@@ -155,7 +157,7 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
         }
         super.init()
         self.snapshot = snapshot
-        self.documentReference = Model.collectionReference.document(id)
+        self.documentReference = Model.collectionReference.document(snapshot.documentID)
     }
 
     public subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {

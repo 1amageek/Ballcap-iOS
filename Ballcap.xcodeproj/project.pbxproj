@@ -79,6 +79,7 @@
 
 /* Begin PBXFileReference section */
 		0259AA41774BDDE02031ABCB /* Pods-Ballcap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.debug.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.debug.xcconfig"; sourceTree = "<group>"; };
+		0265DE2FE8A8887636B5F975 /* Pods-Sample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.release.xcconfig"; path = "Target Support Files/Pods-Sample/Pods-Sample.release.xcconfig"; sourceTree = "<group>"; };
 		12074317224F16D600C26AD3 /* Disposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposer.swift; sourceTree = "<group>"; };
 		12074319224F18A500C26AD3 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		1207431B224F23CC00C26AD3 /* File+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Codable.swift"; sourceTree = "<group>"; };
@@ -112,14 +113,16 @@
 		12D75C9822536864004D1AC4 /* FieldValue+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FieldValue+Codable.swift"; sourceTree = "<group>"; };
 		12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTimestamp.swift; sourceTree = "<group>"; };
 		12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncrementableNumber.swift; sourceTree = "<group>"; };
-		12D75CA422538CE5004D1AC4 /* Ballcap.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ballcap.podspec; sourceTree = "<group>"; };
+		12D75CA422538CE5004D1AC4 /* Ballcap.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ballcap.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		12D75CEF22547DBB004D1AC4 /* DocumentSubCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentSubCollectionTests.swift; sourceTree = "<group>"; };
 		12D75CF1225484BF004D1AC4 /* DocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BallcapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallcapTests.debug.xcconfig"; path = "Target Support Files/Pods-BallcapTests/Pods-BallcapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ballcap.release.xcconfig"; path = "Target Support Files/Pods-Ballcap/Pods-Ballcap.release.xcconfig"; sourceTree = "<group>"; };
 		98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DFA584F88890D16309882E9 /* Pods-Sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.debug.xcconfig"; path = "Target Support Files/Pods-Sample/Pods-Sample.debug.xcconfig"; sourceTree = "<group>"; };
 		B7906A3E7F7F3CE7F194B0BF /* Pods-BallcapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallcapTests.release.xcconfig"; path = "Target Support Files/Pods-BallcapTests/Pods-BallcapTests.release.xcconfig"; sourceTree = "<group>"; };
+		F3A47902D4935E3B4AE81EFE /* Pods_Sample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +227,7 @@
 			children = (
 				98346177A1C9DD332B78F541 /* Pods_Ballcap.framework */,
 				29B83BE21360DD58230A5A04 /* Pods_BallcapTests.framework */,
+				F3A47902D4935E3B4AE81EFE /* Pods_Sample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -235,6 +239,8 @@
 				6C817B0A500CB3E8E5D18911 /* Pods-Ballcap.release.xcconfig */,
 				35D3D5618077A53E69D6F988 /* Pods-BallcapTests.debug.xcconfig */,
 				B7906A3E7F7F3CE7F194B0BF /* Pods-BallcapTests.release.xcconfig */,
+				9DFA584F88890D16309882E9 /* Pods-Sample.debug.xcconfig */,
+				0265DE2FE8A8887636B5F975 /* Pods-Sample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -408,7 +414,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-BallcapTests/Pods-BallcapTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities-Environment-Logger/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",

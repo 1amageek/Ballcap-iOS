@@ -11,3 +11,7 @@ target 'BallcapTests' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
 end
+target 'Sample' do
+  use_frameworks!
+  pod 'Ballcap', :path => '../Ballcap'
+end

@@ -14,9 +14,9 @@ public extension DataSource {
 
     class Query {
 
-        public private(set) var reference: CollectionReference!
+        public private(set) var reference: CollectionReference
 
-        public private(set) var query: FirebaseFirestore.Query!
+        public private(set) var query: FirebaseFirestore.Query
 
         public init(_ reference: CollectionReference) {
             self.reference = reference
