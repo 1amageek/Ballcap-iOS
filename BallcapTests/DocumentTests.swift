@@ -54,6 +54,14 @@ class DocumentTest: XCTestCase {
         XCTAssertEqual(d.documentReference.path, "a/a")
     }
 
+    func testDocumentKeyPath() {
+        struct Model: Codable, Modelable {
+            var path: String = "a"
+        }
+        let document: Document<Model> = Document(id: "a")
+        XCTAssertEqual(document[\.path], "a")
+    }
+
     func testDocumentSaveUpdateDelete() {
         let exp: XCTestExpectation = XCTestExpectation(description: "")
         struct Model: Codable, Modelable {
