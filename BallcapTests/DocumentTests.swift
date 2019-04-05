@@ -19,43 +19,43 @@ class DocumentTest: XCTestCase {
     }
 
     func testDocumentID() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a")
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
     }
 
     func testDocumentIDFromDatae() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: [:])!
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
     }
 
     func testDocumentIDFromModel() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: Model())
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
     }
 
     func testDocumentIDOtherCollectionReference() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", collectionReference: Firestore.firestore().collection("a"))
         XCTAssertEqual(d.documentReference.path, "a/a")
     }
 
     func testDocumentIDFromDataOtherCollectionReference() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: [:], collectionReference: Firestore.firestore().collection("a"))!
         XCTAssertEqual(d.documentReference.path, "a/a")
     }
 
     func testDocumentIDFromModelOtherCollectionReference() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: Model(), collectionReference: Firestore.firestore().collection("a"))
         XCTAssertEqual(d.documentReference.path, "a/a")
     }
 
     func testDocumentKeyPath() {
-        struct Model: Codable, Modelable {
+        struct Model: Codable, Modelable, Equatable {
             var path: String = "a"
         }
         let document: Document<Model> = Document(id: "a")
@@ -64,7 +64,7 @@ class DocumentTest: XCTestCase {
 
     func testDocumentSaveUpdateDelete() {
         let exp: XCTestExpectation = XCTestExpectation(description: "")
-        struct Model: Codable, Modelable {
+        struct Model: Codable, Modelable, Equatable {
             var a: String?
         }
         let d: Document<Model> = Document(id: "a")

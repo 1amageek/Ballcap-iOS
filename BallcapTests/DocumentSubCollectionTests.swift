@@ -21,13 +21,13 @@ class DocumentSubCollectionTest: XCTestCase {
 
     //
     func testModelSubCollectionReference() {
-        struct Model: Codable, Modelable {
+        struct Model: Codable, Modelable, Equatable {
             enum CollectionPaths: String {
                 case t
                 case s
             }
         }
-        struct SubCollectionModel: Codable, Modelable {
+        struct SubCollectionModel: Codable, Modelable, Equatable {
 
         }
         XCTAssertEqual(Model.collectionReference.path, "version/1/model")
@@ -38,13 +38,13 @@ class DocumentSubCollectionTest: XCTestCase {
     }
 
     func testModelSubCollectionTypeReference() {
-        struct Model: Codable, Modelable {
+        struct Model: Codable, Modelable, Equatable {
             enum CollectionPaths: String {
                 case t
                 case s
             }
         }
-        struct SubCollectionModel: Codable, Modelable {
+        struct SubCollectionModel: Codable, Modelable, Equatable {
 
         }
         XCTAssertEqual(Model.collectionReference.path, "version/1/model")
@@ -57,13 +57,13 @@ class DocumentSubCollectionTest: XCTestCase {
     }
 
     func testModelSubCollectionDataSource() {
-        struct Model: Codable, Modelable {
+        struct Model: Codable, Modelable, Equatable {
             enum CollectionPaths: String {
                 case t
                 case s
             }
         }
-        struct SubCollectionModel: Codable, Modelable {
+        struct SubCollectionModel: Codable, Modelable, Equatable {
 
         }
         XCTAssertEqual(Model.collectionReference.path, "version/1/model")

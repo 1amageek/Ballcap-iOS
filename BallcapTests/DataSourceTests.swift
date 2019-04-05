@@ -18,7 +18,7 @@ class DataSourceTests: XCTestCase {
     }
 
     func testSortDesc() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let a: Document<Model> = Document()
         let b: Document<Model> = Document()
         let array: [Document<Model>] = [a, b]
@@ -30,7 +30,7 @@ class DataSourceTests: XCTestCase {
     }
 
     func testSortAesc() {
-        struct Model: Codable, Modelable {}
+        struct Model: Codable, Modelable, Equatable {}
         let a: Document<Model> = Document()
         let b: Document<Model> = Document()
         let array: [Document<Model>] = [a, b]

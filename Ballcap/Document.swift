@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Modelable: Referencable {
+public protocol Modelable: Referencable, Equatable {
 
     init()
 
@@ -41,7 +41,7 @@ public extension Modelable {
     }
 }
 
-public protocol Documentable {
+public protocol Documentable: Equatable {
     associatedtype Model
 
     var id: String { get }
@@ -65,7 +65,11 @@ public enum DocumentError: Error {
     }
 }
 
-public class Document<Model: Codable & Modelable>: NSObject, Documentable {
+public class Document<Model: Codable & Modelable>: Documentable {
+
+    public static func == (lhs: Document<Model>, rhs: Document<Model>) -> Bool {
+        return lhs.id == rhs.id && lhs.data == rhs.data
+    }
 
     public typealias Model = Model
 
@@ -105,31 +109,28 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
 
     public private(set) var updatedAt: Timestamp = Timestamp(date: Date())
 
-    public override init() {
+    public init() {
         self.data = Model()
-        super.init()
         self.documentReference = Model.collectionReference.document()
     }
 
-    public init(collectionReference: CollectionReference) {
-        self.data = Model()
-        super.init()
+    public convenience init(collectionReference: CollectionReference) {
+        self.init()
         self.documentReference = collectionReference.document()
     }
 
-    public init(id: String, collectionReference: CollectionReference? = nil) {
-        self.data = Model()
-        super.init()
+    public convenience init(id: String, collectionReference: CollectionReference? = nil) {
+        self.init()
         self.documentReference = collectionReference?.document(id) ?? Model.collectionReference.document(id)
     }
 
-    public init(id: String, from data: Model, collectionReference: CollectionReference? = nil) {
-        self.data = data
-        super.init()
+    public convenience init(id: String, from data: Model, collectionReference: CollectionReference? = nil) {
+        self.init()
         self.documentReference = collectionReference?.document(id) ?? Model.collectionReference.document(id)
     }
 
-    public required init?(id: String, from data: [String: Any], collectionReference: CollectionReference? = nil) {
+    public required convenience init?(id: String, from data: [String: Any], collectionReference: CollectionReference? = nil) {
+        self.init()
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
             self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
@@ -138,13 +139,12 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
             print(error)
             return nil
         }
-        super.init()
         self.documentReference = collectionReference?.document(id) ?? Model.collectionReference.document(id)
     }
 
-    public init?(snapshot: DocumentSnapshot) {
+    public convenience init?(snapshot: DocumentSnapshot) {
+        self.init()
         guard let data: [String: Any] = snapshot.data() else {
-            super.init()
             self.snapshot = snapshot
             self.documentReference = snapshot.reference
             return
@@ -157,7 +157,6 @@ public class Document<Model: Codable & Modelable>: NSObject, Documentable {
             print(error)
             return nil
         }
-        super.init()
         self.snapshot = snapshot
         self.documentReference = snapshot.reference
     }
