@@ -23,14 +23,14 @@ public final class Batch {
     }
 
     @discardableResult
-    public func save<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> Self {
+    public func save<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
         if isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
         do {
             var data: [String: Any] = try Firestore.Encoder().encode(document.data!)
-            if document.isIncludedInTimestamp {
+            if document.shouldIncludedInTimestamp {
                 data["createdAt"] = FieldValue.serverTimestamp()
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
@@ -43,14 +43,14 @@ public final class Batch {
     }
 
     @discardableResult
-    public func update<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> Self {
+    public func update<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
         if isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
         do {
             var data = try Firestore.Encoder().encode(document.data!)
-            if document.isIncludedInTimestamp {
+            if document.shouldIncludedInTimestamp {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
             self.updateStorage[reference.path] = data
@@ -62,7 +62,7 @@ public final class Batch {
     }
 
     @discardableResult
-    public func delete<T: Encodable>(document: Document<T>) -> Self {
+    public func delete<T: Documentable>(document: T) -> Self {
         if isCommitted {
             fatalError("Batch is already committed")
         }

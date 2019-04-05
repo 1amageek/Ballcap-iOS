@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Referencable {
+public protocol Referencable: Equatable {
 
     static var modelVersion: String { get }
 
@@ -18,4 +18,23 @@ public protocol Referencable {
     static var path: String { get }
 
     static var collectionReference: CollectionReference { get }
+}
+
+public extension Referencable {
+
+    static var modelVersion: String {
+        return "1"
+    }
+
+    static var modelName: String {
+        return String(describing: Mirror(reflecting: self).subjectType).components(separatedBy: ".").first!.lowercased()
+    }
+
+    static var path: String {
+        return "version/\(self.modelVersion)/\(self.modelName)"
+    }
+
+    static var collectionReference: CollectionReference {
+        return Firestore.firestore().collection(self.path)
+    }
 }
