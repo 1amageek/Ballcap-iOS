@@ -17,7 +17,7 @@ internal final class Store {
         return cache
     }()
     
-    func get<T: Document>(documentType: T.Type, reference: DocumentReference) -> T? where T: DataRepresentable {
+    func get<T: Object>(documentType: T.Type, reference: DocumentReference) -> T? where T: DataRepresentable {
         guard let data: T.Model = self.get(modelType: T.Model.self, reference: reference) else { return nil }
         return documentType.init(id: reference.documentID, from: data as! [String : Any], collectionReference: reference.parent)
     }

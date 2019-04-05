@@ -11,7 +11,7 @@ import FirebaseFirestore
 //@testable import Ballcap
 
 
-class DocumentTest: XCTestCase {
+class DocumentTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

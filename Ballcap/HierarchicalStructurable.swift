@@ -14,10 +14,28 @@ protocol HierarchicalStructurable {
 }
 
 
-extension HierarchicalStructurable where Self: Document, Self.CollectionKeys.RawValue == String {
+extension HierarchicalStructurable where Self: Object, Self.CollectionKeys.RawValue == String {
 
-    func collection<T: Document>(path: Self.CollectionKeys) -> DataSource<T>.Query where T: DataRepresentable {
-        let collectionReference: CollectionReference = self.documentReference.collection(path.rawValue)
+    init() {
+        self.init(Self.collectionReference.document())
+    }
+
+    init(collectionReference: CollectionReference? = nil) {
+        let collectionReference: CollectionReference = collectionReference ?? Self.collectionReference
+        self.init(collectionReference.document())
+    }
+
+    init(id: String, collectionReference: CollectionReference? = nil) {
+        let collectionReference: CollectionReference = collectionReference ?? Self.collectionReference
+        self.init(collectionReference.document(id))
+    }
+
+    func collection(path: Self.CollectionKeys) -> CollectionReference {
+        return self.documentReference.collection(path.rawValue)
+    }
+
+    func collection<T: Object>(path: Self.CollectionKeys) -> DataSource<T>.Query where T: DataRepresentable {
+        let collectionReference: CollectionReference = self.collection(path: path)
         return DataSource.Query(collectionReference)
     }
 }

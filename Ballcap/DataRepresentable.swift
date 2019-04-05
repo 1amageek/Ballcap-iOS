@@ -15,28 +15,28 @@ public protocol DataRepresentable: class {
     var data: Model? { get set }
 }
 
-public extension DataRepresentable where Self: Document {
+public extension DataRepresentable where Self: Object {
 
     init() {
-        self.init(documentReference: Document.collectionReference.document())
+        self.init(Self.collectionReference.document())
         self.data = Model()
     }
 
     init(collectionReference: CollectionReference? = nil) {
-        let collectionReference: CollectionReference = collectionReference ?? Document.collectionReference
-        self.init(documentReference: collectionReference.document())
+        let collectionReference: CollectionReference = collectionReference ?? Self.collectionReference
+        self.init(collectionReference.document())
         self.data = Model()
     }
 
     init(id: String, collectionReference: CollectionReference? = nil) {
-        let collectionReference: CollectionReference = collectionReference ?? Document.collectionReference
-        self.init(documentReference: collectionReference.document(id))
+        let collectionReference: CollectionReference = collectionReference ?? Self.collectionReference
+        self.init(collectionReference.document(id))
         self.data = Model()
     }
 
     init?(id: String, from data: [String: Any], collectionReference: CollectionReference? = nil) {
-        let collectionReference: CollectionReference = collectionReference ?? Document.collectionReference
-        self.init(documentReference: collectionReference.document(id))
+        let collectionReference: CollectionReference = collectionReference ?? Self.collectionReference
+        self.init(collectionReference.document(id))
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
             self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
@@ -48,7 +48,7 @@ public extension DataRepresentable where Self: Document {
     }
 
     init?(snapshot: DocumentSnapshot) {
-        self.init(documentReference: snapshot.reference)
+        self.init(snapshot.reference)
         self.snapshot = snapshot
         guard let data: [String: Any] = snapshot.data() else {
             self.snapshot = snapshot
@@ -63,9 +63,18 @@ public extension DataRepresentable where Self: Document {
             return nil
         }
     }
+
+    subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {
+        get {
+            return self.data?[keyPath: keyPath]
+        }
+        set {
+            self.data?[keyPath: keyPath] = newValue!
+        }
+    }
 }
 
-public extension DataRepresentable where Self: Document {
+public extension DataRepresentable where Self: Object {
 
     func save(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
         let batch: Batch = Batch()
@@ -88,7 +97,7 @@ public extension DataRepresentable where Self: Document {
 
 // MARK: -
 
-public extension DataRepresentable where Self: Document {
+public extension DataRepresentable where Self: Object {
 
     static func get(documentReference: DocumentReference, cachePolicy: CachePolicy = .default, completion: @escaping ((Self?, Error?) -> Void)) {
         switch cachePolicy {

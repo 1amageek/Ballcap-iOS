@@ -50,7 +50,7 @@ public enum CollectionChange {
 
 /// DataSource class.
 /// Observe at a Firebase DataSource location.
-public final class DataSource<T: Document & DataRepresentable>: ExpressibleByArrayLiteral {
+public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArrayLiteral {
 
     public typealias ArrayLiteralElement = T
 
