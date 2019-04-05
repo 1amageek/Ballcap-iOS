@@ -138,6 +138,19 @@ let document: Document<Model> = Document()
 document.data?.num = .increment(1)
 ```
 
+__OperableArray__
+
+Property for handling `FieldValue.arrayRemove()`, `FieldValue.arrayUnion()`
+
+```swift
+struct Model: Codable, Equatable, Modelable {
+    var array: OperableArray<Int> = [0, 0]
+}
+let document: Document<Model> = Document()
+document.data?.array = .arrayUnion([1])
+document.data?.array = .arrayRemove([1])
+```
+
 ### File
 
 File is a class for accessing Firestorage.
