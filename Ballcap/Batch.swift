@@ -12,10 +12,6 @@ public final class Batch {
 
     private var writeBatch: FirebaseFirestore.WriteBatch
 
-    private var updateStorage: [String: [String: Any]] = [:]
-
-    private var deleteStorage: [String] = []
-
     private var isCommitted: Bool = false
 
     public init(firestore: Firestore = Firestore.firestore()) {
@@ -23,18 +19,17 @@ public final class Batch {
     }
 
     @discardableResult
-    public func save<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> Self {
+    public func save<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
         if isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
         do {
             var data: [String: Any] = try Firestore.Encoder().encode(document.data!)
-            if document.isIncludedInTimestamp {
+            if document.shouldIncludedInTimestamp {
                 data["createdAt"] = FieldValue.serverTimestamp()
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.updateStorage[reference.path] = data
             self.writeBatch.setData(data, forDocument: reference)
             return self
         } catch let error {
@@ -43,17 +38,16 @@ public final class Batch {
     }
 
     @discardableResult
-    public func update<T: Encodable>(document: Document<T>, reference: DocumentReference? = nil) -> Self {
+    public func update<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
         if isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
         do {
             var data = try Firestore.Encoder().encode(document.data!)
-            if document.isIncludedInTimestamp {
+            if document.shouldIncludedInTimestamp {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.updateStorage[reference.path] = data
             self.writeBatch.updateData(data, forDocument: reference)
             return self
         } catch let error {
@@ -62,11 +56,10 @@ public final class Batch {
     }
 
     @discardableResult
-    public func delete<T: Encodable>(document: Document<T>) -> Self {
+    public func delete<T: Documentable>(document: T) -> Self {
         if isCommitted {
             fatalError("Batch is already committed")
         }
-        self.deleteStorage.append(document.documentReference.path)
         self.writeBatch.deleteDocument(document.documentReference)
         return self
     }
@@ -80,14 +73,6 @@ public final class Batch {
                 completion?(error)
                 return
             }
-            self.updateStorage.forEach({ key, data in
-                Store.shared.set(key: key, data: data)
-            })
-            self.deleteStorage.forEach({ (key) in
-                Store.shared.delete(key: key)
-            })
-            self.updateStorage = [:]
-            self.deleteStorage = []
             completion?(nil)
         }
     }
