@@ -93,14 +93,6 @@ Document<Model>.get(id: "DOCUMENT_ID", completion: { (document, error) in
 })
 ```
 
-If you do not want to use the cache, do the following:
-
-```swift
-Document<Model>.get(id: "DOCUMENT_ID", cachePolicy: .networkOnly) { (document, error) in
-    print(document.data)
-}
-```
-
 It is also possible to access the cache without using the network.
 
 ```swift
