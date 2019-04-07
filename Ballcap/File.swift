@@ -141,31 +141,32 @@ public final class File: Equatable {
     private(set) var storageReference: StorageReference
 
     /// Path to Storage
-    var path: String
+    public var path: String
 
     /// ConentType
-    var mimeType: MIMEType
+    public var mimeType: MIMEType
 
     /// Save data
-    var data: Data?
+    public var data: Data?
 
     /// File download URL
-    var url: URL?
+    public var url: URL?
 
     private var originalURL: URL?
 
     /// File name
-    var name: String
+    public private(set) var name: String
 
     /// File metadata
-    var metadata: StorageMetadata?
+    public private(set) var metadata: StorageMetadata?
 
-    var isUploaded: Bool {
+    /// File uploaded
+    public var isUploaded: Bool {
         return self.metadata?.updated != nil
     }
 
-    ///
-    var additionalData: [String: String]?
+    /// Additinal Data
+    public var additionalData: [String: String]?
 
     /// Firebase uploading task
     private(set) weak var uploadTask: StorageUploadTask?
@@ -245,6 +246,7 @@ public final class File: Equatable {
                     completion?(metadata, error)
                     return
                 }
+                StorageCache.shared.set(data, reference: reference)
                 reference.downloadURL(completion: { (url, error) in
                     if let error = error {
                         completion?(metadata, error)
@@ -288,6 +290,7 @@ public final class File: Equatable {
     public func delete(_ completion: ((Error?) -> Void)?) {
         self.storageReference.delete { (error) in
             self.metadata = nil
+            StorageCache.shared.delete(reference: self.storageReference)
             completion?(error)
         }
     }
@@ -302,6 +305,9 @@ public final class File: Equatable {
             self.downloadTask = nil
             completion(data, error as Error?)
         })
+        if let data: Data = StorageCache.shared.get(self.storageReference) {
+            completion(data, nil)
+        }
         StorageTaskStore.shared.set(download: self.path, task: task)
         self.downloadTask = task
         return task
