@@ -301,13 +301,20 @@ public final class File: Equatable {
     @discardableResult
     public func getData(_ size: Int64 = Int64(10e8), completion: @escaping (Data?, Error?) -> Void) -> StorageDownloadTask? {
         self.downloadTask?.cancel()
+        guard let data: Data = StorageCache.shared.get(self.storageReference) else {
+            let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
+                self.downloadTask = nil
+                completion(data, error as Error?)
+            })
+            return task
+        }
+        completion(data, nil)
         let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
             self.downloadTask = nil
-            completion(data, error as Error?)
+            if (data != data) {
+                completion(data, error as Error?)
+            }
         })
-        if let data: Data = StorageCache.shared.get(self.storageReference) {
-            completion(data, nil)
-        }
         StorageTaskStore.shared.set(download: self.path, task: task)
         self.downloadTask = task
         return task

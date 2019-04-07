@@ -10,6 +10,7 @@
 		1207431C224F23CC00C26AD3 /* File+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207431B224F23CC00C26AD3 /* File+Codable.swift */; };
 		1207AB2F225A43BD00578D29 /* FileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207AB2E225A43BD00578D29 /* FileTests.swift */; };
 		1207AB31225A46E900578D29 /* StorageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207AB30225A46E900578D29 /* StorageCache.swift */; };
+		1207AB32225A4D2B00578D29 /* StorageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207AB30225A46E900578D29 /* StorageCache.swift */; };
 		12314085225758E200E7BD00 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
 		12314086225758E200E7BD00 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
 		1231408722575ADF00E7BD00 /* Disposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074317224F16D600C26AD3 /* Disposer.swift */; };
@@ -520,6 +521,7 @@
 				12314086225758E200E7BD00 /* Batch.swift in Sources */,
 				12D75C7B2251FF95004D1AC4 /* GeoPoint+Codable.swift in Sources */,
 				12D75C9A22536864004D1AC4 /* FieldValue+Codable.swift in Sources */,
+				1207AB32225A4D2B00578D29 /* StorageCache.swift in Sources */,
 				1231409D22576B3500E7BD00 /* DocumentTests.swift in Sources */,
 				12D75C7C2251FF95004D1AC4 /* File+Codable.swift in Sources */,
 				12F8BD6F225750FC004F7D52 /* File.swift in Sources */,
