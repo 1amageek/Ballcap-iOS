@@ -14,6 +14,7 @@ internal final class DocumentCache {
 
     lazy var cache: NSCache<NSString, NSDictionary> = {
         let cache: NSCache<NSString, NSDictionary> = NSCache()
+        cache.countLimit = 1000
         return cache
     }()
 

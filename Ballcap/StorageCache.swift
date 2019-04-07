@@ -14,6 +14,7 @@ internal final class StorageCache {
 
     lazy var cache: NSCache<NSString, NSData> = {
         let cache: NSCache<NSString, NSData> = NSCache()
+        cache.totalCostLimit = Int(8e9) // 1GB
         return cache
     }()
 
@@ -30,7 +31,7 @@ internal final class StorageCache {
     }
 
     func set(key: String, data: Data) {
-        self.cache.setObject(data as NSData, forKey: key as NSString)
+        self.cache.setObject(data as NSData, forKey: key as NSString, cost: data.count)
     }
 
     func delete(reference: StorageReference) {
