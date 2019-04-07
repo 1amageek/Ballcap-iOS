@@ -12,6 +12,8 @@ public final class Batch {
 
     private var writeBatch: FirebaseFirestore.WriteBatch
 
+    private var deleteCacheStorage: [String] = []
+
     private var isCommitted: Bool = false
 
     public init(firestore: Firestore = Firestore.firestore()) {
@@ -61,6 +63,7 @@ public final class Batch {
             fatalError("Batch is already committed")
         }
         self.writeBatch.deleteDocument(document.documentReference)
+        self.deleteCacheStorage.append(document.documentReference.path)
         return self
     }
 
@@ -73,6 +76,9 @@ public final class Batch {
                 completion?(error)
                 return
             }
+            self.deleteCacheStorage.forEach({ (key) in
+                DocumentCache.shared.delete(key: key)
+            })
             completion?(nil)
         }
     }

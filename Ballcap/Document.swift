@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-public final class Document<Model: Modelable & Codable>: Object, DataRepresentable {
+public final class Document<Model: Modelable & Codable>: Object, DataRepresentable, DataCacheable {
 
     public var data: Model?
 

@@ -66,6 +66,9 @@ public extension DataRepresentable where Self: Object {
             if data.keys.contains("updatedAt") {
                 self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
             }
+            if !snapshot.metadata.isFromCache {
+                DocumentCache.shared.set(key: snapshot.reference.path, data: data)
+            }
         } catch (let error) {
             print(error)
             return nil
