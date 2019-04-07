@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1207431C224F23CC00C26AD3 /* File+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207431B224F23CC00C26AD3 /* File+Codable.swift */; };
-		12314083225757F700E7BD00 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839447224B6C6C000383EB /* Store.swift */; };
-		12314084225757F800E7BD00 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839447224B6C6C000383EB /* Store.swift */; };
 		12314085225758E200E7BD00 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
 		12314086225758E200E7BD00 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
 		1231408722575ADF00E7BD00 /* Disposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074317224F16D600C26AD3 /* Disposer.swift */; };
@@ -113,7 +111,6 @@
 		1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GeoPoint+Codable.swift"; sourceTree = "<group>"; };
 		12839443224B6AC4000383EB /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		12839445224B6B5B000383EB /* Referencable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referencable.swift; sourceTree = "<group>"; };
-		12839447224B6C6C000383EB /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		12839449224B7068000383EB /* CodableDocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableDocumentTests.swift; sourceTree = "<group>"; };
 		12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFileTests.swift; sourceTree = "<group>"; };
 		12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -202,7 +199,6 @@
 				12074319224F18A500C26AD3 /* File.swift */,
 				12D75C8A22533296004D1AC4 /* DataSource.swift */,
 				12D75C8922533296004D1AC4 /* Query.swift */,
-				12839447224B6C6C000383EB /* Store.swift */,
 				12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */,
 				12D75C85225300AB004D1AC4 /* Codable */,
 				1283941D224B6A31000383EB /* Info.plist */,
@@ -473,7 +469,6 @@
 				12F8BD6922574E67004F7D52 /* Referencable.swift in Sources */,
 				12F8BD6822574D85004F7D52 /* Documentable.swift in Sources */,
 				12F8BD6B22574F29004F7D52 /* DataRepresentable.swift in Sources */,
-				12314083225757F700E7BD00 /* Store.swift in Sources */,
 				1283943B224B6AA5000383EB /* DocumentReference+Codable.swift in Sources */,
 				12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */,
 				12F8BD6E225750FC004F7D52 /* File.swift in Sources */,
@@ -528,7 +523,6 @@
 				12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */,
 				12D75C782251FF95004D1AC4 /* CodablePassThroughTypes.swift in Sources */,
 				12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */,
-				12314084225757F800E7BD00 /* Store.swift in Sources */,
 				123140942257601500E7BD00 /* IncrementableNumber.swift in Sources */,
 				1231408C22575BA800E7BD00 /* Query.swift in Sources */,
 				12D75C7E2251FF95004D1AC4 /* DocumentReference+Codable.swift in Sources */,
