@@ -37,6 +37,9 @@
 		123140A92258E14600E7BD00 /* QueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9222535B4E004D1AC4 /* QueryTests.swift */; };
 		123140AB225988D800E7BD00 /* DocumentCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AA225988D800E7BD00 /* DocumentCache.swift */; };
 		123140AD22598AC900E7BD00 /* DataCacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AC22598AC900E7BD00 /* DataCacheable.swift */; };
+		123140AF22598D1C00E7BD00 /* DocumentCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AE22598D1C00E7BD00 /* DocumentCacheTests.swift */; };
+		123140B022598E1700E7BD00 /* DocumentCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AA225988D800E7BD00 /* DocumentCache.swift */; };
+		123140B1225A39BE00E7BD00 /* DataCacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AC22598AC900E7BD00 /* DataCacheable.swift */; };
 		12839423224B6A31000383EB /* Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12839419224B6A31000383EB /* Ballcap.framework */; };
 		12839428224B6A31000383EB /* BallcapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839427224B6A31000383EB /* BallcapTests.swift */; };
 		1283942A224B6A31000383EB /* Ballcap.h in Headers */ = {isa = PBXBuildFile; fileRef = 1283941C224B6A31000383EB /* Ballcap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -99,6 +102,7 @@
 		123140A022576E9800E7BD00 /* ObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectTests.swift; sourceTree = "<group>"; };
 		123140AA225988D800E7BD00 /* DocumentCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCache.swift; sourceTree = "<group>"; };
 		123140AC22598AC900E7BD00 /* DataCacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCacheable.swift; sourceTree = "<group>"; };
+		123140AE22598D1C00E7BD00 /* DocumentCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCacheTests.swift; sourceTree = "<group>"; };
 		12839419224B6A31000383EB /* Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1283941C224B6A31000383EB /* Ballcap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ballcap.h; sourceTree = "<group>"; };
 		1283941D224B6A31000383EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -219,6 +223,7 @@
 				12839427224B6A31000383EB /* BallcapTests.swift */,
 				12D75C7F22520147004D1AC4 /* TestHelper.swift */,
 				1231409E22576B8200E7BD00 /* HierarchicalStructurableTests.swift */,
+				123140AE22598D1C00E7BD00 /* DocumentCacheTests.swift */,
 				12D75CF1225484BF004D1AC4 /* DocumentTests.swift */,
 				123140A022576E9800E7BD00 /* ObjectTests.swift */,
 				12839449224B7068000383EB /* CodableDocumentTests.swift */,
@@ -511,6 +516,7 @@
 				1231409D22576B3500E7BD00 /* DocumentTests.swift in Sources */,
 				12D75C7C2251FF95004D1AC4 /* File+Codable.swift in Sources */,
 				12F8BD6F225750FC004F7D52 /* File.swift in Sources */,
+				123140AF22598D1C00E7BD00 /* DocumentCacheTests.swift in Sources */,
 				12D75C702251FF95004D1AC4 /* Object.swift in Sources */,
 				1231409C2257636B00E7BD00 /* Document.swift in Sources */,
 				123140A72258E14600E7BD00 /* CodableFileTests.swift in Sources */,
@@ -529,6 +535,7 @@
 				12F8BD7122575103004F7D52 /* StorageTaskStore.swift in Sources */,
 				123140A92258E14600E7BD00 /* QueryTests.swift in Sources */,
 				12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */,
+				123140B1225A39BE00E7BD00 /* DataCacheable.swift in Sources */,
 				12D75C782251FF95004D1AC4 /* CodablePassThroughTypes.swift in Sources */,
 				12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */,
 				123140942257601500E7BD00 /* IncrementableNumber.swift in Sources */,
@@ -537,6 +544,7 @@
 				123140932257601500E7BD00 /* ServerTimestamp.swift in Sources */,
 				1231409F22576B8200E7BD00 /* HierarchicalStructurableTests.swift in Sources */,
 				123140902257601500E7BD00 /* Documentable.swift in Sources */,
+				123140B022598E1700E7BD00 /* DocumentCache.swift in Sources */,
 				123140922257601500E7BD00 /* HierarchicalStructurable.swift in Sources */,
 				1231408A22575B9000E7BD00 /* DataSource.swift in Sources */,
 			);

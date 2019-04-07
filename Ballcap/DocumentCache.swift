@@ -28,7 +28,11 @@ internal final class DocumentCache {
     }
 
     func get<T: Codable & Modelable>(modelType: T.Type, reference: DocumentReference) throws -> T? {
-        guard let data: [String: Any] = self.cache.object(forKey: reference.path as NSString) as? [String: Any] else { return nil }
+        return try self.get(modelType: modelType, path: reference.path)
+    }
+
+    func get<T: Codable & Modelable>(modelType: T.Type, path: String) throws -> T? {
+        guard let data: [String: Any] = self.cache.object(forKey: path as NSString) as? [String: Any] else { return nil }
         do {
             let document: T = try Firestore.Decoder().decode(T.self, from: data)
             return document
