@@ -33,6 +33,10 @@
 		1231409D22576B3500E7BD00 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75CF1225484BF004D1AC4 /* DocumentTests.swift */; };
 		1231409F22576B8200E7BD00 /* HierarchicalStructurableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231409E22576B8200E7BD00 /* HierarchicalStructurableTests.swift */; };
 		123140A122576E9800E7BD00 /* ObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140A022576E9800E7BD00 /* ObjectTests.swift */; };
+		123140A62258E13300E7BD00 /* CodableDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839449224B7068000383EB /* CodableDocumentTests.swift */; };
+		123140A72258E14600E7BD00 /* CodableFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */; };
+		123140A82258E14600E7BD00 /* DataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C8F22535B06004D1AC4 /* DataSourceTests.swift */; };
+		123140A92258E14600E7BD00 /* QueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9222535B4E004D1AC4 /* QueryTests.swift */; };
 		12839423224B6A31000383EB /* Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12839419224B6A31000383EB /* Ballcap.framework */; };
 		12839428224B6A31000383EB /* BallcapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839427224B6A31000383EB /* BallcapTests.swift */; };
 		1283942A224B6A31000383EB /* Ballcap.h in Headers */ = {isa = PBXBuildFile; fileRef = 1283941C224B6A31000383EB /* Ballcap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -124,7 +128,6 @@
 		12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTimestamp.swift; sourceTree = "<group>"; };
 		12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncrementableNumber.swift; sourceTree = "<group>"; };
 		12D75CA422538CE5004D1AC4 /* Ballcap.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ballcap.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		12D75CEF22547DBB004D1AC4 /* DocumentSubCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentSubCollectionTests.swift; sourceTree = "<group>"; };
 		12D75CF1225484BF004D1AC4 /* DocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		12E25B1822565AB40046CB1C /* OperableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperableArray.swift; sourceTree = "<group>"; };
 		12F8BD6722574D85004F7D52 /* Documentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documentable.swift; sourceTree = "<group>"; };
@@ -216,7 +219,6 @@
 				1231409E22576B8200E7BD00 /* HierarchicalStructurableTests.swift */,
 				12D75CF1225484BF004D1AC4 /* DocumentTests.swift */,
 				123140A022576E9800E7BD00 /* ObjectTests.swift */,
-				12D75CEF22547DBB004D1AC4 /* DocumentSubCollectionTests.swift */,
 				12839449224B7068000383EB /* CodableDocumentTests.swift */,
 				12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */,
 				12D75C8F22535B06004D1AC4 /* DataSourceTests.swift */,
@@ -508,17 +510,21 @@
 				12F8BD6F225750FC004F7D52 /* File.swift in Sources */,
 				12D75C702251FF95004D1AC4 /* Object.swift in Sources */,
 				1231409C2257636B00E7BD00 /* Document.swift in Sources */,
+				123140A72258E14600E7BD00 /* CodableFileTests.swift in Sources */,
 				123140A122576E9800E7BD00 /* ObjectTests.swift in Sources */,
 				123140962257601A00E7BD00 /* OperableArray.swift in Sources */,
 				12D75C752251FF95004D1AC4 /* Codable+.swift in Sources */,
+				123140A82258E14600E7BD00 /* DataSourceTests.swift in Sources */,
 				1231408822575ADF00E7BD00 /* Disposer.swift in Sources */,
 				12D75C762251FF95004D1AC4 /* CodableErrors.swift in Sources */,
 				123140912257601500E7BD00 /* DataRepresentable.swift in Sources */,
 				1231408D2257600E00E7BD00 /* Referencable.swift in Sources */,
 				12D75C7D2251FF95004D1AC4 /* Timestamp+Codable.swift in Sources */,
 				12839428224B6A31000383EB /* BallcapTests.swift in Sources */,
+				123140A62258E13300E7BD00 /* CodableDocumentTests.swift in Sources */,
 				12D75C792251FF95004D1AC4 /* FirestoreDecoder.swift in Sources */,
 				12F8BD7122575103004F7D52 /* StorageTaskStore.swift in Sources */,
+				123140A92258E14600E7BD00 /* QueryTests.swift in Sources */,
 				12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */,
 				12D75C782251FF95004D1AC4 /* CodablePassThroughTypes.swift in Sources */,
 				12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */,

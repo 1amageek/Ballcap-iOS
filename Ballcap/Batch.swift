@@ -12,10 +12,6 @@ public final class Batch {
 
     private var writeBatch: FirebaseFirestore.WriteBatch
 
-    private var updateStorage: [String: [String: Any]] = [:]
-
-    private var deleteStorage: [String] = []
-
     private var isCommitted: Bool = false
 
     public init(firestore: Firestore = Firestore.firestore()) {
@@ -80,14 +76,6 @@ public final class Batch {
                 completion?(error)
                 return
             }
-            self.updateStorage.forEach({ key, data in
-                Store.shared.set(key: key, data: data)
-            })
-            self.deleteStorage.forEach({ (key) in
-                Store.shared.delete(key: key)
-            })
-            self.updateStorage = [:]
-            self.deleteStorage = []
             completion?(nil)
         }
     }

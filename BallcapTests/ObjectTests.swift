@@ -79,31 +79,34 @@ class ObjectTests: XCTestCase {
         let o: Obj = Obj(id: "a")
         XCTAssertEqual(o[\.path], "a")
     }
-//
-//    func testObjectSaveUpdateDelete() {
-//        let exp: XCTestExpectation = XCTestExpectation(description: "")
-//        struct Model: Codable, Modelable, Equatable {
-//            var a: String?
-//        }
-//        let d: Object<Model> = Object(id: "a")
-//        d[\.a] = "t"
-//        d.save() { _ in
-//            Object<Model>.get(id: "a", completion: { (doc, _) in
-//                XCTAssertEqual(doc!.data!.a, "t")
-//                doc![\.a] = "s"
-//                doc?.update() { _ in
-//                    Object<Model>.get(id: "a", completion: { (doc, _) in
-//                        XCTAssertEqual(doc!.data!.a, "s")
-//                        doc?.delete() { _ in
-//                            Object<Model>.get(id: "a", completion: { (doc, _) in
-//                                XCTAssertNil(doc)
-//                                exp.fulfill()
-//                            })
-//                        }
-//                    })
-//                }
-//            })
-//        }
-//        self.wait(for: [exp], timeout: 30)
-//    }
+
+    func testObjectSaveUpdateDelete() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
+        class Obj: Object, DataRepresentable {
+            struct Model: Modelable & Codable & Equatable {
+                var a: String = "a"
+            }
+            var data: Model?
+        }
+        let d: Obj = Obj(id: "a")
+        d[\.a] = "t"
+        d.save() { _ in
+            Obj.get(id: "a", completion: { (doc, _) in
+                XCTAssertEqual(doc!.data!.a, "t")
+                doc![\.a] = "s"
+                doc?.update() { _ in
+                    Obj.get(id: "a", completion: { (doc, _) in
+                        XCTAssertEqual(doc!.data!.a, "s")
+                        doc?.delete() { _ in
+                            Obj.get(id: "a", completion: { (doc, _) in
+                                XCTAssertNil(doc)
+                                exp.fulfill()
+                            })
+                        }
+                    })
+                }
+            })
+        }
+        self.wait(for: [exp], timeout: 30)
+    }
 }

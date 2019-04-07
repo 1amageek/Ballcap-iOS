@@ -50,12 +50,6 @@ public enum DocumentError: Error {
 
 open class Object: Documentable {
 
-    public enum CachePolicy {
-        case `default`          // cache then network
-        case cacheOnly
-        case networkOnly
-    }
-
     public static func == (lhs: Object, rhs: Object) -> Bool {
         return lhs.id == rhs.id
     }
@@ -71,15 +65,6 @@ open class Object: Documentable {
     public required init(_ documentReference: DocumentReference) {
         self.documentReference = documentReference
     }
-//
-//    public required convenience init(id: String, collectionReference: CollectionReference? = nil) {
-//        if let collectionReference: CollectionReference = collectionReference {
-//            self.init(documentReference: collectionReference.document(id))
-//        } else {
-//            self.init(documentReference: Object.collectionReference.document(id))
-//            self.documentReference = type(of: self).collectionReference.document(id)
-//        }
-//    }
 }
 
 public extension DataRepresentable where Self: Object {

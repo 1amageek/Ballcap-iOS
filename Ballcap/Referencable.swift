@@ -18,6 +18,8 @@ public protocol Referencable: Equatable {
     static var path: String { get }
 
     static var collectionReference: CollectionReference { get }
+
+    static var documentReference: DocumentReference { get }
 }
 
 public extension Referencable {
@@ -36,5 +38,9 @@ public extension Referencable {
 
     static var collectionReference: CollectionReference {
         return Firestore.firestore().collection(self.path)
+    }
+
+    static var documentReference: DocumentReference {
+        return Firestore.firestore().document("version/\(self.modelVersion)")
     }
 }

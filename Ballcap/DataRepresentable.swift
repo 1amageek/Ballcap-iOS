@@ -39,8 +39,12 @@ public extension DataRepresentable where Self: Object {
         self.init(collectionReference.document(id))
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
-            self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
-            self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+            if data.keys.contains("createdAt") {
+                self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
+            if data.keys.contains("updatedAt") {
+                self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
         } catch (let error) {
             print(error)
             return nil
@@ -50,14 +54,18 @@ public extension DataRepresentable where Self: Object {
     init?(snapshot: DocumentSnapshot) {
         self.init(snapshot.reference)
         self.snapshot = snapshot
-        guard let data: [String: Any] = snapshot.data() else {
+        guard let data: [String: Any] = snapshot.data(with: .estimate) else {
             self.snapshot = snapshot
             return
         }
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
-            self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
-            self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+            if data.keys.contains("createdAt") {
+                self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
+            if data.keys.contains("updatedAt") {
+                self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
         } catch (let error) {
             print(error)
             return nil
@@ -99,72 +107,27 @@ public extension DataRepresentable where Self: Object {
 
 public extension DataRepresentable where Self: Object {
 
-    static func get(documentReference: DocumentReference, cachePolicy: CachePolicy = .default, completion: @escaping ((Self?, Error?) -> Void)) {
-        switch cachePolicy {
-        case .default:
-            if let document: Self = self.get(documentReference: documentReference) {
-                completion(document, nil)
+    static func get(documentReference: DocumentReference, source: FirestoreSource = FirestoreSource.default, completion: @escaping ((Self?, Error?) -> Void)) {
+        documentReference.getDocument(source: source) { (snapshot, error) in
+            if let error = error {
+                completion(nil, error)
+                return
             }
-            documentReference.getDocument { (snapshot, error) in
-                if let error = error {
-                    completion(nil, error)
-                    return
-                }
-                guard let snapshot = snapshot, snapshot.exists else {
-                    completion(nil, DocumentError.invalidData)
-                    return
-                }
-                guard let document: Self = Self(snapshot: snapshot) else {
-                    completion(nil, DocumentError.invalidData)
-                    return
-                }
-                completion(document, nil)
+            guard let snapshot = snapshot, snapshot.exists else {
+                completion(nil, DocumentError.invalidData)
+                return
             }
-        case .cacheOnly:
-            if let document: Self = self.get(documentReference: documentReference) {
-                completion(document, nil)
+            guard let document: Self = Self(snapshot: snapshot) else {
+                completion(nil, DocumentError.invalidData)
+                return
             }
-            documentReference.getDocument(source: FirestoreSource.cache) { (snapshot, error) in
-                if let error = error {
-                    completion(nil, error)
-                    return
-                }
-                guard let snapshot = snapshot, snapshot.exists else {
-                    completion(nil, DocumentError.invalidData)
-                    return
-                }
-                guard let document: Self = Self(snapshot: snapshot) else {
-                    completion(nil, DocumentError.invalidData)
-                    return
-                }
-                completion(document, nil)
-            }
-        case .networkOnly:
-            documentReference.getDocument(source: FirestoreSource.server) { (snapshot, error) in
-                if let error = error {
-                    completion(nil, error)
-                    return
-                }
-                guard let snapshot = snapshot, snapshot.exists else {
-                    completion(nil, DocumentError.invalidData)
-                    return
-                }
-                guard let document: Self = Self(snapshot: snapshot) else {
-                    completion(nil, DocumentError.invalidData)
-                    return
-                }
-                completion(document, nil)
-            }
+            completion(document, nil)
         }
     }
 
-    static func get(id: String, cachePolicy: CachePolicy = .default, completion: @escaping ((Self?, Error?) -> Void)) {
+    static func get(id: String, source: FirestoreSource = FirestoreSource.default, completion: @escaping ((Self?, Error?) -> Void)) {
         let documentReference: DocumentReference = Self.init(id: id).documentReference
-        self.get(documentReference: documentReference, cachePolicy: cachePolicy, completion: completion)
-    }
-
-    static func get(documentReference: DocumentReference) -> Self? {
-        return Store.shared.get(documentType: self, reference: documentReference)
+        self.get(documentReference: documentReference, source: source, completion: completion)
     }
 
     static func listen(id: String, includeMetadataChanges: Bool = true, completion: @escaping ((Self?, Error?) -> Void)) -> Disposer {

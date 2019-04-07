@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-internal final class Store {
+internal final class FStore {
     
     static let shared: Store = Store()
     
@@ -16,15 +16,25 @@ internal final class Store {
         let cache: NSCache<NSString, NSDictionary> = NSCache()
         return cache
     }()
-    
-    func get<T: Object>(documentType: T.Type, reference: DocumentReference) -> T? where T: DataRepresentable {
-        guard let data: T.Model = self.get(modelType: T.Model.self, reference: reference) else { return nil }
-        return documentType.init(id: reference.documentID, from: data as! [String : Any], collectionReference: reference.parent)
+
+    func get<T: Document<U>, U: Modelable & Codable>(documentType: T.Type, reference: DocumentReference) -> T? {
+        guard let data: [String: Any] = self.cache.object(forKey: reference.path as NSString) as? [String: Any] else { return nil }
+        return Document<U>.init(id: reference.documentID, from: data) as? T
     }
     
-    func get<T: Codable & Modelable>(modelType: T.Type, reference: DocumentReference) -> T? {
-        guard let data: T = self.cache.object(forKey: reference.path as NSString) as? T else { return nil }
-        return data
+    func get<T: Object>(documentType: T.Type, reference: DocumentReference) -> T? where T: DataRepresentable {
+        guard let data: [String: Any] = self.cache.object(forKey: reference.path as NSString) as? [String: Any] else { return nil }
+        return documentType.init(id: reference.documentID, from: data)
+    }
+    
+    func get<T: Codable & Modelable>(modelType: T.Type, reference: DocumentReference) throws -> T? {
+        guard let data: [String: Any] = self.cache.object(forKey: reference.path as NSString) as? [String: Any] else { return nil }
+        do {
+            let document: T = try Firestore.Decoder().decode(T.self, from: data)
+            return document
+        } catch (let error) {
+            throw error
+        }
     }
     
     func set<T: DataRepresentable & Documentable>(_ document: T, reference: DocumentReference? = nil) throws {
