@@ -357,16 +357,12 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     private func get(with change: DocumentChange, block: @escaping (Element?, Error?) -> Void) {
         if self.option.shouldFetchReference {
             let id: String = change.document.documentID
-            if let document: Element = Store.shared.get(documentType: Element.self, reference: change.document.reference) {
-                block(document, nil)
-            } else {
-                Element.get(id: id) { (document, error) in
-                    if let error = error {
-                        block(nil, error)
-                        return
-                    }
-                    block(document, nil)
+            Element.get(id: id) { (document, error) in
+                if let error = error {
+                    block(nil, error)
+                    return
                 }
+                block(document, nil)
             }
         } else {
             guard let document: Element = Element(snapshot: change.document) else {

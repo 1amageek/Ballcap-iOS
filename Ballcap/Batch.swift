@@ -30,7 +30,6 @@ public final class Batch {
                 data["createdAt"] = FieldValue.serverTimestamp()
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.updateStorage[reference.path] = data
             self.writeBatch.setData(data, forDocument: reference)
             return self
         } catch let error {
@@ -49,7 +48,6 @@ public final class Batch {
             if document.shouldIncludedInTimestamp {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.updateStorage[reference.path] = data
             self.writeBatch.updateData(data, forDocument: reference)
             return self
         } catch let error {
@@ -62,7 +60,6 @@ public final class Batch {
         if isCommitted {
             fatalError("Batch is already committed")
         }
-        self.deleteStorage.append(document.documentReference.path)
         self.writeBatch.deleteDocument(document.documentReference)
         return self
     }
