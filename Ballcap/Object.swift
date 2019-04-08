@@ -62,6 +62,10 @@ open class Object: Documentable {
 
     public internal(set) var updatedAt: Timestamp = Timestamp(date: Date())
 
+    open var storageReference: StorageReference {
+        return Storage.storage().reference(withPath: self.documentReference.path)
+    }
+
     public required init(_ documentReference: DocumentReference) {
         self.documentReference = documentReference
     }
