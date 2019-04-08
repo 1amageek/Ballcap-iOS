@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Modelable: Equatable & Referencable {
+public protocol Modelable: Referencable {
     init()
 }
 
