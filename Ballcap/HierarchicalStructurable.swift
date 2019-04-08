@@ -8,13 +8,12 @@
 
 import FirebaseFirestore
 
-protocol HierarchicalStructurable {
+public protocol HierarchicalStructurable {
 
     associatedtype CollectionKeys: RawRepresentable
 }
 
-
-extension HierarchicalStructurable where Self: Object, Self.CollectionKeys.RawValue == String {
+public extension HierarchicalStructurable where Self: Object, Self.CollectionKeys.RawValue == String {
 
     init() {
         self.init(Self.collectionReference.document())
@@ -40,7 +39,7 @@ extension HierarchicalStructurable where Self: Object, Self.CollectionKeys.RawVa
     }
 }
 
-extension HierarchicalStructurable where Self: Object, Self: DataRepresentable, Self.CollectionKeys.RawValue == String {
+public extension HierarchicalStructurable where Self: Object, Self: DataRepresentable, Self.CollectionKeys.RawValue == String {
 
     init() {
         self.init(Self.collectionReference.document())
