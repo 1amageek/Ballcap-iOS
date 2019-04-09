@@ -20,18 +20,11 @@ internal final class FileUploadManager {
 
     func upload(completion: ((Error?) -> Void)?) -> [File] {
         var uploadingFiles: [File] = []
-        var metadataes: [StorageMetadata] = []
-        var errors: [Error] = []
         for (_, file) in files.enumerated() {
             if !file.isUploaded {
                 uploadingFiles.append(file)
                 group.enter()
                 file.save { [weak self] (metadata, error) in
-                    if let error = error {
-                        errors.append(error)
-                        return
-                    }
-                    metadataes.append(metadata!)
                     self?.group.leave()
                 }
             }

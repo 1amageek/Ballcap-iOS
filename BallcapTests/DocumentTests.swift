@@ -8,6 +8,7 @@
 
 import XCTest
 import FirebaseFirestore
+import FirebaseStorage
 //@testable import Ballcap
 
 
@@ -146,6 +147,66 @@ class DocumentTests: XCTestCase {
                 assertRoundTrip(model: doc?.data!, encoded: dict as [String : Any])
                 doc?.delete(completion: { _ in
                     exp.fulfill()
+                })
+            })
+        }
+        self.wait(for: [exp], timeout: 30)
+    }
+
+    func testDocumentCache() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
+        struct Model: Codable, Modelable, Equatable {
+            var a: String?
+        }
+        let d: Document<Model> = Document(id: "a")
+        let date: Date = Date()
+        NSLog("0 - Start")
+        d.save() { _ in
+            let interval: TimeInterval = Date().timeIntervalSince(date)
+            NSLog("1 - Save \(interval)")
+            d.documentReference.getDocument(completion: { (_, _) in
+                let interval0: TimeInterval = Date().timeIntervalSince(date)
+                NSLog("2 - Get \(interval0 - interval)")
+                d.documentReference.getDocument(source: FirestoreSource.cache, completion: { (_, _) in
+                    let interval1: TimeInterval = Date().timeIntervalSince(date)
+                    NSLog("3 - Get from cache \(interval1 - interval0)")
+                    d.documentReference.getDocument(completion: { (_, _) in
+                        let interval2: TimeInterval = Date().timeIntervalSince(date)
+                        NSLog("4 - Get \(interval2 - interval1)")
+                        Firestore.firestore().document(d.documentReference.path).getDocument(source: FirestoreSource.server, completion: { (_, _) in
+                            let interval3: TimeInterval = Date().timeIntervalSince(date)
+                            NSLog("4 - Get from server \(interval3 - interval2)")
+                            exp.fulfill()
+                        })
+                    })
+                })
+            })
+        }
+        self.wait(for: [exp], timeout: 30)
+    }
+
+    func testDocumentFiles() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
+        struct Model: Codable, Modelable, Equatable {
+            var a: File?
+            var b: File?
+        }
+        let d: Document<Model> = Document(id: "s")
+        d.data?.a = File(Storage.storage().reference(withPath: "a"), data: "test".data(using: .utf8)!, mimeType: File.MIMEType.plain)
+        d.data?.b = File(Storage.storage().reference(withPath: "b"), data: "test".data(using: .utf8)!, mimeType: File.MIMEType.plain)
+
+        d.upload { _ in
+            d.data?.a?.getData(completion: { (data, _) in
+                let text: String = String(data: data!, encoding: .utf8)!
+                XCTAssertEqual(text, "test")
+                d.data?.b?.getData(completion: { (data, _) in
+                    let text: String = String(data: data!, encoding: .utf8)!
+                    XCTAssertEqual(text, "test")
+                    d.data?.a?.delete({ (_) in
+                        d.data?.b?.delete({ (_) in
+                            exp.fulfill()
+                        })
+                    })
                 })
             })
         }

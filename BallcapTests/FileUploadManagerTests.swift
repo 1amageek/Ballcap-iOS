@@ -33,7 +33,11 @@ class FileUploadManagerTests: XCTestCase {
                 files.last?.getData(completion: { (data, _) in
                     let text: String = String(data: data!, encoding: .utf8)!
                     XCTAssertEqual(text, "test")
-                    exp.fulfill()
+                    files.first?.delete({ (_) in
+                        files.last?.delete({ (_) in
+                            exp.fulfill()
+                        })
+                    })
                 })
             })
         }
