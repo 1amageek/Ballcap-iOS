@@ -58,12 +58,13 @@ public final class Batch {
     }
 
     @discardableResult
-    public func delete<T: Documentable>(document: T) -> Self {
+    public func delete<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self {
         if isCommitted {
             fatalError("Batch is already committed")
         }
-        self.writeBatch.deleteDocument(document.documentReference)
-        self.deleteCacheStorage.append(document.documentReference.path)
+        let reference: DocumentReference = reference ?? document.documentReference
+        self.writeBatch.deleteDocument(reference)
+        self.deleteCacheStorage.append(reference.path)
         return self
     }
 

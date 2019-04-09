@@ -87,21 +87,33 @@ public extension DataRepresentable where Self: Object {
 
 public extension DataRepresentable where Self: Object {
 
+    func save(completion: ((Error?) -> Void)? = nil) {
+        self.save(reference: nil, completion: completion)
+    }
+
+    func update(completion: ((Error?) -> Void)? = nil) {
+        self.update(reference: nil, completion: completion)
+    }
+
+    func delete(completion: ((Error?) -> Void)? = nil) {
+        self.delete(reference: nil, completion: completion)
+    }
+
     func save(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
         let batch: Batch = Batch()
-        batch.save(document: self)
+        batch.save(document: self, reference: reference)
         batch.commit(completion)
     }
 
     func update(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
         let batch: Batch = Batch()
-        batch.update(document: self)
+        batch.update(document: self, reference: reference)
         batch.commit(completion)
     }
 
     func delete(reference: DocumentReference? = nil, completion: ((Error?) -> Void)? = nil) {
         let batch: Batch = Batch()
-        batch.delete(document: self)
+        batch.delete(document: self, reference: reference)
         batch.commit(completion)
     }
 }
