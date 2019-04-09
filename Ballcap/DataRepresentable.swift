@@ -145,8 +145,27 @@ public extension DataRepresentable where Self: Object {
         self.get(documentReference: documentReference, source: source, completion: completion)
     }
 
+    static func listen(documentReference: DocumentReference, includeMetadataChanges: Bool = true, completion: @escaping ((Self?, Error?) -> Void)) -> Disposer {
+        let listenr: ListenerRegistration = documentReference.addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            guard let document: Self = Self(snapshot: snapshot!) else {
+                completion(nil, DocumentError.invalidData)
+                return
+            }
+            completion(document, nil)
+        }
+        return Disposer(.value(listenr))
+    }
+
     static func listen(id: String, includeMetadataChanges: Bool = true, completion: @escaping ((Self?, Error?) -> Void)) -> Disposer {
-        let listenr: ListenerRegistration = Self.collectionReference.document(id).addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
+        return self.listen(documentReference: Self.collectionReference.document(id), includeMetadataChanges: includeMetadataChanges, completion: completion)
+    }
+
+    func listen(includeMetadataChanges: Bool = true, completion: @escaping ((Self?, Error?) -> Void)) -> Disposer {
+        let listenr: ListenerRegistration = self.documentReference.addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
