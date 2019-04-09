@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-public protocol Documentable: class, Referencable {
+public protocol Documentable: class, Referencable & Equatable {
 
     var id: String { get }
 

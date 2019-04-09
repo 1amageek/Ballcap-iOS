@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Referencable: Equatable {
+public protocol Referencable {
 
     static var modelVersion: String { get }
 
