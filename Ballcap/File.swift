@@ -162,7 +162,7 @@ public final class File: Equatable {
 
     /// File uploaded
     public var isUploaded: Bool {
-        return self.metadata?.updated != nil
+        return self.metadata?.updated != nil || self.url != nil
     }
 
     /// Additinal Data
