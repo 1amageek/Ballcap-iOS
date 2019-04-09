@@ -88,4 +88,67 @@ class DocumentTests: XCTestCase {
         }
         self.wait(for: [exp], timeout: 30)
     }
+
+    func testDocumentModelSaveUpdateDelete() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
+        struct Model: Modelable, Codable, Equatable {
+
+            init() {
+                s = "abc"
+                d = 123
+                f = -4
+                l = 1_234_567_890_123
+                i = -4444
+                b = false
+                ai = [1, 2, 3, 4]
+                si = ["abc", "def"]
+                caseSensitive = "aaa"
+                casESensitive = "bbb"
+                casESensitivE = "ccc"
+                timestamp = Timestamp(date: Date(timeIntervalSince1970: 0))
+                serverTimestamp = .resolved(Timestamp(date: Date(timeIntervalSince1970: 0)))
+            }
+
+            let s: String
+            let d: Double
+            let f: Float
+            let l: CLongLong
+            let i: Int
+            let b: Bool
+            let ai: [Int]
+            let si: [String]
+            let caseSensitive: String
+            let casESensitive: String
+            let casESensitivE: String
+            let timestamp: Timestamp
+            let serverTimestamp: ServerTimestamp
+        }
+
+        let dict = [
+            "s": "abc",
+            "d": 123,
+            "f": -4,
+            "l": 1_234_567_890_123,
+            "i": -4444,
+            "b": false,
+            "ai": [1, 2, 3, 4],
+            "si": ["abc", "def"],
+            "caseSensitive": "aaa",
+            "casESensitive": "bbb",
+            "casESensitivE": "ccc",
+            "timestamp": Timestamp(date: Date(timeIntervalSince1970: 0)),
+            "serverTimestamp": Timestamp(date: Date(timeIntervalSince1970: 0))
+            ] as [String: Any]
+
+        let d: Document<Model> = Document(id: "a")
+        d.save() { _ in
+            Document<Model>.get(id: "a", completion: { (doc, _) in
+                assertRoundTrip(model: doc?.data!, encoded: dict as [String : Any])
+                doc?.delete(completion: { _ in
+                    exp.fulfill()
+                })
+            })
+        }
+        self.wait(for: [exp], timeout: 30)
+    }
 }
