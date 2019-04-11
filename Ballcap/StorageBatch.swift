@@ -28,7 +28,7 @@ public final class StorageBatch {
     public init() { }
 
     @discardableResult
-    public func save(file: File) -> Self {
+    public func save(_ file: File) -> Self {
         if _isCommitted {
             fatalError("Batch is already committed")
         }
@@ -37,11 +37,29 @@ public final class StorageBatch {
     }
 
     @discardableResult
-    public func delete(file: File) -> Self {
+    public func save(_ files: [File]) -> Self {
+        if _isCommitted {
+            fatalError("Batch is already committed")
+        }
+        files.forEach({ self._storage.append((.save, $0)) })
+        return self
+    }
+
+    @discardableResult
+    public func delete(_ file: File) -> Self {
         if _isCommitted {
             fatalError("Batch is already committed")
         }
         self._storage.append((.delete, file))
+        return self
+    }
+
+    @discardableResult
+    public func delete(_ files: [File]) -> Self {
+        if _isCommitted {
+            fatalError("Batch is already committed")
+        }
+        files.forEach({ self._storage.append((.delete, $0)) })
         return self
     }
 

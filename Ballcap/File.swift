@@ -144,7 +144,7 @@ public final class File: Equatable {
     public var path: String
 
     /// ConentType
-    public var mimeType: MIMEType
+    public var mimeType: MIMEType = .octetStream(nil)
 
     /// Save data
     public var data: Data?
@@ -176,7 +176,9 @@ public final class File: Equatable {
 
     // MARK: - Initialize
 
-    public init(_ storageReference: StorageReference, name: String? = nil, mimeType: MIMEType? = nil) {
+    public init(_ storageReference: StorageReference,
+                            name: String? = nil,
+                            mimeType: MIMEType? = nil) {
         self.storageReference = storageReference
         self.path = storageReference.fullPath
         let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
@@ -187,17 +189,17 @@ public final class File: Equatable {
     }
 
     public convenience init(_ storageReference: StorageReference,
-                     data: Data,
-                     name: String? = nil,
-                     mimeType: MIMEType? = nil) {
+                            data: Data,
+                            name: String? = nil,
+                            mimeType: MIMEType? = nil) {
         self.init(storageReference, name: name, mimeType: mimeType)
         self.data = data
     }
 
     public convenience init(_ storageReference: StorageReference,
-                     url: URL,
-                     name: String? = nil,
-                     mimeType: MIMEType? = nil) {
+                            url: URL,
+                            name: String? = nil,
+                            mimeType: MIMEType? = nil) {
         self.init(storageReference, name: name, mimeType: mimeType)
         self.originalURL = url
     }
@@ -212,15 +214,15 @@ public final class File: Equatable {
 
     class func generateFileName(_ name: String, mimeType: MIMEType?) -> (String, MIMEType) {
         var fileName: String = name
-        let url: URL = URL(string: name)!
+        let nameURL: URL = URL(string: name)!
         if let mimeType: MIMEType = mimeType {
-            fileName = url.pathExtension.isEmpty ? url.appendingPathExtension(mimeType.fileExtension).absoluteString : name
+            fileName = nameURL.pathExtension.isEmpty ? nameURL.appendingPathExtension(mimeType.fileExtension).absoluteString : name
             return (fileName, mimeType)
         }
-        guard !url.pathExtension.isEmpty else {
-            fatalError("This file has invalid extension.")
+        guard !nameURL.pathExtension.isEmpty else {
+            return (fileName, .octetStream(nil))
         }
-        guard let mimeType: MIMEType = MIMEType(ext: url.pathExtension) else {
+        guard let mimeType: MIMEType = MIMEType(ext: nameURL.pathExtension) else {
             fatalError("This file has invalid extension.")
         }
         return (fileName, mimeType)
@@ -290,6 +292,7 @@ public final class File: Equatable {
     public func delete(_ completion: ((Error?) -> Void)?) {
         self.storageReference.delete { (error) in
             self.metadata = nil
+            self.url = nil
             StorageCache.shared.delete(reference: self.storageReference)
             completion?(error)
         }
