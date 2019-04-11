@@ -63,15 +63,18 @@ public final class StorageBatch {
         return self
     }
 
-    public func commit(_ completion: ((Error?) -> Void)? = nil) {
+    @discardableResult
+    public func commit(_ completion: ((Error?) -> Void)? = nil) -> [File] {
         if _isCommitted {
             fatalError("Batch is already committed")
         }
         if self._storage.isEmpty {
             completion?(nil)
-            return
+            return []
         }
+        var commitingFiles: [File] = []
         for (_, stock) in self._storage.enumerated() {
+            commitingFiles.append(stock.file)
             switch stock.type {
             case .save:
                 self._group.enter()
@@ -97,5 +100,6 @@ public final class StorageBatch {
                 }
             }
         }
+        return commitingFiles
     }
 }
