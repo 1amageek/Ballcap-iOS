@@ -207,7 +207,7 @@ batch.commit { error in
 }
 ```
 
-## Migrate from Pring
+## Migrate from [Pring](https://github.com/1amageek/Pring)
 
 ### Overview
 The difference from Pring is that ReferenceCollection and NestedCollection have been abolished.
