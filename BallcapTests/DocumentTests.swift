@@ -184,32 +184,4 @@ class DocumentTests: XCTestCase {
         }
         self.wait(for: [exp], timeout: 30)
     }
-
-//    func testDocumentFiles() {
-//        let exp: XCTestExpectation = XCTestExpectation(description: "")
-//        struct Model: Codable, Modelable, Equatable {
-//            var a: File?
-//            var b: File?
-//        }
-//        let d: Document<Model> = Document(id: "s")
-//        d.data?.a = File(Storage.storage().reference(withPath: "a"), data: "test".data(using: .utf8)!, mimeType: File.MIMEType.plain)
-//        d.data?.b = File(Storage.storage().reference(withPath: "b"), data: "test".data(using: .utf8)!, mimeType: File.MIMEType.plain)
-//
-//        d.upload { _ in
-//            d.data?.a?.getData(completion: { (data, _) in
-//                let text: String = String(data: data!, encoding: .utf8)!
-//                XCTAssertEqual(text, "test")
-//                d.data?.b?.getData(completion: { (data, _) in
-//                    let text: String = String(data: data!, encoding: .utf8)!
-//                    XCTAssertEqual(text, "test")
-//                    d.data?.a?.delete({ (_) in
-//                        d.data?.b?.delete({ (_) in
-//                            exp.fulfill()
-//                        })
-//                    })
-//                })
-//            })
-//        }
-//        self.wait(for: [exp], timeout: 30)
-//    }
 }
