@@ -118,30 +118,6 @@ public extension DataRepresentable where Self: Object {
     }
 }
 
-//public extension DataRepresentable where Self: Object {
-//    
-//    func upload(completion: ((Error?) -> Void)?) -> [File] {
-//
-//        guard let data: Self.Model = self.data else {
-//            completion?(nil)
-//            return []
-//        }
-//        var files: [File] = []
-//        let mirror: Mirror = Mirror(reflecting: data)
-//        mirror.children.forEach { (child) in
-//            if let file: File = child.value as? File {
-//                files.append(file)
-//            }
-//        }
-//        if files.isEmpty {
-//            completion?(nil)
-//            return []
-//        }
-//        self._fileUploadManager.files = files
-//        return self._fileUploadManager.upload(completion: completion)
-//    }
-//}
-
 // MARK: -
 
 public extension DataRepresentable where Self: Object {
