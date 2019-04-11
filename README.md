@@ -209,6 +209,14 @@ batch.commit { error in
 
 ## Migrate from Pring
 
+### Overview
+The difference from Pring is that ReferenceCollection and NestedCollection have been abolished.
+In Pring, adding a child Object to the ReferenceCollection and NestedCollection of the parent Object saved the parent Object at the same time when it was saved.
+Ballcap requires the developer to save SubCollection using Batch.
+In addition, Pring also saved the File at the same time as the Object with the File was saved.
+Ballcap requires that developers save files using StorageBatch.
+
+### Scheme
 Ballcap can handle Object class by inheriting Object class like Pring.
 If you inherit Object class, you must conform to `DataRepresentable`.
 
