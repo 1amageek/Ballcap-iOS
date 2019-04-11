@@ -55,9 +55,10 @@
 		12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839439224B6AA4000383EB /* FirestoreEncoder.swift */; };
 		12839442224B6AA5000383EB /* GeoPoint+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283943A224B6AA5000383EB /* GeoPoint+Codable.swift */; };
 		12839444224B6AC4000383EB /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839443224B6AC4000383EB /* Object.swift */; };
-		12AE79F3225CA58000D7EE23 /* FileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE79F2225CA58000D7EE23 /* FileUploadManager.swift */; };
-		12AE79F7225CB4B400D7EE23 /* FileUploadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE79F6225CB4B400D7EE23 /* FileUploadManagerTests.swift */; };
-		12AE79F8225CB5C700D7EE23 /* FileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE79F2225CA58000D7EE23 /* FileUploadManager.swift */; };
+		128CDD4C225F00BE005926E7 /* StorageBatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128CDD4B225F00BE005926E7 /* StorageBatch.swift */; };
+		12AE79F3225CA58000D7EE23 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE79F2225CA58000D7EE23 /* StorageManager.swift */; };
+		12AE79F7225CB4B400D7EE23 /* StorageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE79F6225CB4B400D7EE23 /* StorageManagerTests.swift */; };
+		12AE79F8225CB5C700D7EE23 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE79F2225CA58000D7EE23 /* StorageManager.swift */; };
 		12D75C6E2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
 		12D75C6F2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
 		12D75C702251FF95004D1AC4 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839443224B6AC4000383EB /* Object.swift */; };
@@ -128,8 +129,9 @@
 		12839443224B6AC4000383EB /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		12839445224B6B5B000383EB /* Referencable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referencable.swift; sourceTree = "<group>"; };
 		12839449224B7068000383EB /* CodableDocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableDocumentTests.swift; sourceTree = "<group>"; };
-		12AE79F2225CA58000D7EE23 /* FileUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadManager.swift; sourceTree = "<group>"; };
-		12AE79F6225CB4B400D7EE23 /* FileUploadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadManagerTests.swift; sourceTree = "<group>"; };
+		128CDD4B225F00BE005926E7 /* StorageBatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageBatch.swift; sourceTree = "<group>"; };
+		12AE79F2225CA58000D7EE23 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		12AE79F6225CB4B400D7EE23 /* StorageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerTests.swift; sourceTree = "<group>"; };
 		12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFileTests.swift; sourceTree = "<group>"; };
 		12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D75C7F22520147004D1AC4 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
@@ -215,11 +217,12 @@
 				12E25B1822565AB40046CB1C /* OperableArray.swift */,
 				12074317224F16D600C26AD3 /* Disposer.swift */,
 				12D75C822252169D004D1AC4 /* Batch.swift */,
+				128CDD4B225F00BE005926E7 /* StorageBatch.swift */,
 				12074319224F18A500C26AD3 /* File.swift */,
-				12AE79F2225CA58000D7EE23 /* FileUploadManager.swift */,
 				12D75C8A22533296004D1AC4 /* DataSource.swift */,
 				12D75C8922533296004D1AC4 /* Query.swift */,
 				123140AA225988D800E7BD00 /* DocumentCache.swift */,
+				12AE79F2225CA58000D7EE23 /* StorageManager.swift */,
 				1207AB30225A46E900578D29 /* StorageCache.swift */,
 				12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */,
 				12D75C85225300AB004D1AC4 /* Codable */,
@@ -242,7 +245,7 @@
 				12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */,
 				12D75C8F22535B06004D1AC4 /* DataSourceTests.swift */,
 				12D75C9222535B4E004D1AC4 /* QueryTests.swift */,
-				12AE79F6225CB4B400D7EE23 /* FileUploadManagerTests.swift */,
+				12AE79F6225CB4B400D7EE23 /* StorageManagerTests.swift */,
 				1207AB2E225A43BD00578D29 /* FileTests.swift */,
 				12839429224B6A31000383EB /* Info.plist */,
 			);
@@ -498,6 +501,7 @@
 				12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */,
 				12F8BD6E225750FC004F7D52 /* File.swift in Sources */,
 				1283943C224B6AA5000383EB /* CodablePassThroughTypes.swift in Sources */,
+				128CDD4C225F00BE005926E7 /* StorageBatch.swift in Sources */,
 				12839442224B6AA5000383EB /* GeoPoint+Codable.swift in Sources */,
 				123140AB225988D800E7BD00 /* DocumentCache.swift in Sources */,
 				123140992257624F00E7BD00 /* Document.swift in Sources */,
@@ -508,7 +512,7 @@
 				1231408E2257601400E7BD00 /* ServerTimestamp.swift in Sources */,
 				12F8BD7022575102004F7D52 /* StorageTaskStore.swift in Sources */,
 				1283943F224B6AA5000383EB /* CodableErrors.swift in Sources */,
-				12AE79F3225CA58000D7EE23 /* FileUploadManager.swift in Sources */,
+				12AE79F3225CA58000D7EE23 /* StorageManager.swift in Sources */,
 				1207AB31225A46E900578D29 /* StorageCache.swift in Sources */,
 				123140AD22598AC900E7BD00 /* DataCacheable.swift in Sources */,
 				12F8BD6D22574F44004F7D52 /* HierarchicalStructurable.swift in Sources */,
@@ -536,7 +540,7 @@
 				123140AF22598D1C00E7BD00 /* DocumentCacheTests.swift in Sources */,
 				12D75C702251FF95004D1AC4 /* Object.swift in Sources */,
 				1231409C2257636B00E7BD00 /* Document.swift in Sources */,
-				12AE79F7225CB4B400D7EE23 /* FileUploadManagerTests.swift in Sources */,
+				12AE79F7225CB4B400D7EE23 /* StorageManagerTests.swift in Sources */,
 				123140A72258E14600E7BD00 /* CodableFileTests.swift in Sources */,
 				123140A122576E9800E7BD00 /* ObjectTests.swift in Sources */,
 				123140962257601A00E7BD00 /* OperableArray.swift in Sources */,
@@ -559,7 +563,7 @@
 				12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */,
 				123140942257601500E7BD00 /* IncrementableNumber.swift in Sources */,
 				1231408C22575BA800E7BD00 /* Query.swift in Sources */,
-				12AE79F8225CB5C700D7EE23 /* FileUploadManager.swift in Sources */,
+				12AE79F8225CB5C700D7EE23 /* StorageManager.swift in Sources */,
 				12D75C7E2251FF95004D1AC4 /* DocumentReference+Codable.swift in Sources */,
 				123140932257601500E7BD00 /* ServerTimestamp.swift in Sources */,
 				1231409F22576B8200E7BD00 /* HierarchicalStructurableTests.swift in Sources */,

@@ -17,15 +17,14 @@ class FileUploadManagerTests: XCTestCase {
         _ = FirebaseTest.shared
     }
 
-    func testUpload() {
+    func testUploadDownloadDelete() {
         let exp: XCTestExpectation = XCTestExpectation(description: "")
         let data: Data = "test".data(using: .utf8)!
         let files: [File] = [
             File(Storage.storage().reference(withPath: "a"), data: data, mimeType: File.MIMEType.plain),
             File(Storage.storage().reference(withPath: "b"), data: data, mimeType: File.MIMEType.plain)
             ]
-        let uploadManager: FileUploadManager = FileUploadManager()
-        uploadManager.files = files
+        let uploadManager: StorageManager = StorageManager(files: files)
         uploadManager.upload { _ in
             files.first?.getData(completion: { (data, _) in
                 let text: String = String(data: data!, encoding: .utf8)!
@@ -33,6 +32,7 @@ class FileUploadManagerTests: XCTestCase {
                 files.last?.getData(completion: { (data, _) in
                     let text: String = String(data: data!, encoding: .utf8)!
                     XCTAssertEqual(text, "test")
+
                     files.first?.delete({ (_) in
                         files.last?.delete({ (_) in
                             exp.fulfill()

@@ -62,7 +62,7 @@ open class Object: Documentable {
 
     public internal(set) var updatedAt: Timestamp = Timestamp(date: Date())
 
-    internal let _fileUploadManager: FileUploadManager = FileUploadManager()
+//    internal let _fileUploadManager: FileUploadManager = FileUploadManager()
 
     open var storageReference: StorageReference {
         return Storage.storage().reference(withPath: self.documentReference.path)

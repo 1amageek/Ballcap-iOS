@@ -341,4 +341,3 @@ public final class File: Equatable {
                 lhs.mimeType == rhs.mimeType
     }
 }
-
