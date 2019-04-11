@@ -1,5 +1,5 @@
 //
-//  FileUploadManager.swift
+//  FileUploader.swift
 //  Ballcap
 //
 //  Created by 1amageek on 2019/04/09.
@@ -8,15 +8,19 @@
 
 import FirebaseStorage
 
-internal final class FileUploadManager {
+internal final class FileUploader {
 
     let queue: DispatchQueue = DispatchQueue(label: "file.upload.queue")
 
     let group: DispatchGroup = DispatchGroup()
 
-    var files: [File] = []
+    let files: [File]
 
     var timeout: Int = 10 // Default 10s
+
+    init(files: [File]) {
+        self.files = files
+    }
 
     func upload(completion: ((Error?) -> Void)?) -> [File] {
         var uploadingFiles: [File] = []

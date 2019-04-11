@@ -10,19 +10,19 @@ import FirebaseFirestore
 
 public final class Batch {
 
-    private var writeBatch: FirebaseFirestore.WriteBatch
+    private var _writeBatch: FirebaseFirestore.WriteBatch
 
-    private var deleteCacheStorage: [String] = []
+    private var _deleteCacheStorage: [String] = []
 
-    private var isCommitted: Bool = false
+    private var _isCommitted: Bool = false
 
     public init(firestore: Firestore = Firestore.firestore()) {
-        self.writeBatch = firestore.batch()
+        self._writeBatch = firestore.batch()
     }
 
     @discardableResult
     public func save<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
-        if isCommitted {
+        if _isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
@@ -32,7 +32,7 @@ public final class Batch {
                 data["createdAt"] = FieldValue.serverTimestamp()
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.writeBatch.setData(data, forDocument: reference)
+            self._writeBatch.setData(data, forDocument: reference)
             return self
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
@@ -41,7 +41,7 @@ public final class Batch {
 
     @discardableResult
     public func update<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
-        if isCommitted {
+        if _isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
@@ -50,7 +50,7 @@ public final class Batch {
             if document.shouldIncludedInTimestamp {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self.writeBatch.updateData(data, forDocument: reference)
+            self._writeBatch.updateData(data, forDocument: reference)
             return self
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
@@ -59,25 +59,25 @@ public final class Batch {
 
     @discardableResult
     public func delete<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self {
-        if isCommitted {
+        if _isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
-        self.writeBatch.deleteDocument(reference)
-        self.deleteCacheStorage.append(reference.path)
+        self._writeBatch.deleteDocument(reference)
+        self._deleteCacheStorage.append(reference.path)
         return self
     }
 
     public func commit(_ completion: ((Error?) -> Void)? = nil) {
-        if isCommitted {
+        if _isCommitted {
             fatalError("Batch is already committed")
         }
-        self.writeBatch.commit {(error) in
+        self._writeBatch.commit {(error) in
             if let error = error {
                 completion?(error)
                 return
             }
-            self.deleteCacheStorage.forEach({ (key) in
+            self._deleteCacheStorage.forEach({ (key) in
                 DocumentCache.shared.delete(key: key)
             })
             completion?(nil)
