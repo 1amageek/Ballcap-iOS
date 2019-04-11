@@ -189,3 +189,63 @@ let task = file.getData(completion: { (data, error) in
     let text: String = String(data: data!, encoding: .utf8)!
 })
 ```
+
+#### StorageBatch
+
+StorageBatch is used when uploading multiple files to Cloud Storage.
+
+```swift
+let textData: Data = "test".data(using: .utf8)!
+let textFile: File = File(Storage.storage().reference(withPath: "c"), data: textData, mimeType: .plain)
+batch.save(textFile)
+
+let jpgData: Data = image.jpegData(compressionQuality: 1)!
+let jpgFile: File = File(Storage.storage().reference(withPath: "d"), jpgData: textData, mimeType: .jpeg)
+batch.save(jpgFile)
+batch.commit { error in
+
+}
+```
+
+## Migrate from Pring
+
+Ballcap can handle Object class by inheriting Object class like Pring.
+If you inherit Object class, you must conform to `DataRepresentable`.
+
+
+```swift
+class Room: Object, DataRepresentable {
+
+    var data: Firebase.Pass.Model?
+
+    struct Model: Modelable & Codable & ItemProtocol {
+        var members: [String] = []
+    }
+}
+```
+
+__SubCollection__
+
+Ballcap has discontinued NestedCollection and ReferenceCollection Class. Instead, it represents SubCollection by defining CollectionKeys.
+
+Class must match `HierarchicalStructurable` to use CollectionKeys.
+```swift
+class Room: Object, DataRepresentable & HierarchicalStructurable {
+
+    var data: Firebase.Pass.Model?
+
+    struct Model: Modelable & Codable & ItemProtocol {
+        var members: [String] = []
+    }
+
+    enum CollectionKeys: String {
+        case transcripts
+    }
+}
+```
+
+Use the collection function to access the SubCollection.
+```swift
+let collectionReference: CollectionReference = obj.collection(path: .subCollectionPath)
+```
+
