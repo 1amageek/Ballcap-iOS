@@ -81,6 +81,14 @@ extension OperableArray: Collection {
         }
     }
 
+    public var count: Int {
+        switch self {
+        case .value(let value): return value.count
+        case .arrayRemove(let value): return value.count
+        case .arrayUnion(let value): return value.count
+        }
+    }
+
     public var first: Element? {
         switch self {
         case .value(let value): return value.first
