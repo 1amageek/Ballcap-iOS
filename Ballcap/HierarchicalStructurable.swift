@@ -43,6 +43,7 @@ public extension HierarchicalStructurable where Self: Object, Self: DataRepresen
 
     init() {
         self.init(Self.collectionReference.document())
+        self.data = Model()
     }
 
     init(collectionReference: CollectionReference? = nil) {
