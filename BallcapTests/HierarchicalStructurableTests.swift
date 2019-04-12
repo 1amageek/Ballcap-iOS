@@ -17,6 +17,24 @@ class HierarchicalStructurableTests: XCTestCase {
         _ = FirebaseTest.shared
     }
 
+    func testDataRepresentableHierarchicalStructurable() {
+        struct Model: Codable, Modelable {}
+        class Obj: Object, DataRepresentable, HierarchicalStructurable {
+            var data: Obj.Model?
+            struct Model: Modelable & Codable {
+
+            }
+            enum CollectionKeys: String {
+                case subCollectionPath
+            }
+        }
+        let a: Obj = Obj()
+        let b: Obj = Obj(id: "a")
+        XCTAssertNotNil(a.data)
+        XCTAssertNotNil(b.data)
+        XCTAssertEqual(b.collection(path: .subCollectionPath).path, "version/1/obj/a/subCollectionPath")
+    }
+
     func testHierarchicalStructurable() {
         struct Model: Codable, Modelable {}
         class Obj: Object, HierarchicalStructurable {
