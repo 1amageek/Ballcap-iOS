@@ -293,6 +293,7 @@ public final class File: Equatable {
         self.storageReference.delete { (error) in
             self.metadata = nil
             self.url = nil
+            self.data = nil
             StorageCache.shared.delete(reference: self.storageReference)
             completion?(error)
         }
