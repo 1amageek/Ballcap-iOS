@@ -304,6 +304,10 @@ public final class File: Equatable {
     @discardableResult
     public func getData(_ size: Int64 = Int64(10e8), completion: @escaping (Data?, Error?) -> Void) -> StorageDownloadTask? {
         self.downloadTask?.cancel()
+        if let data: Data = self.data {
+            completion(data, nil)
+            return nil
+        }
         guard let data: Data = StorageCache.shared.get(self.storageReference) else {
             let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
                 self.downloadTask = nil
