@@ -21,7 +21,7 @@ public final class Batch {
     }
 
     @discardableResult
-    public func save<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
+    public func save<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
         if _isCommitted {
             fatalError("Batch is already committed")
         }
@@ -40,7 +40,7 @@ public final class Batch {
     }
 
     @discardableResult
-    public func update<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
+    public func update<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
         if _isCommitted {
             fatalError("Batch is already committed")
         }
@@ -58,13 +58,63 @@ public final class Batch {
     }
 
     @discardableResult
-    public func delete<T: Documentable>(document: T, reference: DocumentReference? = nil) -> Self {
+    public func delete<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self {
         if _isCommitted {
             fatalError("Batch is already committed")
         }
         let reference: DocumentReference = reference ?? document.documentReference
         self._writeBatch.deleteDocument(reference)
         self._deleteCacheStorage.append(reference.path)
+        return self
+    }
+
+    // MARK: -
+
+    @discardableResult
+    public func save<T: Documentable>(_ document: T, to collectionReference: CollectionReference) -> Self where T: DataRepresentable {
+        let reference: DocumentReference = collectionReference.document(document.id)
+        self.save(document, reference: reference)
+        return self
+    }
+
+    @discardableResult
+    public func update<T: Documentable>(_ document: T, in collectionReference: CollectionReference) -> Self where T: DataRepresentable {
+        let reference: DocumentReference = collectionReference.document(document.id)
+        self.update(document, reference: reference)
+        return self
+    }
+
+    @discardableResult
+    public func delete<T: Documentable>(_ document: T, in collectionReference: CollectionReference) -> Self {
+        let reference: DocumentReference = collectionReference.document(document.id)
+        self.delete(document, reference: reference)
+        return self
+    }
+
+    @discardableResult
+    public func save<T: Documentable>(_ documents: [T], to collectionReference: CollectionReference) -> Self where T: DataRepresentable {
+        documents.forEach { (document) in
+            let reference: DocumentReference = collectionReference.document(document.id)
+            self.save(document, reference: reference)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func update<T: Documentable>(_ documents: [T], in collectionReference: CollectionReference) -> Self where T: DataRepresentable {
+        documents.forEach { (document) in
+            let reference: DocumentReference = collectionReference.document(document.id)
+            self.update(document, reference: reference)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func delete<T: Documentable>(_ documents: [T], in collectionReference: CollectionReference) -> Self {
+        documents.forEach { (document) in
+            let reference: DocumentReference = collectionReference.document(document.id)
+            self.delete(document, reference: reference)
+        }
         return self
     }
 
