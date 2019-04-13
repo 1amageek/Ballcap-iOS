@@ -129,7 +129,7 @@ public extension DataRepresentable where Self: Object {
                 return
             }
             guard let snapshot = snapshot, snapshot.exists else {
-                completion(nil, DocumentError.snapshotNotExists)
+                completion(nil, nil)
                 return
             }
             guard let document: Self = Self(snapshot: snapshot) else {
@@ -152,7 +152,7 @@ public extension DataRepresentable where Self: Object {
                 return
             }
             guard let snapshot = snapshot, snapshot.exists else {
-                completion(nil, DocumentError.snapshotNotExists)
+                completion(nil, nil)
                 return
             }
             guard let document: Self = Self(snapshot: snapshot) else {
@@ -175,7 +175,7 @@ public extension DataRepresentable where Self: Object {
                 return
             }
             guard let snapshot = snapshot, snapshot.exists else {
-                completion(nil, DocumentError.snapshotNotExists)
+                completion(nil, nil)
                 return
             }
             guard let document: Self = Self(snapshot: snapshot) else {

@@ -88,7 +88,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
                 return
             }
             guard let snapshot = snapshot, snapshot.exists else {
-                completion(nil, DocumentError.snapshotNotExists)
+                completion(nil, nil)
                 return
             }
             guard let document: Document = Document(snapshot: snapshot) else {
@@ -111,7 +111,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
                 return
             }
             guard let snapshot = snapshot, snapshot.exists else {
-                completion(nil, DocumentError.snapshotNotExists)
+                completion(nil, nil)
                 return
             }
             guard let document: Document = Document(snapshot: snapshot) else {
