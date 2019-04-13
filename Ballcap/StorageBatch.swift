@@ -8,6 +8,18 @@
 
 import FirebaseStorage
 
+public enum StorageBatchError: Error {
+    case invalidData(File)
+    case timeout
+
+    public var description: String {
+        switch self {
+        case .invalidData(let file): return "[Ballcap: StorageBatch] Invalid file. \(file)"
+        case .timeout: return "[Ballcap: StorageBatch] StorageBatch updload has timed out."
+        }
+    }
+}
+
 public final class StorageBatch {
 
     enum BatchType {
@@ -96,7 +108,7 @@ public final class StorageBatch {
                 }
             case .timedOut:
                 DispatchQueue.main.async {
-                    completion?(DocumentError.timeout)
+                    completion?(StorageBatchError.timeout)
                 }
             }
         }

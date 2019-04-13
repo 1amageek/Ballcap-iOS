@@ -35,15 +35,15 @@ public extension Modelable {
 public enum DocumentError: Error {
     case snapshotNotExists
     case invalidReference
-    case invalidData
+    case invalidData([String: Any]?)
     case timeout
 
     public var description: String {
         switch self {
-        case .snapshotNotExists: return "DocumentSnapshot is not exists."
-        case .invalidReference: return "The value you are trying to reference is invalid."
-        case .invalidData: return "Invalid data."
-        case .timeout: return "DataSource fetch timed out."
+        case .snapshotNotExists: return "[Ballcap: Document] DocumentSnapshot is not exists."
+        case .invalidReference: return "[Ballcap: Document] The value you are trying to reference is invalid."
+        case .invalidData(let data): return "[Ballcap: Document] Invalid data. \(data ?? [:])"
+        case .timeout: return "[Ballcap: Document] DataSource fetch has timed out."
         }
     }
 }

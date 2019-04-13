@@ -11,13 +11,13 @@ import FirebaseFirestore
 import FirebaseStorage
 
 public enum FileError: Error {
-    case invalidData
+    case invalidData(File)
     case timeout
 
     public var description: String {
         switch self {
-        case .invalidData: return "Invalid data."
-        case .timeout: return "File updload timed out."
+        case .invalidData(let file): return "[Ballcap: File] Invalid data.\(file)"
+        case .timeout: return "[Ballcap: File] File updload has timed out."
         }
     }
 }
@@ -281,7 +281,7 @@ public final class File: Equatable {
             self.uploadTask = task
             return self.uploadTask
         } else {
-            let error: FileError = .invalidData
+            let error: FileError = .invalidData(self)
             completion?(nil, error)
             return nil
         }

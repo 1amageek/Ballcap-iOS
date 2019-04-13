@@ -88,11 +88,11 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
                 return
             }
             guard let snapshot = snapshot, snapshot.exists else {
-                completion(nil, DocumentError.invalidData)
+                completion(nil, DocumentError.snapshotNotExists)
                 return
             }
             guard let document: Document = Document(snapshot: snapshot) else {
-                completion(nil, DocumentError.invalidData)
+                completion(nil, DocumentError.invalidData(snapshot.data()))
                 return
             }
             completion(document, nil)
@@ -110,8 +110,12 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
                 completion(nil, error)
                 return
             }
-            guard let document: Document = Document(snapshot: snapshot!) else {
-                completion(nil, DocumentError.invalidData)
+            guard let snapshot = snapshot, snapshot.exists else {
+                completion(nil, DocumentError.snapshotNotExists)
+                return
+            }
+            guard let document: Document = Document(snapshot: snapshot) else {
+                completion(nil, DocumentError.invalidData(snapshot.data()))
                 return
             }
             completion(document, nil)
