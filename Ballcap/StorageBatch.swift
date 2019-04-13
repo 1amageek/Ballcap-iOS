@@ -42,7 +42,7 @@ public final class StorageBatch {
     @discardableResult
     public func save(_ file: File) -> Self {
         if _isCommitted {
-            fatalError("Batch is already committed")
+            fatalError("[Ballcap: StorageBatch] Batch is already committed")
         }
         self._storage.append((.save, file))
         return self
@@ -51,7 +51,7 @@ public final class StorageBatch {
     @discardableResult
     public func save(_ files: [File]) -> Self {
         if _isCommitted {
-            fatalError("Batch is already committed")
+            fatalError("[Ballcap: StorageBatch] Batch is already committed")
         }
         files.forEach({ self._storage.append((.save, $0)) })
         return self
@@ -60,7 +60,7 @@ public final class StorageBatch {
     @discardableResult
     public func delete(_ file: File) -> Self {
         if _isCommitted {
-            fatalError("Batch is already committed")
+            fatalError("[Ballcap: StorageBatch] Batch is already committed")
         }
         self._storage.append((.delete, file))
         return self
@@ -69,7 +69,7 @@ public final class StorageBatch {
     @discardableResult
     public func delete(_ files: [File]) -> Self {
         if _isCommitted {
-            fatalError("Batch is already committed")
+            fatalError("[Ballcap: StorageBatch] Batch is already committed")
         }
         files.forEach({ self._storage.append((.delete, $0)) })
         return self
@@ -78,8 +78,9 @@ public final class StorageBatch {
     @discardableResult
     public func commit(_ completion: ((Error?) -> Void)? = nil) -> [File] {
         if _isCommitted {
-            fatalError("Batch is already committed")
+            fatalError("[Ballcap: StorageBatch] Batch is already committed")
         }
+        _isCommitted = true
         if self._storage.isEmpty {
             completion?(nil)
             return []
@@ -108,6 +109,7 @@ public final class StorageBatch {
                 }
             case .timedOut:
                 DispatchQueue.main.async {
+                    self._isCommitted = false
                     completion?(StorageBatchError.timeout)
                 }
             }

@@ -14,17 +14,12 @@ public final class Batch {
 
     private var _deleteCacheStorage: [String] = []
 
-    private var _isCommitted: Bool = false
-
     public init(firestore: Firestore = Firestore.firestore()) {
         self._writeBatch = firestore.batch()
     }
 
     @discardableResult
     public func save<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
-        if _isCommitted {
-            fatalError("Batch is already committed")
-        }
         let reference: DocumentReference = reference ?? document.documentReference
         do {
             var data: [String: Any] = try Firestore.Encoder().encode(document.data!)
@@ -41,9 +36,6 @@ public final class Batch {
 
     @discardableResult
     public func update<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
-        if _isCommitted {
-            fatalError("Batch is already committed")
-        }
         let reference: DocumentReference = reference ?? document.documentReference
         do {
             var data = try Firestore.Encoder().encode(document.data!)
@@ -59,9 +51,6 @@ public final class Batch {
 
     @discardableResult
     public func delete<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self {
-        if _isCommitted {
-            fatalError("Batch is already committed")
-        }
         let reference: DocumentReference = reference ?? document.documentReference
         self._writeBatch.deleteDocument(reference)
         self._deleteCacheStorage.append(reference.path)
@@ -119,9 +108,6 @@ public final class Batch {
     }
 
     public func commit(_ completion: ((Error?) -> Void)? = nil) {
-        if _isCommitted {
-            fatalError("Batch is already committed")
-        }
         self._writeBatch.commit {(error) in
             if let error = error {
                 completion?(error)
