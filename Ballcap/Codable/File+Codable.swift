@@ -15,8 +15,8 @@ private protocol CodableFile: Codable {
     var url: URL? { get }
     var name: String { get }
     var mimeType: File.MIMEType { get }
-    var additionalData: [String: String]? { get }
-    init(path: String, name: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]?)
+    var additionalData: [String: String] { get }
+    init(path: String, name: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String])
 }
 
 private enum FileKeys: String, CodingKey {
@@ -35,7 +35,7 @@ extension CodableFile {
         let url = try container.decode(URL?.self, forKey: .url)
         let name = try container.decode(String.self, forKey: .name)
         let mimeType = try container.decode(File.MIMEType.self, forKey: .mimeType)
-        let additionalData = try container.decode([String: String]?.self, forKey: .additionalData)
+        let additionalData = try container.decode([String: String].self, forKey: .additionalData)
         self.init(path: path, name: name, url: url, mimeType: mimeType, additionalData: additionalData)
     }
 

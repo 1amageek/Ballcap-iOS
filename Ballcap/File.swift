@@ -166,7 +166,7 @@ public final class File: Equatable {
     }
 
     /// Additinal Data
-    public var additionalData: [String: String]?
+    public var additionalData: [String: String] = [:]
 
     /// Firebase uploading task
     private(set) weak var uploadTask: StorageUploadTask?
@@ -204,7 +204,7 @@ public final class File: Equatable {
         self.originalURL = url
     }
 
-    internal convenience init(path: String, name: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]?) {
+    internal convenience init(path: String, name: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]) {
         let storageReference: StorageReference = Storage.storage().reference().child(path)
         self.init(storageReference, name: name)
         self.url = url
@@ -336,7 +336,7 @@ public final class File: Equatable {
             "      url: \(self.url?.absoluteString ?? "")\n" +
             "      path: \(self.path)\n" +
             "      mimeType: \(self.mimeType.rawValue)\n" +
-            "      additionalData: \(self.additionalData ?? [:])\n" +
+            "      additionalData: \(self.additionalData)\n" +
             "    "
         return "\n    File {\n\(base)}"
     }
