@@ -311,15 +311,18 @@ public final class File: Equatable {
         }
         guard let data: Data = StorageCache.shared.get(self.storageReference) else {
             let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
+                self.data = data
                 self.downloadTask = nil
                 completion(data, error as Error?)
             })
             return task
         }
         completion(data, nil)
-        let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
+        let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (networkData, error) in
             self.downloadTask = nil
-            if (data != data) {
+            if let networkData = networkData, data != networkData {
+                self.data = networkData
+                StorageCache.shared.set(networkData, reference: self.storageReference)
                 completion(data, error as Error?)
             }
         })
