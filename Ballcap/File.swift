@@ -313,6 +313,9 @@ public final class File: Equatable {
             let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
                 self.data = data
                 self.downloadTask = nil
+                if let data = data {
+                    StorageCache.shared.set(data, reference: self.storageReference)
+                }
                 completion(data, error as Error?)
             })
             return task
