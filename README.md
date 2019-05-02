@@ -224,9 +224,9 @@ If you inherit Object class, you must conform to `DataRepresentable`.
 ```swift
 class Room: Object, DataRepresentable {
 
-    var data: Firebase.Pass.Model?
+    var data: Model?
 
-    struct Model: Modelable & Codable & ItemProtocol {
+    struct Model: Modelable & Codable {
         var members: [String] = []
     }
 }
@@ -240,9 +240,9 @@ Class must match `HierarchicalStructurable` to use CollectionKeys.
 ```swift
 class Room: Object, DataRepresentable & HierarchicalStructurable {
 
-    var data: Firebase.Pass.Model?
+    var data: Model?
 
-    struct Model: Modelable & Codable & ItemProtocol {
+    struct Model: Modelable & Codable {
         var members: [String] = []
     }
 
