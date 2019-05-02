@@ -254,6 +254,6 @@ class Room: Object, DataRepresentable & HierarchicalStructurable {
 
 Use the collection function to access the SubCollection.
 ```swift
-let collectionReference: CollectionReference = obj.collection(path: .subCollectionPath)
+let collectionReference: CollectionReference = obj.collection(path: .transcripts)
 ```
 
