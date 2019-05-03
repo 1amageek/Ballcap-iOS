@@ -47,7 +47,7 @@ public enum DocumentError: Error {
 open class Object: Documentable {
 
     public static func == (lhs: Object, rhs: Object) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.path == rhs.path
     }
 
     public internal(set) var documentReference: DocumentReference!
