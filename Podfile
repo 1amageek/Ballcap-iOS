@@ -1,5 +1,5 @@
 
-platform :ios, '12.0'
+platform :ios, '10.0'
   
 target 'Ballcap' do
   use_frameworks!
@@ -10,8 +10,4 @@ target 'BallcapTests' do
   use_frameworks!
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
-end
-target 'Sample' do
-  use_frameworks!
-  pod 'Ballcap', :path => '../Ballcap'
 end
