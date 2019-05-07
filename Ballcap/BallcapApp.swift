@@ -6,7 +6,7 @@
 //  Copyright © 2019 Stamp Inc. All rights reserved.
 //
 
-import Firebase
+import FirebaseFirestore
 
 public final class BallcapApp {
 
