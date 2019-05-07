@@ -64,7 +64,7 @@ print(document[\.string]) // "Ballcap"
 
 ### RootCollectionReference
 
-When considering the extensibility of DB, it is not recommended to put data of RootCollection suddenly.
+Considering the extensibility of DB, it is recommended to provide a method of version control.
 
 ```swift
 // in AppDelegate
