@@ -14,7 +14,7 @@ internal final class StorageCache {
 
     lazy var cache: NSCache<NSString, NSData> = {
         let cache: NSCache<NSString, NSData> = NSCache()
-        cache.totalCostLimit = Int(4e9) // 0.5GB
+        cache.totalCostLimit = Int.max
         return cache
     }()
 
