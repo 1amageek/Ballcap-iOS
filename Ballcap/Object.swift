@@ -14,21 +14,17 @@ public protocol Modelable: Referencable {
 }
 
 public extension Modelable {
-    
-    static var modelVersion: String {
-        return "1"
-    }
 
-    static var modelName: String {
+    static var name: String {
         return String(describing: Mirror(reflecting: self).subjectType).components(separatedBy: ".").first!.lowercased()
     }
 
     static var path: String {
-        return "version/\(self.modelVersion)/\(self.modelName)"
+        return self.collectionReference.path
     }
 
     static var collectionReference: CollectionReference {
-        return Firestore.firestore().collection(self.path)
+        return BallcapApp.default.rootReference?.collection(self.name) ?? Firestore.firestore().collection(self.name)
     }
 }
 

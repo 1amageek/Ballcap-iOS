@@ -13,10 +13,6 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
 
     public var data: Model?
 
-    public class var modelName: String {
-        return String(describing: Mirror(reflecting: Model.self).subjectType).components(separatedBy: ".").first!.lowercased()
-    }
-
     public override var storageReference: StorageReference {
         return Storage.storage().reference(withPath: self.documentReference.path)
     }
