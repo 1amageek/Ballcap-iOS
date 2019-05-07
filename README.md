@@ -62,6 +62,16 @@ print(document[\.number]) // 0
 print(document[\.string]) // "Ballcap"
 ```
 
+### RootCollectionReference
+
+When considering the extensibility of DB, it is not recommended to put data of RootCollection suddenly.
+
+```swift
+// in AppDelegate
+FirebaseApp.configure()
+BallcapApp.configure(Firestore.firestore().document("version/1"))
+```
+
 ### CRUD
 
 Ballcap has a cache internally.When using the cache, use `Batch` instead of `WriteBatch`.
