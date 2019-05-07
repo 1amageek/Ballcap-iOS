@@ -11,36 +11,30 @@ import FirebaseStorage
 
 public protocol Referencable {
 
-    static var modelVersion: String { get }
-
-    static var modelName: String { get }
+    static var name: String { get }
 
     static var path: String { get }
 
     static var collectionReference: CollectionReference { get }
 
-    static var documentReference: DocumentReference { get }
+    static var parent: DocumentReference? { get }
 }
 
 public extension Referencable {
 
-    static var modelVersion: String {
-        return "1"
-    }
-
-    static var modelName: String {
+    static var name: String {
         return String(describing: Mirror(reflecting: self).subjectType).components(separatedBy: ".").first!.lowercased()
     }
 
     static var path: String {
-        return "version/\(self.modelVersion)/\(self.modelName)"
+        return self.collectionReference.path
     }
 
     static var collectionReference: CollectionReference {
-        return Firestore.firestore().collection(self.path)
+        return BallcapApp.default.rootReference?.collection(self.name) ?? Firestore.firestore().collection(self.name)
     }
 
-    static var documentReference: DocumentReference {
-        return Firestore.firestore().document("version/\(self.modelVersion)")
+    static var parent: DocumentReference? {
+        return self.collectionReference.parent
     }
 }
