@@ -17,6 +17,7 @@ class DocumentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
+        BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
     func testDocumentID() {
@@ -175,7 +176,7 @@ class DocumentTests: XCTestCase {
                         NSLog("4 - Get \(interval2 - interval1)")
                         Firestore.firestore().document(d.documentReference.path).getDocument(source: FirestoreSource.server, completion: { (_, _) in
                             let interval3: TimeInterval = Date().timeIntervalSince(date)
-                            NSLog("4 - Get from server \(interval3 - interval2)")
+                            NSLog("5 - Get from server \(interval3 - interval2)")
                             exp.fulfill()
                         })
                     })

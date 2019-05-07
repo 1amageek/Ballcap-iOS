@@ -16,6 +16,7 @@ class ObjectTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
+        BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
     func testObjectID() {

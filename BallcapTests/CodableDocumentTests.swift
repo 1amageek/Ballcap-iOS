@@ -16,6 +16,7 @@ class CodableDocumentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
+        BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
     // 
@@ -28,25 +29,6 @@ class CodableDocumentTests: XCTestCase {
         struct Model: Codable, Modelable {}
         let document: Document<Model> = Document(id: "foo")
         XCTAssertEqual(document.documentReference.path, "version/1/model/foo")
-    }
-
-    func testModelOverrideCollectionReference() {
-        struct Model: Codable, Modelable {
-            static var path: String {
-                return "foo"
-            }
-        }
-        XCTAssertEqual(Model.collectionReference.path, "foo")
-    }
-
-    func testModelOverrideDocumentReference() {
-        struct Model: Codable, Modelable {
-            static var path: String {
-                return "foo"
-            }
-        }
-        let document: Document<Model> = Document(id: "foo")
-        XCTAssertEqual(document.documentReference.path, "foo/foo")
     }
 
     func testInt() {
