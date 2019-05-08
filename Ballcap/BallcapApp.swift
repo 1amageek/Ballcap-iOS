@@ -10,11 +10,11 @@ import FirebaseFirestore
 
 public final class BallcapApp {
 
-    static let `default`: BallcapApp = BallcapApp()
+    public static let `default`: BallcapApp = BallcapApp()
 
-    class func configure(_ rootReference: DocumentReference? = nil) {
+    public class func configure(_ rootReference: DocumentReference? = nil) {
         self.default.rootReference = rootReference
     }
 
-    var rootReference: DocumentReference? = nil
+    public var rootReference: DocumentReference? = nil
 }
