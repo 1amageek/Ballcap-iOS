@@ -102,6 +102,14 @@ Document<Model>.get(id: "DOCUMENT_ID", completion: { (document, error) in
     print(document.data)
 })
 ```
+__Why data is optional?__
+
+In CloudFirestore, DocumentReference does not necessarily have data. There are cases where there is no data under the following conditions.
+
+1. If no data is stored in DocumentReference.
+1. If data was acquired using `Source.cache` from DocumentReference, but there is no data in cache.
+
+Ballcap recommends that developers unwrap if they can determine that there is data.
 
 It is also possible to access the cache without using the network.
 
