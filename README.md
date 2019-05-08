@@ -251,6 +251,8 @@ Class must match `HierarchicalStructurable` to use CollectionKeys.
 class Room: Object, DataRepresentable & HierarchicalStructurable {
 
     var data: Model?
+    
+    var transcripts: [Transcript] = []
 
     struct Model: Modelable & Codable {
         var members: [String] = []
@@ -267,3 +269,10 @@ Use the collection function to access the SubCollection.
 let collectionReference: CollectionReference = obj.collection(path: .transcripts)
 ```
 
+SubCollection's Document save
+```swift
+let batch: Batch = Batch()
+let room: Room = Room()
+batch.save(room.transcripts, to: room.collection(path: .transcripts))
+batch.commit()
+```
