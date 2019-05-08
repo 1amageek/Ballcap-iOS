@@ -64,7 +64,7 @@ print(document[\.string]) // "Ballcap"
 
 ### RootCollectionReference
 
-When considering the extensibility of DB, it is not recommended to put data of RootCollection suddenly.
+Considering the extensibility of DB, it is recommended to provide a method of version control.
 
 ```swift
 // in AppDelegate
@@ -102,6 +102,14 @@ Document<Model>.get(id: "DOCUMENT_ID", completion: { (document, error) in
     print(document.data)
 })
 ```
+__Why data is optional?__
+
+In CloudFirestore, DocumentReference does not necessarily have data. There are cases where there is no data under the following conditions.
+
+1. If no data is stored in DocumentReference.
+1. If data was acquired using `Source.cache` from DocumentReference, but there is no data in cache.
+
+Ballcap recommends that developers unwrap if they can determine that there is data.
 
 It is also possible to access the cache without using the network.
 
@@ -251,6 +259,8 @@ Class must match `HierarchicalStructurable` to use CollectionKeys.
 class Room: Object, DataRepresentable & HierarchicalStructurable {
 
     var data: Model?
+    
+    var transcripts: [Transcript] = []
 
     struct Model: Modelable & Codable {
         var members: [String] = []
@@ -267,3 +277,10 @@ Use the collection function to access the SubCollection.
 let collectionReference: CollectionReference = obj.collection(path: .transcripts)
 ```
 
+SubCollection's Document save
+```swift
+let batch: Batch = Batch()
+let room: Room = Room()
+batch.save(room.transcripts, to: room.collection(path: .transcripts))
+batch.commit()
+```
