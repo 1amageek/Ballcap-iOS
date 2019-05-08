@@ -1,5 +1,5 @@
 
-platform :ios, '10.0'
+platform :ios, '11.0'
   
 target 'Ballcap' do
   use_frameworks!
