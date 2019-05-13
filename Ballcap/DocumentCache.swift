@@ -63,4 +63,8 @@ internal final class DocumentCache {
     func delete(key: String) {
         self.cache.removeObject(forKey: key as NSString)
     }
+
+    func clear() {
+        self.cache.removeAllObjects()
+    }
 }
