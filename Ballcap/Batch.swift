@@ -12,6 +12,8 @@ public final class Batch {
 
     private var _writeBatch: FirebaseFirestore.WriteBatch
 
+    private var _updateCacheStorage: [String: [String: Any]] = [:]
+
     private var _deleteCacheStorage: [String] = []
 
     public init(firestore: Firestore = Firestore.firestore()) {
@@ -28,6 +30,7 @@ public final class Batch {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
             self._writeBatch.setData(data, forDocument: reference)
+            self._updateCacheStorage[reference.path] = data
             return self
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
@@ -43,6 +46,7 @@ public final class Batch {
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
             self._writeBatch.updateData(data, forDocument: reference)
+            self._updateCacheStorage[reference.path] = data
             return self
         } catch let error {
             fatalError("Unable to encode data with Firestore encoder: \(error)")
@@ -113,9 +117,8 @@ public final class Batch {
                 completion?(error)
                 return
             }
-            self._deleteCacheStorage.forEach({ (key) in
-                DocumentCache.shared.delete(key: key)
-            })
+            self._updateCacheStorage.forEach { DocumentCache.shared.set(key: $0, data: $1) }
+            self._deleteCacheStorage.forEach { DocumentCache.shared.delete(key: $0) }
             completion?(nil)
         }
     }
