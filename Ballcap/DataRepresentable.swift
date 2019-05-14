@@ -81,6 +81,24 @@ public extension DataRepresentable where Self: Object {
             self.data?[keyPath: keyPath] = newValue!
         }
     }
+
+    var description: String {
+        let base: String =
+            "  path: \(self.path)\n" +
+            "  createdAt: \(self.createdAt) (\(self.createdAt.dateValue()))\n" +
+            "  updatedAt: \(self.updatedAt) (\(self.updatedAt.dateValue()))\n"
+
+        if let data = self.data {
+            let mirror = Mirror(reflecting: data)
+            let values: String = mirror.children.reduce(base) { (result, child) -> String in
+                guard let label: String = child.label else { return result }
+                return result + "  \(label): \(String(describing: child.value))\n"
+            }
+            return "\(type(of: self).name) {\n\(values)}"
+        }
+
+        return "\(type(of: self).name) {\n data: nil\n}"
+    }
 }
 
 public extension DataRepresentable where Self: Object {
