@@ -77,6 +77,7 @@
 		12D75C9A22536864004D1AC4 /* FieldValue+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C9822536864004D1AC4 /* FieldValue+Codable.swift */; };
 		12D75CA522538CE5004D1AC4 /* Ballcap.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 12D75CA422538CE5004D1AC4 /* Ballcap.podspec */; };
 		12D75CA622538CE5004D1AC4 /* Ballcap.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 12D75CA422538CE5004D1AC4 /* Ballcap.podspec */; };
+		12F45C74228A9409008FB73E /* ModelableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F45C73228A9409008FB73E /* ModelableTests.swift */; };
 		12F8BD6822574D85004F7D52 /* Documentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8BD6722574D85004F7D52 /* Documentable.swift */; };
 		12F8BD6922574E67004F7D52 /* Referencable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839445224B6B5B000383EB /* Referencable.swift */; };
 		12F8BD6B22574F29004F7D52 /* DataRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8BD6A22574F29004F7D52 /* DataRepresentable.swift */; };
@@ -148,6 +149,7 @@
 		12D75CA422538CE5004D1AC4 /* Ballcap.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ballcap.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		12D75CF1225484BF004D1AC4 /* DocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		12E25B1822565AB40046CB1C /* OperableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperableArray.swift; sourceTree = "<group>"; };
+		12F45C73228A9409008FB73E /* ModelableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelableTests.swift; sourceTree = "<group>"; };
 		12F8BD6722574D85004F7D52 /* Documentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documentable.swift; sourceTree = "<group>"; };
 		12F8BD6A22574F29004F7D52 /* DataRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepresentable.swift; sourceTree = "<group>"; };
 		12F8BD6C22574F44004F7D52 /* HierarchicalStructurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalStructurable.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				1231409E22576B8200E7BD00 /* HierarchicalStructurableTests.swift */,
 				123140AE22598D1C00E7BD00 /* DocumentCacheTests.swift */,
 				12D75CF1225484BF004D1AC4 /* DocumentTests.swift */,
+				12F45C73228A9409008FB73E /* ModelableTests.swift */,
 				123140A022576E9800E7BD00 /* ObjectTests.swift */,
 				12839449224B7068000383EB /* CodableDocumentTests.swift */,
 				12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */,
@@ -541,6 +544,7 @@
 				12D75C792251FF95004D1AC4 /* FirestoreDecoder.swift in Sources */,
 				12F8BD7122575103004F7D52 /* StorageTaskStore.swift in Sources */,
 				123140A92258E14600E7BD00 /* QueryTests.swift in Sources */,
+				12F45C74228A9409008FB73E /* ModelableTests.swift in Sources */,
 				12D75C7A2251FF95004D1AC4 /* FirestoreEncoder.swift in Sources */,
 				123140B1225A39BE00E7BD00 /* DataCacheable.swift in Sources */,
 				12D75C782251FF95004D1AC4 /* CodablePassThroughTypes.swift in Sources */,

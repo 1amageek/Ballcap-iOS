@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Modelable: Referencable {
+public protocol Modelable: Referencable, CustomDebugStringConvertible {
     init()
 }
 
@@ -25,6 +25,15 @@ public extension Modelable {
 
     static var collectionReference: CollectionReference {
         return BallcapApp.default.rootReference?.collection(self.name) ?? Firestore.firestore().collection(self.name)
+    }
+
+    var debugDescription: String {
+        let mirror = Mirror(reflecting: self)
+        let values: String = mirror.children.reduce("") { (result, child) -> String in
+            guard let label: String = child.label else { return result }
+            return result + "  \(label): \(String(describing: child.value))\n"
+        }
+        return "\(type(of: self).name) {\n\(values)}"
     }
 }
 
