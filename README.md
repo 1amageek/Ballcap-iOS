@@ -9,6 +9,7 @@
 Ballcap is a database schema design framework for Cloud Firestore.
 
 __Why Ballcap__
+
 Cloud Firestore is a great schema-less and flexible database that can handle data. However, its flexibility can create many bugs in development. Ballcap can assign schemas to Cloud Firestore to visualize data structures. This plays a very important role when developing as a team.
 
 Inspired by https://github.com/firebase/firebase-ios-sdk/tree/pb-codable3
