@@ -1,5 +1,7 @@
 # 🧢 Ballcap-iOS
 
+<img src="https://github.com/1amageek/Ballcap-iOS/blob/master/Ballcap.png" width="100%">
+
  [![Version](http://img.shields.io/cocoapods/v/Ballcap.svg)](http://cocoapods.org/?q=Pring)
  [![Platform](http://img.shields.io/cocoapods/p/Ballcap.svg)](http://cocoapods.org/?q=Pring)
  [![Downloads](https://img.shields.io/cocoapods/dt/Ballcap.svg?label=Total%20Downloads&colorB=28B9FE)](https://cocoapods.org/pods/Ballcap)
