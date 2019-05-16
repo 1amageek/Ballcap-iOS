@@ -67,7 +67,7 @@ print(document[\.number]) // 0
 print(document[\.string]) // "Ballcap"
 ```
 
-### RootCollectionReference
+### RootReference
 
 Considering the extensibility of DB, it is recommended to provide a method of version control.
 
