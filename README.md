@@ -1,11 +1,16 @@
 # 🧢 Ballcap-iOS
 
+<img src="https://github.com/1amageek/Ballcap-iOS/blob/master/Ballcap.png" width="100%">
+
  [![Version](http://img.shields.io/cocoapods/v/Ballcap.svg)](http://cocoapods.org/?q=Pring)
  [![Platform](http://img.shields.io/cocoapods/p/Ballcap.svg)](http://cocoapods.org/?q=Pring)
  [![Downloads](https://img.shields.io/cocoapods/dt/Ballcap.svg?label=Total%20Downloads&colorB=28B9FE)](https://cocoapods.org/pods/Ballcap)
 
-Ballcap is the next generation Cloud Firestore design framework. It is possible to hold a Document more flexibly than [Pring](https://github.com/1amageek/Pring). 
-Ballcap is based on WriteBatch database operations. Also, like Pring, it supports DataSource and File.
+Ballcap is a database schema design framework for Cloud Firestore.
+
+__Why Ballcap__
+
+Cloud Firestore is a great schema-less and flexible database that can handle data. However, its flexibility can create many bugs in development. Ballcap can assign schemas to Cloud Firestore to visualize data structures. This plays a very important role when developing as a team.
 
 Inspired by https://github.com/firebase/firebase-ios-sdk/tree/pb-codable3
 
@@ -62,7 +67,7 @@ print(document[\.number]) // 0
 print(document[\.string]) // "Ballcap"
 ```
 
-### RootCollectionReference
+### RootReference
 
 Considering the extensibility of DB, it is recommended to provide a method of version control.
 
