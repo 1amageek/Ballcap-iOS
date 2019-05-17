@@ -60,6 +60,7 @@
 		128CDD4C225F00BE005926E7 /* StorageBatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128CDD4B225F00BE005926E7 /* StorageBatch.swift */; };
 		128CDD4D225F1BB8005926E7 /* StorageBatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128CDD4B225F00BE005926E7 /* StorageBatch.swift */; };
 		12AE79F7225CB4B400D7EE23 /* StorageBatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE79F6225CB4B400D7EE23 /* StorageBatchTests.swift */; };
+		12B95487228EC24200EA1DE0 /* DisposeBagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B95486228EC24200EA1DE0 /* DisposeBagTests.swift */; };
 		12D75C6E2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
 		12D75C6F2251FE5E004D1AC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */; };
 		12D75C702251FF95004D1AC4 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839443224B6AC4000383EB /* Object.swift */; };
@@ -134,6 +135,7 @@
 		12839449224B7068000383EB /* CodableDocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableDocumentTests.swift; sourceTree = "<group>"; };
 		128CDD4B225F00BE005926E7 /* StorageBatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageBatch.swift; sourceTree = "<group>"; };
 		12AE79F6225CB4B400D7EE23 /* StorageBatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageBatchTests.swift; sourceTree = "<group>"; };
+		12B95486228EC24200EA1DE0 /* DisposeBagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposeBagTests.swift; sourceTree = "<group>"; };
 		12D75C6A2251F98A004D1AC4 /* CodableFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFileTests.swift; sourceTree = "<group>"; };
 		12D75C6D2251FE5E004D1AC4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D75C7F22520147004D1AC4 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				12D75C9222535B4E004D1AC4 /* QueryTests.swift */,
 				12AE79F6225CB4B400D7EE23 /* StorageBatchTests.swift */,
 				1207AB2E225A43BD00578D29 /* FileTests.swift */,
+				12B95486228EC24200EA1DE0 /* DisposeBagTests.swift */,
 				12839429224B6A31000383EB /* Info.plist */,
 			);
 			path = BallcapTests;
@@ -535,6 +538,7 @@
 				1207AB2F225A43BD00578D29 /* FileTests.swift in Sources */,
 				123140A82258E14600E7BD00 /* DataSourceTests.swift in Sources */,
 				1231408822575ADF00E7BD00 /* Disposer.swift in Sources */,
+				12B95487228EC24200EA1DE0 /* DisposeBagTests.swift in Sources */,
 				12D75C762251FF95004D1AC4 /* CodableErrors.swift in Sources */,
 				123140912257601500E7BD00 /* DataRepresentable.swift in Sources */,
 				1231408D2257600E00E7BD00 /* Referencable.swift in Sources */,
