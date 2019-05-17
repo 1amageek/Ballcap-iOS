@@ -26,6 +26,12 @@ class DocumentTests: XCTestCase {
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
     }
 
+    func testDocumentTypeInference() {
+        struct Model: Codable, Modelable, Equatable {}
+        let d = Document<Model>(id: "a")
+        XCTAssertEqual(d.documentReference.path, "version/1/model/a")
+    }
+
     func testDocumentIDFromDatae() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: [:])!
