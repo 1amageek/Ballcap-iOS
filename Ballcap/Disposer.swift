@@ -69,6 +69,13 @@ public final class Disposer: ReferenceObservationDisposable {
     }
 }
 
+public extension Disposer {
+
+    func disposed(by bag: DisposeBag) {
+        bag.insert(self)
+    }
+}
+
 ///  A type-erased `Disposer`.
 public final class AnyDisposer: ReferenceObservationDisposable {
 
@@ -91,4 +98,45 @@ public final class AnyDisposer: ReferenceObservationDisposable {
 public final class NoDisposer: ReferenceObservationDisposable {
     public init() { }
     public func dispose() { }
+}
+
+public final class DisposeBag {
+
+    private let _lock: NSLock = NSLock()
+
+    fileprivate var _disposables: [ReferenceObservationDisposable] = []
+
+    fileprivate var _isDisposed: Bool = false
+
+    public func insert(_ disposable: ReferenceObservationDisposable) {
+        self._insert(disposable)?.dispose()
+    }
+
+    private func _insert(_ disposable: ReferenceObservationDisposable) -> ReferenceObservationDisposable? {
+        self._lock.lock(); defer { self._lock.unlock() }
+        if self._isDisposed {
+            return disposable
+        }
+        self._disposables.append(disposable)
+        return nil
+    }
+
+    private func dispose() {
+        let oldDisposables = self._dispose()
+        for disposable in oldDisposables {
+            disposable.dispose()
+        }
+    }
+
+    private func _dispose() -> [ReferenceObservationDisposable] {
+        self._lock.lock(); defer { self._lock.unlock() }
+        let disposables = self._disposables
+        self._disposables.removeAll(keepingCapacity: false)
+        self._isDisposed = true
+        return disposables
+    }
+
+    deinit {
+        self.dispose()
+    }
 }
