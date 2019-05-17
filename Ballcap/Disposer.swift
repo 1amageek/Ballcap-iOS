@@ -108,6 +108,8 @@ public final class DisposeBag {
 
     fileprivate var _isDisposed: Bool = false
 
+    public init() { }
+
     public func insert(_ disposable: ReferenceObservationDisposable) {
         self._insert(disposable)?.dispose()
     }
