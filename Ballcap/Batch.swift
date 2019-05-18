@@ -21,6 +21,14 @@ public final class Batch {
     }
 
     @discardableResult
+    public func set(_ data: [String: Any], reference: DocumentReference) -> Self {
+        self._writeBatch.setData(data, forDocument: reference, merge: true)
+        return self
+    }
+
+    // MARK: -
+
+    @discardableResult
     public func save<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
         let reference: DocumentReference = reference ?? document.documentReference
         do {
