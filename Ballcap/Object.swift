@@ -70,6 +70,10 @@ open class Object: Documentable {
     public required init(_ documentReference: DocumentReference) {
         self.documentReference = documentReference
     }
+
+    public func set(documentReference: DocumentReference) {
+        self.documentReference = documentReference
+    }
 }
 
 public extension DataRepresentable where Self: Object {
