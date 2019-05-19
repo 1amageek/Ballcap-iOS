@@ -18,6 +18,8 @@ Inspired by https://github.com/firebase/firebase-ios-sdk/tree/pb-codable3
 
 <img src="https://github.com/1amageek/pls_donate/blob/master/kyash.jpg" width="180">
 
+- Ballcap for TypeScript: https://github.com/1amageek/ballcap.ts
+
 ### Feature
 
 ☑️ Firestore's document schema with Swift Codable<br>
