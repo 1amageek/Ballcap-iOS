@@ -32,7 +32,13 @@ class DocumentTests: XCTestCase {
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
     }
 
-    func testDocumentIDFromDatae() {
+    func testDocumentIDFromData() {
+        struct Model: Codable, Modelable, Equatable {}
+        let d: Document<Model> = Document(documentReference: Firestore.firestore().document("version/1/model/a"), from: [:])!
+        XCTAssertEqual(d.documentReference.path, "version/1/model/a")
+    }
+
+    func testDocumentReferenceFromData() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: [:])!
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")

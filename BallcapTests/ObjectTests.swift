@@ -28,7 +28,7 @@ class ObjectTests: XCTestCase {
         XCTAssertEqual(o.documentReference.path, "version/1/obj/a")
     }
 
-    func testObjectIDFromDatae() {
+    func testObjectIDFromData() {
         class Obj: Object, DataRepresentable {
             struct Model: Modelable & Codable { }
             var data: Model?
@@ -37,14 +37,14 @@ class ObjectTests: XCTestCase {
         XCTAssertEqual(o.documentReference.path, "version/1/obj/a")
     }
 
-//    func testObjectIDFromModel() {
-//        class Obj: Object, DataRepresentable {
-//            struct Model: Modelable & Codable { }
-//            var data: Model?
-//        }
-//        let o: Obj = Obj(id: "a", from: Obj.Model())
-//        XCTAssertEqual(o.documentReference.path, "version/1/obj/a")
-//    }
+    func testObjectReferenceFromData() {
+        class Obj: Object, DataRepresentable {
+            struct Model: Modelable & Codable { }
+            var data: Model?
+        }
+        let o: Obj = Obj(documentReference: Firestore.firestore().document("version/1/obj/a"), from: [:])!
+        XCTAssertEqual(o.documentReference.path, "version/1/obj/a")
+    }
 
     func testObjectIDOtherCollectionReference() {
         class Obj: Object, DataRepresentable {

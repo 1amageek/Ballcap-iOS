@@ -51,6 +51,22 @@ public extension DataRepresentable where Self: Object {
         }
     }
 
+    init?(documentReference: DocumentReference, from data: [String: Any]) {
+        self.init(documentReference)
+        do {
+            self.data = try Firestore.Decoder().decode(Model.self, from: data)
+            if data.keys.contains("createdAt") {
+                self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
+            if data.keys.contains("updatedAt") {
+                self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
+        } catch (let error) {
+            print(error)
+            return nil
+        }
+    }
+
     init?(snapshot: DocumentSnapshot) {
         self.init(snapshot.reference)
         self.snapshot = snapshot
