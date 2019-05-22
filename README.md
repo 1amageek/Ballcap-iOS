@@ -47,7 +47,7 @@ If you have a Feature Request, please post an [issue](https://github.com/1amagee
 You must conform to the Codable and Modelable protocols to define Scheme.
 
 ```swift
-struct Model: Codable, Equatable, Modalable {
+struct Model: Codable, Equatable, Modelable {
     var number: Int = 0
     var string: String = "Ballcap"
 }
