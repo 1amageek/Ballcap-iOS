@@ -89,6 +89,26 @@ public extension DataRepresentable where Self: Object {
         }
     }
 
+    private func _set(snapshot: DocumentSnapshot) throws {
+        self.snapshot = snapshot
+        guard let data: [String: Any] = snapshot.data() else {
+            self.snapshot = snapshot
+            return
+        }
+        do {
+            self.data = try Firestore.Decoder().decode(Model.self, from: data)
+            if data.keys.contains("createdAt") {
+                self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
+            if data.keys.contains("updatedAt") {
+                self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+            }
+            DocumentCache.shared.set(key: snapshot.reference.path, data: data)
+        } catch (let error) {
+            throw error
+        }
+    }
+
     subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {
         get {
             return self.data?[keyPath: keyPath]
@@ -201,7 +221,7 @@ public extension DataRepresentable where Self: Object {
     }
 
     func listen(includeMetadataChanges: Bool = true, completion: @escaping ((Self?, Error?) -> Void)) -> Disposer {
-        let listenr: ListenerRegistration = self.documentReference.addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
+        let listenr: ListenerRegistration = self.documentReference.addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { [weak self] (snapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
@@ -210,11 +230,13 @@ public extension DataRepresentable where Self: Object {
                 completion(nil, nil)
                 return
             }
-            guard let document: Self = Self(snapshot: snapshot) else {
+            do {
+                try self?._set(snapshot: snapshot)
+                guard let self = self else { return }
+                completion(self, nil)
+            } catch {
                 completion(nil, DocumentError.invalidData(snapshot.data()))
-                return
             }
-            completion(document, nil)
         }
         return Disposer(.value(listenr))
     }
