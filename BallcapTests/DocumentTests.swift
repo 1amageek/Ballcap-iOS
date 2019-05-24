@@ -20,6 +20,13 @@ class DocumentTests: XCTestCase {
         BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
+    func testDocumentAutoID() {
+        struct Model: Codable, Modelable, Equatable {}
+        let d: Document<Model> = Document()
+        XCTAssertEqual(d.documentReference.parent.path, "version/1/model")
+        XCTAssertEqual(d.documentReference.path, "version/1/model/\(d.id)")
+    }
+
     func testDocumentID() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a")

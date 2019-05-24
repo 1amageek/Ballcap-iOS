@@ -19,6 +19,16 @@ class ObjectTests: XCTestCase {
         BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
+    func testObjectAutoID() {
+        class Obj: Object, DataRepresentable {
+            struct Model: Modelable & Codable { }
+            var data: Model?
+        }
+        let o: Obj = Obj()
+        XCTAssertEqual(o.documentReference.parent.path, "version/1/obj")
+        XCTAssertEqual(o.documentReference.path, "version/1/obj/\(o.id)")
+    }
+
     func testObjectID() {
         class Obj: Object, DataRepresentable {
             struct Model: Modelable & Codable { }
