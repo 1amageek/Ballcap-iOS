@@ -22,7 +22,7 @@ public enum FileError: Error {
     }
 }
 
-public final class File: Equatable {
+public final class File: Hashable {
     
     public enum MIMEType: Codable, Equatable {
         
@@ -143,6 +143,10 @@ public final class File: Equatable {
     /// Path to Storage
     public var path: String
 
+    public var fullPath: String {
+        return self.storageReference.fullPath
+    }
+
     /// ConentType
     public var mimeType: MIMEType = .octetStream(nil)
 
@@ -179,13 +183,14 @@ public final class File: Equatable {
     public init(_ storageReference: StorageReference,
                             name: String? = nil,
                             mimeType: MIMEType? = nil) {
-        self.storageReference = storageReference
-        self.path = storageReference.fullPath
         let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
         self.name = fileName
         self.mimeType = mimeType
-        self.uploadTask = StorageTaskStore.shared.get(upload: self.path)
-        self.downloadTask = StorageTaskStore.shared.get(download: self.path)
+        self.path = storageReference.fullPath
+        let reference: StorageReference = storageReference.child(fileName)
+        self.storageReference = reference
+        self.uploadTask = StorageTaskStore.shared.get(upload: reference.fullPath)
+        self.downloadTask = StorageTaskStore.shared.get(download: reference.fullPath)
     }
 
     public convenience init(_ storageReference: StorageReference,
@@ -338,6 +343,7 @@ public final class File: Equatable {
 
     public var description: String {
         let base: String =
+            "      fullPath: \(self.fullPath)\n" +
             "      name: \(self.name)\n" +
             "      url: \(self.url?.absoluteString ?? "")\n" +
             "      path: \(self.path)\n" +
@@ -345,6 +351,10 @@ public final class File: Equatable {
             "      additionalData: \(self.additionalData)\n" +
             "    "
         return "\n    File {\n\(base)}"
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.path)
     }
 
     public static func == (lhs: File, rhs: File) -> Bool {

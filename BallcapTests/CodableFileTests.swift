@@ -141,7 +141,7 @@ class CodableFileTests: XCTestCase {
         let file: File = File(ref, data: data, name: "n", mimeType: .plain)
         let task = file.save { (metadata, error) in
             XCTAssertEqual(metadata?.contentType!, File.MIMEType.plain.rawValue)
-            XCTAssertEqual(metadata?.path!, "a")
+            XCTAssertEqual(metadata?.path!, "a/n.txt")
             XCTAssertEqual(file.isUploaded, true)
             XCTAssertNil(StorageTaskStore.shared.get(upload: ref.fullPath))
             let task = file.getData(completion: { (data, error) in

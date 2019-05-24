@@ -17,6 +17,22 @@ class FileTests: XCTestCase {
         _ = FirebaseTest.shared
     }
 
+    func testReferencePath() {
+        let data: Data = "test".data(using: .utf8)!
+        let f: File = File(Storage.storage().reference(withPath: "a"), data: data, name: "b", mimeType: File.MIMEType.plain)
+        XCTAssertEqual(f.storageReference.fullPath, "a/b.txt")
+    }
+
+    func testFileUnique() {
+        var s: Set<File> = []
+        let data: Data = "test".data(using: .utf8)!
+        let file0: File = File(Storage.storage().reference(withPath: "a"), data: data, name: "b", mimeType: File.MIMEType.plain)
+        s.insert(file0)
+        let file1: File = File(Storage.storage().reference(withPath: "a"), data: data, name: "b", mimeType: File.MIMEType.plain)
+        s.insert(file1)
+        XCTAssertEqual(s.count, 1)
+    }
+
     func testFile() {
         let exp: XCTestExpectation = XCTestExpectation(description: "")
         let data: Data = "test".data(using: .utf8)!
