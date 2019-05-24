@@ -23,6 +23,17 @@ class FileTests: XCTestCase {
         XCTAssertEqual(f.storageReference.fullPath, "a/b.txt")
     }
 
+    func testDocumentReferencePath() {
+        struct Model: Codable, Modelable, Equatable {
+            var f: File?
+        }
+        let data: Data = "test".data(using: .utf8)!
+        let doc: Document<Model> = Document(id: "a")
+        let f: File = File(doc.storageReference, data: data, name: "b", mimeType: File.MIMEType.plain)
+        print(f.storageReference.fullPath)
+        XCTAssertEqual(f.storageReference.fullPath, "model/a/b.txt")
+    }
+
     func testFileUnique() {
         var s: Set<File> = []
         let data: Data = "test".data(using: .utf8)!
