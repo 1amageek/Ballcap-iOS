@@ -18,6 +18,8 @@ Inspired by https://github.com/firebase/firebase-ios-sdk/tree/pb-codable3
 
 <img src="https://github.com/1amageek/pls_donate/blob/master/kyash.jpg" width="180">
 
+- Ballcap for TypeScript: https://github.com/1amageek/ballcap.ts
+
 ### Feature
 
 ☑️ Firestore's document schema with Swift Codable<br>
@@ -45,7 +47,7 @@ If you have a Feature Request, please post an [issue](https://github.com/1amagee
 You must conform to the Codable and Modelable protocols to define Scheme.
 
 ```swift
-struct Model: Codable, Equatable, Modalable {
+struct Model: Codable, Equatable, Modelable {
     var number: Int = 0
     var string: String = "Ballcap"
 }
