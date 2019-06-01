@@ -241,3 +241,26 @@ public extension DataRepresentable where Self: Object {
         return Disposer(.value(listenr))
     }
 }
+
+// MARK: -
+
+public extension DataRepresentable where Self: Object {
+
+    func on(_ completion: @escaping (Self?, Error?) -> Void) -> Self {
+        return self.on { (snapshot, error) in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            guard let snapshot = snapshot, snapshot.exists else {
+                completion(nil, nil)
+                return
+            }
+            guard let document: Self = Self(snapshot: snapshot) else {
+                completion(nil, DocumentError.invalidData(snapshot.data()))
+                return
+            }
+            completion(document, nil)
+        }
+    }
+}
