@@ -74,25 +74,6 @@ open class Object: Documentable {
     public func set(documentReference: DocumentReference) {
         self.documentReference = documentReference
     }
-
-    // MARK: -
-
-    private var _documentSnapshotBlocks: [FIRDocumentSnapshotBlock] = []
-
-    public func on(documentSnapshotBlock: @escaping FIRDocumentSnapshotBlock) -> Self {
-        self._documentSnapshotBlocks.append(documentSnapshotBlock)
-        return self
-    }
-
-    @discardableResult
-    public func get() -> Self {
-        self.documentReference.getDocument { (snapshot, error) in
-            self._documentSnapshotBlocks.forEach({ (block) in
-                block(snapshot, error)
-            })
-        }
-        return self
-    }
 }
 
 public extension DataRepresentable where Self: Object {
