@@ -112,7 +112,7 @@ Document<Model>.get(id: "DOCUMENT_ID", completion: { (document, error) in
 The next get function gets data in favor of the cache. If there is no cached data, it gets from the server.
 ```swift
 let document: Document<Model> = Document("DOCUMENT_ID")
-document.get {
+document.get { (document, error) in
    print(document.data)
 }
 ```
