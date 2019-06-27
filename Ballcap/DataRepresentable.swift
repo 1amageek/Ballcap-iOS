@@ -13,6 +13,8 @@ public protocol DataRepresentable: class {
     associatedtype Model: Modelable & Codable
 
     var data: Model? { get set }
+
+    init()
 }
 
 public extension DataRepresentable where Self: Object {

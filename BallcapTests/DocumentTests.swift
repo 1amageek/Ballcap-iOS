@@ -25,54 +25,63 @@ class DocumentTests: XCTestCase {
         let d: Document<Model> = Document()
         XCTAssertEqual(d.documentReference.parent.path, "version/1/model")
         XCTAssertEqual(d.documentReference.path, "version/1/model/\(d.id)")
+        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/\(d.id)")
     }
 
     func testDocumentID() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a")
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
     }
 
     func testDocumentTypeInference() {
         struct Model: Codable, Modelable, Equatable {}
         let d = Document<Model>(id: "a")
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
     }
 
     func testDocumentIDFromData() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(documentReference: Firestore.firestore().document("version/1/model/a"), from: [:])!
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
     }
 
     func testDocumentReferenceFromData() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: [:])!
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
     }
 
     func testDocumentIDFromModel() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: Model())
         XCTAssertEqual(d.documentReference.path, "version/1/model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
     }
 
     func testDocumentIDOtherCollectionReference() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", collectionReference: Firestore.firestore().collection("a"))
         XCTAssertEqual(d.documentReference.path, "a/a")
+        XCTAssertEqual(d.storageReference.fullPath, "a/a")
     }
 
     func testDocumentIDFromDataOtherCollectionReference() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: [:], collectionReference: Firestore.firestore().collection("a"))!
         XCTAssertEqual(d.documentReference.path, "a/a")
+        XCTAssertEqual(d.storageReference.fullPath, "a/a")
     }
 
     func testDocumentIDFromModelOtherCollectionReference() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: Model(), collectionReference: Firestore.firestore().collection("a"))
         XCTAssertEqual(d.documentReference.path, "a/a")
+        XCTAssertEqual(d.storageReference.fullPath, "a/a")
     }
 
     func testDocumentKeyPath() {
@@ -84,6 +93,64 @@ class DocumentTests: XCTestCase {
     }
 
     func testDocumentSaveUpdateDelete() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
+        struct Model: Codable, Modelable {
+            var a: String?
+        }
+        let d: Document<Model> = Document()
+        d[\.a] = "t"
+        let id: String = d.id
+        d.save() { _ in
+            Document<Model>.get(id: id, completion: { (doc, _) in
+                XCTAssertEqual(doc!.data!.a, "t")
+                doc![\.a] = "s"
+                doc?.update() { _ in
+                    Document<Model>.get(id: id, completion: { (doc, _) in
+                        XCTAssertEqual(doc!.data!.a, "s")
+                        doc?.delete() { _ in
+                            Document<Model>.get(id: id, completion: { (doc, _) in
+                                XCTAssertNil(doc)
+                                exp.fulfill()
+                            })
+                        }
+                    })
+                }
+            })
+        }
+        self.wait(for: [exp], timeout: 30)
+    }
+
+    func testDocumentSaveUpdateDeleteWithBatch() {
+        let exp: XCTestExpectation = XCTestExpectation(description: "")
+        struct Model: Codable, Modelable {
+            var a: String?
+        }
+        let d: Document<Model> = Document()
+        d[\.a] = "t"
+        let id: String = d.id
+        let batch: Batch = Batch()
+        batch.save(d)
+        batch.commit() { _ in
+            Document<Model>.get(id: id, completion: { (doc, _) in
+                XCTAssertEqual(doc!.data!.a, "t")
+                doc![\.a] = "s"
+                doc?.update() { _ in
+                    Document<Model>.get(id: id, completion: { (doc, _) in
+                        XCTAssertEqual(doc!.data!.a, "s")
+                        doc?.delete() { _ in
+                            Document<Model>.get(id: id, completion: { (doc, _) in
+                                XCTAssertNil(doc)
+                                exp.fulfill()
+                            })
+                        }
+                    })
+                }
+            })
+        }
+        self.wait(for: [exp], timeout: 30)
+    }
+
+    func testDocumentIDSaveUpdateDelete() {
         let exp: XCTestExpectation = XCTestExpectation(description: "")
         struct Model: Codable, Modelable, Equatable {
             var a: String?

@@ -159,8 +159,8 @@ class ObjectTests: XCTestCase {
 """
 obj {
   path: a/a
-  createdAt: FIRTimestamp: seconds=0 nanoseconds=0> (1970-01-01 00:00:00 +0000)
-  updatedAt: FIRTimestamp: seconds=0 nanoseconds=0> (1970-01-01 00:00:00 +0000)
+  createdAt: <FIRTimestamp: seconds=0 nanoseconds=0> (1970-01-01 00:00:00 +0000)
+  updatedAt: <FIRTimestamp: seconds=0 nanoseconds=0> (1970-01-01 00:00:00 +0000)
   s: abc
   d: 123.0
   f: -4.0

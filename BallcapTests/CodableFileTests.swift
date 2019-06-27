@@ -19,18 +19,19 @@ class CodableFileTests: XCTestCase {
     
     // TODO:
     func testMIMEType() {
-        let ref: StorageReference = Storage.storage().reference().child("/a")
-        
+
         // plain
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .plain)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .plain)
             XCTAssertEqual(file.mimeType, File.MIMEType.plain)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n.txt")
+            let ref: StorageReference = Storage.storage().reference().child("/a/n.txt")
+            let file: File = File(ref, data: data)
             XCTAssertEqual(file.mimeType, File.MIMEType.plain)
         }
         
@@ -38,19 +39,22 @@ class CodableFileTests: XCTestCase {
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .csv)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .csv)
             XCTAssertEqual(file.mimeType, File.MIMEType.csv)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .csv)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .csv)
             XCTAssertEqual(file.mimeType, File.MIMEType.csv)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n.csv")
+            let ref: StorageReference = Storage.storage().reference().child("/a/n.csv")
+            let file: File = File(ref, data: data)
             XCTAssertEqual(file.mimeType, File.MIMEType.csv)
         }
         
@@ -58,19 +62,22 @@ class CodableFileTests: XCTestCase {
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .html)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .html)
             XCTAssertEqual(file.mimeType, File.MIMEType.html)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .html)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .html)
             XCTAssertEqual(file.mimeType, File.MIMEType.html)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n.html")
+            let ref: StorageReference = Storage.storage().reference().child("/a/n.html")
+            let file: File = File(ref, data: data)
             XCTAssertEqual(file.mimeType, File.MIMEType.html)
         }
         
@@ -78,19 +85,22 @@ class CodableFileTests: XCTestCase {
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .css)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .css)
             XCTAssertEqual(file.mimeType, File.MIMEType.css)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .css)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .css)
             XCTAssertEqual(file.mimeType, File.MIMEType.css)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n.css")
+            let ref: StorageReference = Storage.storage().reference().child("/a/n.css")
+            let file: File = File(ref, data: data)
             XCTAssertEqual(file.mimeType, File.MIMEType.css)
         }
         
@@ -98,19 +108,22 @@ class CodableFileTests: XCTestCase {
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .javascript)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .javascript)
             XCTAssertEqual(file.mimeType, File.MIMEType.javascript)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n", mimeType: .javascript)
+            let ref: StorageReference = Storage.storage().reference().child("/a/n")
+            let file: File = File(ref, data: data, mimeType: .javascript)
             XCTAssertEqual(file.mimeType, File.MIMEType.javascript)
         }
         
         do {
             let data: Data = "test".data(using: .utf8)!
-            let file: File = File(ref, data: data, name: "n.js")
+            let ref: StorageReference = Storage.storage().reference().child("/a/n.js")
+            let file: File = File(ref, data: data)
             XCTAssertEqual(file.mimeType, File.MIMEType.javascript)
         }
         
@@ -118,27 +131,27 @@ class CodableFileTests: XCTestCase {
     }
     
     func testCodableFile() {
-        let ref: StorageReference = Storage.storage().reference().child("/a")
+        let ref: StorageReference = Storage.storage().reference().child("/a/n.txt")
         let data: Data = "test".data(using: .utf8)!
-        let file: File = File(ref, data: data, name: "n", mimeType: .plain)
-        let dict = ["path": "a", "mimeType": "text/plain", "name": "n.txt", "url": nil, "additionalData": [:]] as [String : Any?]
+        let file: File = File(ref, data: data, mimeType: .plain)
+        let dict = ["path": "a/n.txt", "mimeType": "text/plain", "url": nil, "additionalData": [:]] as [String : Any?]
         assertRoundTrip(model: file, encoded: dict as [String : Any])
     }
     
     func testCodableFileWithAdditinalData() {
-        let ref: StorageReference = Storage.storage().reference().child("/a")
+        let ref: StorageReference = Storage.storage().reference().child("/a/n")
         let data: Data = "test".data(using: .utf8)!
-        let file: File = File(ref, data: data, name: "n", mimeType: .plain)
+        let file: File = File(ref, data: data, mimeType: .plain)
         file.additionalData = ["foo": "foo"]
-        let dict = ["path": "a", "mimeType": "text/plain", "name": "n.txt", "url": nil, "additionalData": ["foo": "foo"]] as [String : Any?]
+        let dict = ["path": "a/n.txt", "mimeType": "text/plain", "url": nil, "additionalData": ["foo": "foo"]] as [String : Any?]
         assertRoundTrip(model: file, encoded: dict as [String : Any])
     }
     
     func testFileSaveGetDelete() {
         let exp: XCTestExpectation = XCTestExpectation(description: "")
-        let ref: StorageReference = Storage.storage().reference().child("/a")
+        let ref: StorageReference = Storage.storage().reference().child("/a/n")
         let data: Data = "test".data(using: .utf8)!
-        let file: File = File(ref, data: data, name: "n", mimeType: .plain)
+        let file: File = File(ref, data: data, mimeType: .plain)
         let task = file.save { (metadata, error) in
             XCTAssertEqual(metadata?.contentType!, File.MIMEType.plain.rawValue)
             XCTAssertEqual(metadata?.path!, "a/n.txt")
@@ -156,9 +169,9 @@ class CodableFileTests: XCTestCase {
                     })
                 })
             })
-            XCTAssertEqual(task, StorageTaskStore.shared.get(download: ref.fullPath))
+            XCTAssertEqual(task, StorageTaskStore.shared.get(download: file.path))
         }
-        XCTAssertEqual(task, StorageTaskStore.shared.get(upload: ref.fullPath))
+        XCTAssertEqual(task, StorageTaskStore.shared.get(upload: file.path))
         self.wait(for: [exp], timeout: 30)
     }
     

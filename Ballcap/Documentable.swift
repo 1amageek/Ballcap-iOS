@@ -7,6 +7,7 @@
 //
 
 import FirebaseFirestore
+import FirebaseStorage
 
 public protocol Documentable: class, Referencable & Equatable {
 
@@ -15,6 +16,8 @@ public protocol Documentable: class, Referencable & Equatable {
     var path: String { get }
 
     var documentReference: DocumentReference! { get }
+
+    var storageReference: StorageReference { get }
 
     var shouldIncludedInTimestamp: Bool { get }
 

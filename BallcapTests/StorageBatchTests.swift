@@ -44,35 +44,44 @@ class StorageBatchTests: XCTestCase {
         let exp: XCTestExpectation = XCTestExpectation(description: "")
         let data: Data = "test".data(using: .utf8)!
         let batch: StorageBatch = StorageBatch()
-        let files: [File] = [
-            File(Storage.storage().reference(withPath: "c"), data: data, mimeType: File.MIMEType.plain),
-            File(Storage.storage().reference(withPath: "e"), data: data, mimeType: File.MIMEType.plain)
-        ]
-        batch.save(files)
-        batch.commit { (_) in
 
-            let file = File(Storage.storage().reference(withPath: "c"))
-            file.getData(completion: { (data, _) in
+        let c: File = File(Storage.storage().reference(withPath: "c"), data: data, mimeType: File.MIMEType.plain)
+        let e: File = File(Storage.storage().reference(withPath: "e"), data: data, mimeType: File.MIMEType.plain)
+
+        let files: [File] = [c, e]
+        batch.save(files)
+        batch.commit { (error) in
+
+            if let error = error {
+                print(error)
+            }
+
+            let file = File(Storage.storage().reference(withPath: "c"), mimeType: File.MIMEType.plain)
+            file.getData(completion: { (data, error) in
+
+                if let error = error {
+                    print(error)
+                }
 
                 let text: String = String(data: data!, encoding: .utf8)!
                 XCTAssertEqual(text, "test")
 
-                let file = File(Storage.storage().reference(withPath: "e"))
+                let file = File(Storage.storage().reference(withPath: "e"), mimeType: File.MIMEType.plain)
                 file.getData(completion: { (data, _) in
                     let text: String = String(data: data!, encoding: .utf8)!
                     XCTAssertEqual(text, "test")
                     let batch: StorageBatch = StorageBatch()
                     batch.delete(
                         [
-                            File(Storage.storage().reference(withPath: "c")),
-                            File(Storage.storage().reference(withPath: "e"))
+                            File(Storage.storage().reference(withPath: "c"), mimeType: File.MIMEType.plain),
+                            File(Storage.storage().reference(withPath: "e"), mimeType: File.MIMEType.plain)
                         ]
                     )
                     batch.commit({ (_) in
-                        let file = File(Storage.storage().reference(withPath: "c"))
+                        let file = File(Storage.storage().reference(withPath: "c"), mimeType: File.MIMEType.plain)
                         file.getData(completion: { (data, _) in
                             XCTAssertNil(data)
-                            let file = File(Storage.storage().reference(withPath: "e"))
+                            let file = File(Storage.storage().reference(withPath: "e"), mimeType: File.MIMEType.plain)
                             file.getData(completion: { (data, _) in
                                 XCTAssertNil(data)
                                 exp.fulfill()

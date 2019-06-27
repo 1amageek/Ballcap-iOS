@@ -140,12 +140,7 @@ public final class File: Hashable {
 
     private(set) var storageReference: StorageReference
 
-    /// Path to Storage
     public var path: String
-
-    public var fullPath: String {
-        return self.storageReference.fullPath
-    }
 
     /// ConentType
     public var mimeType: MIMEType = .octetStream(nil)
@@ -159,7 +154,18 @@ public final class File: Hashable {
     private var originalURL: URL?
 
     /// File name
-    public private(set) var name: String
+    public var name: String {
+        get {
+            return self.storageReference.name
+        }
+        set {
+            if let parent = self.storageReference.parent() {
+                self.storageReference = parent.child(newValue)
+            } else {
+                self.storageReference = Storage.storage().reference(withPath: newValue)
+            }
+        }
+    }
 
     /// File metadata
     public private(set) var metadata: StorageMetadata?
@@ -180,38 +186,32 @@ public final class File: Hashable {
 
     // MARK: - Initialize
 
-    public init(_ storageReference: StorageReference,
-                            name: String? = nil,
-                            mimeType: MIMEType? = nil) {
-        let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
-        self.name = fileName
+    public init(_ storageReference: StorageReference, data: Data? = nil, mimeType: MIMEType? = nil) {
+        let (name, mimeType) = File.generateFileName(storageReference.name, mimeType: mimeType)
+        if let parent = storageReference.parent() {
+            self.storageReference = parent.child(name)
+        } else {
+            self.storageReference = Storage.storage().reference(withPath: name)
+        }
+        self.path = self.storageReference.fullPath
         self.mimeType = mimeType
-        self.path = storageReference.fullPath
-        let reference: StorageReference = storageReference.child(fileName)
-        self.storageReference = reference
-        self.uploadTask = StorageTaskStore.shared.get(upload: reference.fullPath)
-        self.downloadTask = StorageTaskStore.shared.get(download: reference.fullPath)
-    }
-
-    public convenience init(_ storageReference: StorageReference,
-                            data: Data,
-                            name: String? = nil,
-                            mimeType: MIMEType? = nil) {
-        self.init(storageReference, name: name, mimeType: mimeType)
         self.data = data
+        self.uploadTask = StorageTaskStore.shared.get(upload: storageReference.fullPath)
+        self.downloadTask = StorageTaskStore.shared.get(download: storageReference.fullPath)
     }
 
-    public convenience init(_ storageReference: StorageReference,
-                            url: URL,
-                            name: String? = nil,
-                            mimeType: MIMEType? = nil) {
-        self.init(storageReference, name: name, mimeType: mimeType)
-        self.originalURL = url
+    public convenience init<T: Documentable>(_ object: T,
+                                             name: String? = nil,
+                                             data: Data? = nil,
+                                             mimeType: MIMEType? = nil) {
+        let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
+        let reference: StorageReference = object.storageReference.child(fileName)
+        self.init(reference, data: data, mimeType: mimeType)
     }
 
-    internal convenience init(path: String, name: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]) {
+    internal convenience init(path: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]) {
         let storageReference: StorageReference = Storage.storage().reference().child(path)
-        self.init(storageReference, name: name)
+        self.init(storageReference)
         self.url = url
         self.mimeType = mimeType
         self.additionalData = additionalData
@@ -343,13 +343,12 @@ public final class File: Hashable {
 
     public var description: String {
         let base: String =
-            "      fullPath: \(self.fullPath)\n" +
+            "      path: \(self.path)\n" +
             "      name: \(self.name)\n" +
             "      url: \(self.url?.absoluteString ?? "")\n" +
-            "      path: \(self.path)\n" +
             "      mimeType: \(self.mimeType.rawValue)\n" +
             "      additionalData: \(self.additionalData)\n" +
-            "    "
+        "    "
         return "\n    File {\n\(base)}"
     }
 
@@ -358,10 +357,6 @@ public final class File: Hashable {
     }
 
     public static func == (lhs: File, rhs: File) -> Bool {
-        return
-            lhs.path == rhs.path &&
-                lhs.name == rhs.name &&
-                lhs.url == rhs.url &&
-                lhs.mimeType == rhs.mimeType
+        return lhs.name == rhs.name && lhs.url == rhs.url && lhs.mimeType == rhs.mimeType
     }
 }

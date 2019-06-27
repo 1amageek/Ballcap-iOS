@@ -17,7 +17,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
         return Storage.storage().reference(withPath: self.documentReference.path)
     }
 
-    convenience init() {
+    convenience public init() {
         self.init(Model.collectionReference.document())
         self.data = Model()
     }

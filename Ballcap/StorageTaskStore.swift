@@ -29,7 +29,7 @@ internal final class StorageTaskStore {
     }
 
     func get(upload path: String) -> StorageUploadTask? {
-        return self.uploadTaskStorage[path]
+        return self.uploadTaskStorage.keys.contains(path) ? self.uploadTaskStorage[path] : nil
     }
 
     // MARK: DOWNLOAD
