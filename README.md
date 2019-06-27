@@ -102,13 +102,21 @@ batch.commit()
 ```
 
 You can get data by using the get function.
-> note: The callback may be called twice to access the cache within the get function.
 
 ```swift
 Document<Model>.get(id: "DOCUMENT_ID", completion: { (document, error) in
     print(document.data)
 })
 ```
+
+The next get function gets data in favor of the cache. If there is no cached data, it gets from the server.
+```swift
+let document: Document<Model> = Document("DOCUMENT_ID")
+document.get { (document, error) in
+   print(document.data)
+}
+```
+
 __Why data is optional?__
 
 In CloudFirestore, DocumentReference does not necessarily have data. There are cases where there is no data under the following conditions.
