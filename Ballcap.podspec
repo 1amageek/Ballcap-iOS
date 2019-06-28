@@ -3,8 +3,8 @@ Pod::Spec.new do |s|
 s.name         = "Ballcap"
 s.version      = "0.8.1"
 s.summary      = "Firestore design framework"
-s.description  = <<-DESC
 s.swift_version = "5"
+s.description  = <<-DESC
 Ballcap is a framework for operating Cloud Firestore Document.
 DESC
 s.homepage     = "https://github.com/1amageek/Ballcap-iOS"
