@@ -20,6 +20,36 @@ class DocumentTests: XCTestCase {
         BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
+    func testDocumentModelName() {
+        do {
+            struct Model: Codable, Modelable, Equatable {}
+            XCTAssertEqual(Document<Model>.name, "model")
+        }
+        do {
+            struct aModel: Codable, Modelable, Equatable {}
+            XCTAssertEqual(Document<aModel>.name, "amodel")
+        }
+        do {
+            struct Na: Codable, Modelable, Equatable {}
+            XCTAssertEqual(Document<Na>.name, "na")
+        }
+    }
+
+    func testDocumentCollectionReference() {
+        do {
+            struct Model: Codable, Modelable, Equatable {}
+            XCTAssertEqual(Document<Model>.collectionReference.path, "version/1/model")
+        }
+        do {
+            struct aModel: Codable, Modelable, Equatable {}
+            XCTAssertEqual(Document<aModel>.collectionReference.path, "version/1/amodel")
+        }
+        do {
+            struct Na: Codable, Modelable, Equatable {}
+            XCTAssertEqual(Document<Na>.collectionReference.path, "version/1/na")
+        }
+    }
+
     func testDocumentAutoID() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document()

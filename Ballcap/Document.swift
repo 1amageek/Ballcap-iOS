@@ -13,6 +13,14 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
 
     public var data: Model?
 
+    public static var name: String {
+        return Model.name
+    }
+
+    public static var collectionReference: CollectionReference {
+        return BallcapApp.default.rootReference?.collection(self.name) ?? Firestore.firestore().collection(self.name)
+    }
+
     public override var storageReference: StorageReference {
         return Storage.storage().reference(withPath: self.documentReference.path)
     }
