@@ -22,12 +22,12 @@ struct ContentView : View {
                 }.onDelete(perform: delete)
             }
             .navigationBarTitle(Text("Item"))
-                .navigationBarItems(trailing: Button("Add", action: {
-                    let item: Document<Item> = Document()
-                    item.data?.title = UUID().uuidString
-                    item.data?.body = "\(Date())"
-                    item.save()
-                }))
+            .navigationBarItems(trailing: Button("Add", action: {
+                let item: Document<Item> = Document()
+                item.data?.title = UUID().uuidString
+                item.data?.body = "\(Date())"
+                item.save()
+            }))
         }
 
     }

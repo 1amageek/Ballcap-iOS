@@ -15,6 +15,7 @@ class StorageBatchTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
+        BallcapApp.configure()
     }
 
     func testBatchSaveDelete() {
@@ -23,8 +24,8 @@ class StorageBatchTests: XCTestCase {
         let batch: StorageBatch = StorageBatch()
         batch.save(File(Storage.storage().reference(withPath: "b"), data: data, mimeType: File.MIMEType.plain))
         batch.commit { (_) in
-            let file = File(Storage.storage().reference(withPath: "b"))
-            file.getData(completion: { (data, _) in
+            let file = File(Storage.storage().reference(withPath: "b"), mimeType: File.MIMEType.plain)
+            file.getData(completion: { (data, error) in
                 let text: String = String(data: data!, encoding: .utf8)!
                 XCTAssertEqual(text, "test")
                 let batch: StorageBatch = StorageBatch()

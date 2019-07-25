@@ -25,22 +25,22 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
         return Storage.storage().reference(withPath: self.documentReference.path)
     }
 
-    convenience public init() {
+    public convenience init() {
         self.init(Model.collectionReference.document())
         self.data = Model()
     }
 
-    required init(documentReference: DocumentReference) {
+    public required init(documentReference: DocumentReference) {
         super.init(documentReference)
         self.data = Model()
     }
 
-    convenience required init(id: String, collectionReference: CollectionReference? = nil) {
+    public convenience required init(id: String, collectionReference: CollectionReference? = nil) {
         let collectionReference: CollectionReference = collectionReference ?? Model.collectionReference
         self.init(documentReference: collectionReference.document(id))
     }
 
-    convenience init?(id: String, from data: [String: Any], collectionReference: CollectionReference? = nil) {
+    public convenience init?(id: String, from data: [String: Any], collectionReference: CollectionReference? = nil) {
         let collectionReference: CollectionReference = collectionReference ?? Model.collectionReference
         self.init(documentReference: collectionReference.document(id))
         do {
@@ -57,7 +57,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
         }
     }
 
-    convenience init?(documentReference: DocumentReference, from data: [String: Any]) {
+    public convenience init?(documentReference: DocumentReference, from data: [String: Any]) {
         self.init(documentReference: documentReference)
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
@@ -73,7 +73,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
         }
     }
 
-    convenience init?(snapshot: DocumentSnapshot) {
+    public convenience init?(snapshot: DocumentSnapshot) {
         self.init(documentReference: snapshot.reference)
         self.snapshot = snapshot
         guard let data: [String: Any] = snapshot.data() else {
@@ -95,7 +95,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
         }
     }
 
-    convenience init(id: String, from data: Model, collectionReference: CollectionReference? = nil) {
+    public convenience init(id: String, from data: Model, collectionReference: CollectionReference? = nil) {
         let collectionReference: CollectionReference = collectionReference ?? Model.collectionReference
         self.init(documentReference: collectionReference.document(id))
         self.data = data
