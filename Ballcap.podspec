@@ -10,7 +10,7 @@ DESC
 s.homepage     = "https://github.com/1amageek/Ballcap-iOS"
 s.license      = { :type => "MIT", :file => "LICENSE" }
 s.author             = { "1amageek" => "tmy0x3@icloud.com" }
-s.social_media_url   = "http://twitter.com/1amageek"
+s.social_media_url   = "https://twitter.com/1amageek"
 s.ios.deployment_target = '11.0'
 #s.osx.deployment_target = '10.14'
 #s.tvos.deployment_target = '10.0'

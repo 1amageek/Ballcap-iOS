@@ -13,12 +13,8 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
 
     public var data: Model?
 
-    public static var name: String {
+    public override class var name: String {
         return Model.name
-    }
-
-    public static var collectionReference: CollectionReference {
-        return BallcapApp.default.rootReference?.collection(self.name) ?? Firestore.firestore().collection(self.name)
     }
 
     public override var storageReference: StorageReference {
@@ -107,7 +103,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
 
     // MARK: -
 
-    static func get(documentReference: DocumentReference, source: FirestoreSource = FirestoreSource.default, completion: @escaping ((Document?, Error?) -> Void)) {
+    public static func get(documentReference: DocumentReference, source: FirestoreSource = FirestoreSource.default, completion: @escaping ((Document?, Error?) -> Void)) {
         documentReference.getDocument(source: source) { (snapshot, error) in
             if let error = error {
                 completion(nil, error)
@@ -125,12 +121,12 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
         }
     }
 
-    static func get(id: String, source: FirestoreSource = FirestoreSource.default, completion: @escaping ((Document?, Error?) -> Void)) {
+    public static func get(id: String, source: FirestoreSource = FirestoreSource.default, completion: @escaping ((Document?, Error?) -> Void)) {
         let documentReference: DocumentReference = Document.init(id: id).documentReference
         self.get(documentReference: documentReference, source: source, completion: completion)
     }
 
-    static func listen(id: String, includeMetadataChanges: Bool = true, completion: @escaping ((Document?, Error?) -> Void)) -> Disposer {
+    public static func listen(id: String, includeMetadataChanges: Bool = true, completion: @escaping ((Document?, Error?) -> Void)) -> Disposer {
         let listenr: ListenerRegistration = Document.collectionReference.document(id).addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
             if let error = error {
                 completion(nil, error)

@@ -22,10 +22,6 @@ public protocol Referencable {
 
 public extension Referencable {
 
-    static var name: String {
-        return String(describing: Mirror(reflecting: self).subjectType).components(separatedBy: ".").first!.lowercased()
-    }
-
     static var path: String {
         return self.collectionReference.path
     }
