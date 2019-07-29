@@ -17,17 +17,17 @@ struct ContentView : View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(self.dataSource.items.identified(by: \.id)) { item in
+                ForEach(self.dataSource.items, id: \.id) { item in
                     ItemRow(item: item.data!)
                 }.onDelete(perform: delete)
             }
             .navigationBarTitle(Text("Item"))
-            .navigationBarItems(trailing: Button("Add", action: {
-                let item: Document<Item> = Document()
-                item.data?.title = UUID().uuidString
-                item.data?.body = "\(Date())"
-                item.save()
-            }))
+                .navigationBarItems(trailing: Button("Add", action: {
+                    let item: Document<Item> = Document()
+                    item.data?.title = UUID().uuidString
+                    item.data?.body = "\(Date())"
+                    item.save()
+                }))
         }
 
     }

@@ -13,12 +13,12 @@ import Combine
 
 class ItemDatabase: BindableObject {
 
-    var didChange = PassthroughSubject<Void, Never>()
+    var willChange = PassthroughSubject<Void, Never>()
 
     var _dataSource: DataSource<Document<Item>>?
 
     var items: [Document<Item>] = [] {
-        didSet { self.didChange.send() }
+        didSet { self.willChange.send() }
     }
 
     init() {

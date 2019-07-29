@@ -13,6 +13,15 @@ import FirebaseFirestore
 
 class ModelableTests: XCTestCase {
 
+    func testModelName() {
+        struct Model: Modelable & Codable & Equatable {
+            static var name: String {
+                return "name"
+            }
+        }
+        XCTAssertEqual(Document<Model>.name, "name")
+    }
+
     func testDebugDescription() {
         struct Model: Modelable & Codable & Equatable {
             init() {
