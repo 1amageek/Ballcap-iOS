@@ -12,8 +12,8 @@ import Ballcap
 
 struct ContentView : View {
 
-    @ObjectBinding var dataSource: ItemDatabase = ItemDatabase()
-
+    @ObservedObject (initialValue: ItemDatabase()) var dataSource: ItemDatabase
+    
     var body: some View {
         NavigationView {
             List {
