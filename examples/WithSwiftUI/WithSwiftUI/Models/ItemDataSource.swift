@@ -11,15 +11,11 @@ import Firebase
 import SwiftUI
 import Combine
 
-class ItemDatabase: BindableObject {
+class ItemDatabase: ObservableObject {
 
-    var willChange = PassthroughSubject<Void, Never>()
 
-    var _dataSource: DataSource<Document<Item>>?
-
-    var items: [Document<Item>] = [] {
-        didSet { self.willChange.send() }
-    }
+    @Published var  _dataSource: DataSource<Document<Item>> = []
+    @Published var items: [Document<Item>] = []
 
     init() {
         _dataSource = DataSource<Document<Item>>.Query(Document<Item>.collectionReference).dataSource()
