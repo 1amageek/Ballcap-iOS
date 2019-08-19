@@ -55,7 +55,7 @@ open class Object: Documentable {
         return lhs.path == rhs.path
     }
 
-    public class var name: String {
+    open class var name: String {
         return String(describing: Mirror(reflecting: self).subjectType).components(separatedBy: ".").first!.lowercased()
     }
 
