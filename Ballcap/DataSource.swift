@@ -1,50 +1,22 @@
 //
 //  DataSource.swift
-//  Pring
+//  Ballcap
 //
 //  Created by 1amageek on 2017/10/06.
-//  Copyright © 2017年 Stamp Inc. All rights reserved.
+//  Copyright © 2019年 Stamp Inc. All rights reserved.
 //
 //  Contact us https://twitter.com/1amageek
 
 import FirebaseFirestore
 import FirebaseStorage
 
-
 public enum DataSourceError: Error {
-    case invalidReference
-    case empty
     case timeout
 
     var description: String {
         switch self {
-        case .invalidReference: return "The value you are trying to reference is invalid."
-        case .empty: return "There was no value."
         case .timeout: return "DataSource fetch timed out."
         }
-    }
-}
-
-public typealias Change = (deletions: [Int], insertions: [Int], modifications: [Int])
-
-public enum CollectionChange {
-
-    case initial
-
-    case update(Change)
-
-    case error(Error)
-
-    init(change: Change?, error: Error?) {
-        if let error: Error = error {
-            self = .error(error)
-            return
-        }
-        if let change: Change = change {
-            self = .update(change)
-            return
-        }
-        self = .initial
     }
 }
 
@@ -56,13 +28,13 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 
     public typealias Element = ArrayLiteralElement
 
-    public typealias ChangeBlock = (QuerySnapshot?, CollectionChange) -> Void
+    public typealias RetrieveBlock = (QuerySnapshot?, QueryDocumentSnapshot, @escaping ((Element) -> Void)) -> Void
 
-    public typealias ParseBlock = (QuerySnapshot?, Element, @escaping ((Element) -> Void)) -> Void
-
-    public typealias CompletedBlock = (QuerySnapshot?, [Element]) -> Void
+    public typealias ChangedBlock = (QuerySnapshot?, Change) -> Void
 
     public typealias ErrorBlock = (QuerySnapshot?, DataSourceError) -> Void
+
+    public typealias Change = (deletions: [Element], insertions: [Element], modifications: [Element])
 
 
     /// Objects held in the client
@@ -73,8 +45,6 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 
     /// True if we have the last Document of the data source
     public private(set) var isLast: Bool = false
-
-    var completedBlocks: [CompletedBlock] = []
 
     /// Reference of element
     public private(set) var query: Query
@@ -89,20 +59,14 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     /// Holds the Key previously sent to Firebase.
     private var previousLastKey: String?
 
-    /// Block called when there is a change in DataSource
-    private var changedBlock: ChangeBlock?
 
-    private var parseBlock: ParseBlock?
+    private var _changedBlock: ChangedBlock?
+
+    private var _retrieveBlock: RetrieveBlock?
+
+    private var _sortedBlock: (T, T) throws -> Bool = { $0.updatedAt > $1.updatedAt }
 
     private var errorBlock: ErrorBlock?
-
-    /// Applies the NSPredicate specified by option.
-    private func filtered() -> [Element] {
-        if let predicate: NSPredicate = self.option.predicate {
-            return (self.documents as NSArray).filtered(using: predicate) as! [Element]
-        }
-        return self.documents
-    }
 
     /**
      DataSource retrieves data from the referenced data. Change the acquisition of data by setting Options.
@@ -116,10 +80,9 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
      - parameter options: DataSource Options
      - parameter block: A block which is called to process Firebase change evnet.
      */
-    public init(reference: Query, option: Option = Option(), block: ChangeBlock? = nil) {
+    public init(reference: Query, option: Option = Option()) {
         self.query = reference
         self.option = option
-        self.changedBlock = block
     }
 
     /// Initializing the DataSource
@@ -134,24 +97,21 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
         self.documents = documents
     }
 
-    /// Set the Block to receive the change of the DataSource.
     @discardableResult
-    public func on(_ block: ChangeBlock?) -> Self {
-        self.changedBlock = block
+    public func retrieve(from block: RetrieveBlock?) -> Self {
+        self._retrieveBlock = block
         return self
     }
 
     @discardableResult
-    public func on(parse block: ParseBlock?) -> Self {
-        self.parseBlock = block
+    public func onChanged(_ block: ChangedBlock?) -> Self {
+        self._changedBlock = block
         return self
     }
 
     @discardableResult
-    public func onCompleted(_ block: CompletedBlock?) -> Self {
-        if let block: CompletedBlock = block {
-            self.completedBlocks.append(block)
-        }
+    public func sorted(by areInIncreasingOrder: @escaping (T, T) throws -> Bool) rethrows -> Self {
+        self._sortedBlock = areInIncreasingOrder
         return self
     }
 
@@ -164,32 +124,18 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     /// Start monitoring data source.
     @discardableResult
     public func listen() -> Self {
-        let changeBlock: ChangeBlock? = self.changedBlock
-        let completedBlocks: [CompletedBlock] = self.completedBlocks
-        var isFirst: Bool = true
-        self.listenr = self.query.listen(includeMetadataChanges: self.option.includeMetadataChanges, listener: { [weak self] (snapshot, error) in
+        self.listenr = self.query.listen(includeMetadataChanges: true, listener: { [weak self] (snapshot, error) in
             guard let `self` = self else { return }
             guard let snapshot: QuerySnapshot = snapshot else {
-                changeBlock?(nil, CollectionChange(change: nil, error: error))
                 return
             }
-            if isFirst {
-                guard let lastSnapshot = snapshot.documents.last else {
-                    // The collection is empty.
-                    changeBlock?(snapshot, .initial)
-                    completedBlocks.forEach({ block in
-                        block(snapshot, self.documents)
-                    })
-                    return
-                }
-                if !snapshot.metadata.hasPendingWrites {
-                    self.query = self.query.start(afterDocument: lastSnapshot)
-                }
-                self._operate(with: snapshot, isFirst: isFirst, error: error)
-                isFirst = false
-            } else {
-                self._operate(with: snapshot, isFirst: isFirst, error: error)
+            guard let lastSnapshot = snapshot.documents.last else {
+                return
             }
+            if !snapshot.metadata.hasPendingWrites {
+                self.query = self.query.start(afterDocument: lastSnapshot)
+            }
+            self._execute(snapshot: snapshot)
         })
         return self
     }
@@ -199,178 +145,67 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
         self.listenr?.remove()
     }
 
-    private func _operate(with snapshot: QuerySnapshot?, isFirst: Bool, error: Error?) {
-        let changeBlock: ChangeBlock? = self.changedBlock
-        let parseBlock: ParseBlock? = self.parseBlock
-        let completedBlocks: [CompletedBlock] = self.completedBlocks
+    private func _execute(snapshot: QuerySnapshot) {
         let errorBlock: ErrorBlock? = self.errorBlock
+        let retrieveBlock: RetrieveBlock? = self._retrieveBlock
+        let changedBlock: ChangedBlock? = self._changedBlock
 
-        func mainThreadCall(_ block: @escaping () -> Void) {
-            if Thread.isMainThread {
-                block()
-            } else {
-                DispatchQueue.main.async {
-                    block()
-                }
-            }
-        }
-
-        guard let snapshot: QuerySnapshot = snapshot else {
-            mainThreadCall {
-                changeBlock?(nil, CollectionChange(change: nil, error: error))
-                completedBlocks.forEach({ block in
-                    block(nil, [])
-                })
-            }
-            return
-        }
+        var documents: [Element] = self.documents
 
         self.fetchQueue.async {
             let group: DispatchGroup = DispatchGroup()
-            snapshot.documentChanges(includeMetadataChanges: self.option.includeMetadataChanges).forEach({ (change) in
+            var insertions: [Element] = []
+            var modifications: [Element] = []
+            var deletions: [Element] = []
+            snapshot.documentChanges(includeMetadataChanges: true).forEach { change in
                 let id: String = change.document.documentID
                 switch change.type {
                 case .added:
-                    guard self.option.listeningChangeTypes.contains(.added) else { return }
-                    guard !self.documents.contains(where: { return $0.id == id}) else {
-                        return
-                    }
-                    group.enter()
-                    self.get(with: change, block: { (document, error) in
-                        guard let document: Element = document else {
-                            if !isFirst {
-                                let error: Error = error ?? DataSourceError.invalidReference
-                                let collectionChange: CollectionChange = CollectionChange.error(error)
-                                mainThreadCall {
-                                    changeBlock?(snapshot, collectionChange)
-                                }
-                            }
-                            group.leave()
-                            return
-                        }
-                        if let parseBlock: ParseBlock = parseBlock {
-                            parseBlock(snapshot, document, { document in
-                                self.documents.append(document)
-                                self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
-                                if !isFirst {
-                                    if let i: Int = self.documents.firstIndex(of: document) {
-                                        mainThreadCall {
-                                            changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
-                                        }
-                                    }
-                                }
+                    if !documents.keys.contains(id) {
+                        if let retrieveBlock = retrieveBlock {
+                            group.enter()
+                            retrieveBlock(snapshot, change.document, { element in
+                                insertions.append(element)
+                                documents.append(element)
                                 group.leave()
                             })
-                        } else {
-                            self.documents.append(document)
-                            self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
-                            if !isFirst {
-                                if let i: Int = self.documents.firstIndex(of: document) {
-                                    mainThreadCall {
-                                        changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
-                                    }
-                                }
-                            }
-                            group.leave()
                         }
-                    })
+                    }
                 case .modified:
-                    guard self.option.listeningChangeTypes.contains(.modified) else { return }
-                    guard self.documents.contains(where: { return $0.id == id}) else {
-                        return
-                    }
-                    group.enter()
-                    self.get(with: change, block: { (document, error) in
-                        guard let document: Element = document else {
-                            let error: Error = error ?? DataSourceError.invalidReference
-                            let collectionChange: CollectionChange = CollectionChange.error(error)
-                            mainThreadCall {
-                                changeBlock?(snapshot, collectionChange)
-                            }
-                            group.leave()
-                            return
-                        }
-                        if let parseBlock: ParseBlock = parseBlock {
-                            parseBlock(snapshot, document, { document in
-                                if let i: Int = self.documents.index(of: id) {
-                                    self.documents.remove(at: i)
-                                    self.documents.insert(document, at: i)
-                                }
-                                self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
-                                if let i: Int = self.documents.index(of: document) {
-                                    mainThreadCall {
-                                        changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [], modifications: [i]), error: nil))
-                                    }
-                                }
+                    if let index: Int = documents.keys.firstIndex(of: id) {
+                        if let retrieveBlock = retrieveBlock {
+                            group.enter()
+                            retrieveBlock(snapshot, change.document, { element in
+                                modifications.append(element)
+                                documents[index] = element
                                 group.leave()
                             })
-                        } else {
-                            if let i: Int = self.documents.index(of: id) {
-                                self.documents.remove(at: i)
-                                self.documents.insert(document, at: i)
-                            }
-                            self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
-                            if let i: Int = self.documents.index(of: document) {
-                                mainThreadCall {
-                                    changeBlock?(snapshot, CollectionChange(change: (deletions: [], insertions: [], modifications: [i]), error: nil))
-                                }
-                            }
-                            group.leave()
                         }
-                    })
-                case .removed:
-                    guard self.option.listeningChangeTypes.contains(.removed) else { return }
-                    guard self.documents.contains(where: { return $0.id == id}) else {
-                        return
                     }
-                    group.enter()
-                    if let i: Int = self.documents.index(of: id) {
-                        self.documents.remove(at: i)
-                        mainThreadCall {
-                            changeBlock?(snapshot, CollectionChange(change: (deletions: [i], insertions: [], modifications: []), error: nil))
+                case .removed:
+                    if let index: Int = documents.keys.firstIndex(of: id) {
+                        if let retrieveBlock = retrieveBlock {
+                            group.enter()
+                            retrieveBlock(snapshot, change.document, { element in
+                                deletions.append(element)
+                                documents.remove(at: index)
+                                group.leave()
+                            })
                         }
-                        group.leave()
                     }
                 @unknown default:
                     fatalError()
                 }
-            })
+            }
             group.notify(queue: DispatchQueue.main, execute: {
-                if isFirst {
-                    changeBlock?(snapshot, CollectionChange(change: nil, error: nil))
-                }
-                completedBlocks.forEach({ block in
-                    block(snapshot, self.documents)
-                })
+                self.documents = try! documents.sorted(by: self._sortedBlock)
+                changedBlock?(snapshot, (deletions: deletions, insertions: insertions, modifications: modifications))
             })
             switch group.wait(timeout: .now() + .seconds(self.option.timeout)) {
             case .success: break
             case .timedOut:
                 let error: DataSourceError = DataSourceError.timeout
-                mainThreadCall {
-                    errorBlock?(snapshot, error)
-                }
-            }
-        }
-    }
-
-    private func get(with change: DocumentChange, block: @escaping (Element?, Error?) -> Void) {
-        if self.option.shouldFetchReference {
-            let id: String = change.document.documentID
-            Element.get(id: id) { (document, error) in
-                if let error = error {
-                    block(nil, error)
-                    return
-                }
-                block(document, nil)
-            }
-        } else {
-            guard let document: Element = Element(snapshot: change.document) else {
-                block(nil, nil)
-                return
-            }
-            DispatchQueue.main.async {
-                block(document, nil)
+                errorBlock?(snapshot, error)
             }
         }
     }
@@ -386,8 +221,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     ///     - block: It returns `isLast` as an argument.
     @discardableResult
     public func next(_ block: ((Bool) -> Void)? = nil) -> Self {
-        self.query.get(completion: { (snapshot, error) in
-            self._operate(with: snapshot, isFirst: false, error: error)
+        self.query.get { (snapshot, error) in
             guard let lastSnapshot = snapshot?.documents.last else {
                 // The collection is empty.
                 self.isLast = true
@@ -396,7 +230,8 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
             }
             self.query = self.query.start(afterDocument: lastSnapshot)
             block?(false)
-        })
+            self._execute(snapshot: snapshot!)
+        }
         return self
     }
 
@@ -410,39 +245,23 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 public extension DataSource {
 
     func add(document: Element) {
-        let changeBlock: ChangeBlock? = self.changedBlock
-        let parseBlock: ParseBlock? = self.parseBlock
-        let completedBlocks: [CompletedBlock] = self.completedBlocks
-        if let parseBlock: ParseBlock = parseBlock {
-            parseBlock(nil, document, { document in
-                self.documents.append(document)
-                self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
-                if let i: Int = self.documents.firstIndex(of: document) {
-                    changeBlock?(nil, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
-                }
-            })
-        } else {
-            self.documents.append(document)
-            self.documents = try! self.filtered().sorted(by: self.option.sortClosure)
-            if let i: Int = self.documents.firstIndex(of: document) {
-                changeBlock?(nil, CollectionChange(change: (deletions: [], insertions: [i], modifications: []), error: nil))
-            }
+        let changedBlock: ChangedBlock? = self._changedBlock
+        var documents: [Element] = self.documents
+        let id: String = document.id
+        if !documents.keys.contains(id) {
+            documents.append(document)
+            self.documents = try! documents.sorted(by: self._sortedBlock)
+            changedBlock?(nil, (deletions: [], insertions: [document], modifications: []))
         }
-        completedBlocks.forEach({ block in
-            block(nil, self.documents)
-        })
     }
 
     func remove(document: Element) {
-        let changeBlock: ChangeBlock? = self.changedBlock
-        let completedBlocks: [CompletedBlock] = self.completedBlocks
-        if let i: Int = self.documents.index(of: document.id) {
-            self.documents.remove(at: i)
-            changeBlock?(nil, CollectionChange(change: (deletions: [i], insertions: [], modifications: []), error: nil))
+        let changedBlock: ChangedBlock? = self._changedBlock
+        var documents: [Element] = self.documents
+        if let index: Int = self.documents.index(of: document.id) {
+            documents.remove(at: index)
+            changedBlock?(nil, (deletions: [document], insertions: [], modifications: []))
         }
-        completedBlocks.forEach({ block in
-            block(nil, self.documents)
-        })
     }
 }
 
@@ -450,30 +269,13 @@ public extension DataSource {
     /**
      Options class
      */
-    final class Option {
+    struct Option {
 
         /// Fetch timeout
         public var timeout: Int = 10    // Default Timeout 10s
 
-        ///
-        public var includeMetadataChanges: Bool = true
-
-        ///
-        public var listeningChangeTypes: [DocumentChangeType] = [.added, .modified, .removed]
-
-        /// Predicate
-        public var predicate: NSPredicate?
-
-        /// Sort
-        public var sortClosure: (Element, Element) throws -> Bool = { l, r in
-            return l.updatedAt > r.updatedAt
-        }
-
-        public var shouldFetchReference: Bool = false
-
         public init() { }
     }
-
 }
 
 public extension Array where Element: Documentable {

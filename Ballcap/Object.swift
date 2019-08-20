@@ -49,10 +49,14 @@ public enum DocumentError: Error {
     }
 }
 
-open class Object: Documentable {
+open class Object: Documentable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.path)
+    }
 
     public static func == (lhs: Object, rhs: Object) -> Bool {
-        return lhs.path == rhs.path
+        return lhs.hashValue == rhs.hashValue
     }
 
     open class var name: String {
