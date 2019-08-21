@@ -60,9 +60,8 @@ class ViewController: UIViewController {
         snapshot.appendSections([.main])
         self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
 
-
         self.dataSource = Document<Item>.query
-        .order(by: "updatedAt", descending: true)
+            .order(by: "updatedAt", descending: true)
             .limit(to: 3)
             .dataSource()
             .retrieve(from: { (snapshot, documentSnapshot, done) in
@@ -76,7 +75,6 @@ class ViewController: UIViewController {
                 snapshot.appendItems(changes.insertions.map { DocumentProxy(document: $0)})
                 snapshot.deleteItems(changes.deletions.map { DocumentProxy(document: $0)})
                 snapshot.reloadItems(changes.modifications.map { DocumentProxy(document: $0)})
-
                 self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
             })
             .listen()
