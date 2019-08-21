@@ -240,9 +240,9 @@ batch.commit { error in
 }
 ```
 
-#### DataSource
+### DataSource
 
-Ballcap has prepared DataSources for easy handling of Collections and SubCollections.
+Ballcap provides a DataSource for easy handling of Collections and SubCollections.
 
 ##### DataSource initialize
 
