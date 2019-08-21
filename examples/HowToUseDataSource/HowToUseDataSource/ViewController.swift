@@ -8,18 +8,28 @@
 
 import UIKit
 import Ballcap
+import Firebase
 
-class Obj: Hashable {
+struct DocumentProxy<Model: Modelable & Codable>: Hashable {
 
-    static func == (lhs: Obj, rhs: Obj) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+    var id: String {
+        document.id
     }
 
-    var id: String = UUID().uuidString
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+    var createdAt: Timestamp {
+        document.createdAt
     }
+
+    var updatedAt: Timestamp {
+        document.updatedAt
+    }
+
+    var document: Document<Model>
+
+    init(document: Document<Model>) {
+        self.document = document
+    }
+
 }
 
 class ViewController: UIViewController {
@@ -32,7 +42,7 @@ class ViewController: UIViewController {
 
     var dataSource: DataSource<Document<Item>>?
 
-    var tableViewDataSource: UITableViewDiffableDataSource<Section, Obj>!
+    var tableViewDataSource: UITableViewDiffableDataSource<Section, DocumentProxy<Item>>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,11 +56,8 @@ class ViewController: UIViewController {
             return cell
         })
 
-        let docs: [Obj] = [Obj(), Obj(), Obj()]
-
-        var snapshot: NSDiffableDataSourceSnapshot<Section, Obj> = NSDiffableDataSourceSnapshot()
+        var snapshot: NSDiffableDataSourceSnapshot<Section, DocumentProxy<Item>> = NSDiffableDataSourceSnapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(docs)
         self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
 
 
@@ -65,54 +72,20 @@ class ViewController: UIViewController {
                 }
             })
             .onChanged({ (snapshot, changes) in
-//                var snapshot: NSDiffableDataSourceSnapshot<Section, Document<Item>> = self.tableViewDataSource.snapshot()
-////                snapshot.deleteAllItems()
-////                snapshot.appendSections([.main])
-////                snapshot.appendItems(self.dataSource!.documents)
-//
-//                print(snapshot.itemIdentifiers(inSection: .main).map { $0.hashValue })
-//                print("insertions", changes.insertions.map { $0.hashValue })
-//                print("modifications", changes.modifications.map { $0.hashValue })
-////
-//                snapshot.appendItems(changes.insertions)
-////                snapshot.deleteItems(changes.deletions)
-//                snapshot.reloadItems(changes.modifications)
-//
-//                self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
+                var snapshot: NSDiffableDataSourceSnapshot<Section, DocumentProxy<Item>> = self.tableViewDataSource.snapshot()
+                snapshot.appendItems(changes.insertions.map { DocumentProxy(document: $0)})
+                snapshot.deleteItems(changes.deletions.map { DocumentProxy(document: $0)})
+                snapshot.reloadItems(changes.modifications.map { DocumentProxy(document: $0)})
+
+                self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
             })
-//            .onCompleted({ [weak self] (snapshot, items) in
-//                print(snapshot?.documents)
-//                print(snapshot?.documentChanges)
-//                let snapshot: NSDiffableDataSourceSnapshot<Section, Document<Item>> = NSDiffableDataSourceSnapshot()
-//                snapshot.appendSections([.main])
-//                snapshot.appendItems(items)
-//                self?.tableViewDataSource.apply(snapshot, animatingDifferences: true)
-//            })
             .listen()
-
-
     }
 
     @objc func add() {
-//        let item: Document<Item> = Document()
-//        item.data?.name = "\(Date())"
-//        item.save()
-
-        var snapshot: NSDiffableDataSourceSnapshot<Section, Obj> = self.tableViewDataSource.snapshot()
-//        let doc = snapshot.itemIdentifiers(inSection: .main).first!
-//        print(doc.documentReference.path, doc.hashValue)
-//        let document: Document<Item> = Document(doc.documentReference)
-//        print(document.documentReference.path, document.hashValue)
-//        snapshot.reloadItems([document])
-
-
-        let obj = snapshot.itemIdentifiers(inSection: .main).first!
-        var reloadObj = Obj()
-        reloadObj.id = obj.id
-
-        print(reloadObj.hashValue, obj.hashValue)
-        snapshot.reloadItems([reloadObj])
-        self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
+        let item: Document<Item> = Document()
+        item.data?.name = "\(Date())"
+        item.save()
     }
 }
 
