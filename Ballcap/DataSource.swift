@@ -30,12 +30,26 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 
     public typealias RetrieveBlock = (QuerySnapshot?, QueryDocumentSnapshot, @escaping ((Element) -> Void)) -> Void
 
-    public typealias ChangedBlock = (QuerySnapshot?, Change) -> Void
+    public typealias ChangedBlock = (QuerySnapshot?, Snapshot) -> Void
 
     public typealias ErrorBlock = (QuerySnapshot?, DataSourceError) -> Void
 
-    public typealias Change = (deletions: [Element], insertions: [Element], modifications: [Element])
+    public typealias Changes = (deletions: [Element], insertions: [Element], modifications: [Element])
 
+    public struct Snapshot {
+
+        public let before: [Element]
+
+        public let after: [Element]
+
+        public let changes: Changes
+
+        init(before: [Element], after: [Element], changes: Changes) {
+            self.before = before
+            self.after = after
+            self.changes = changes
+        }
+    }
 
     /// Objects held in the client
     public var documents: [Element] = []
@@ -150,6 +164,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
         let retrieveBlock: RetrieveBlock? = self._retrieveBlock
         let changedBlock: ChangedBlock? = self._changedBlock
 
+        let before: [Element] = self.documents
         var documents: [Element] = self.documents
 
         self.fetchQueue.async {
@@ -199,7 +214,8 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
             }
             group.notify(queue: DispatchQueue.main, execute: {
                 self.documents = try! documents.sorted(by: self._sortedBlock)
-                changedBlock?(snapshot, (deletions: deletions, insertions: insertions, modifications: modifications))
+                let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: self.documents, changes: (deletions: deletions, insertions: insertions, modifications: modifications))
+                changedBlock?(snapshot, dataSourceSnapshot)
             })
             switch group.wait(timeout: .now() + .seconds(self.option.timeout)) {
             case .success: break
@@ -246,21 +262,25 @@ public extension DataSource {
 
     func add(document: Element) {
         let changedBlock: ChangedBlock? = self._changedBlock
+        let before: [Element] = self.documents
         var documents: [Element] = self.documents
         let id: String = document.id
         if !documents.keys.contains(id) {
             documents.append(document)
             self.documents = try! documents.sorted(by: self._sortedBlock)
-            changedBlock?(nil, (deletions: [], insertions: [document], modifications: []))
+            let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: self.documents, changes: (deletions: [], insertions: [document], modifications: []))
+            changedBlock?(nil, dataSourceSnapshot)
         }
     }
 
     func remove(document: Element) {
         let changedBlock: ChangedBlock? = self._changedBlock
+        let before: [Element] = self.documents
         var documents: [Element] = self.documents
-        if let index: Int = self.documents.index(of: document.id) {
+        if let index: Int = self.documents.firstIndex(of: document.id) {
             documents.remove(at: index)
-            changedBlock?(nil, (deletions: [document], insertions: [], modifications: []))
+            let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: self.documents, changes: (deletions: [document], insertions: [], modifications: []))
+            changedBlock?(nil, dataSourceSnapshot)
         }
     }
 }
@@ -284,11 +304,11 @@ public extension Array where Element: Documentable {
         return self.compactMap { return $0.id }
     }
 
-    func index(of key: String) -> Int? {
+    func firstIndex(of key: String) -> Int? {
         return self.keys.firstIndex(of: key)
     }
 
-    func index(of document: Element) -> Int? {
+    func firstIndex(of document: Element) -> Int? {
         return self.keys.firstIndex(of: document.id)
     }
 }
@@ -315,9 +335,9 @@ extension DataSource: Collection {
         return try self.documents.firstIndex(where: predicate)
     }
 
-    public func index(of element: Element) -> Int? {
+    public func firstIndex(of element: Element) -> Int? {
         if self.documents.isEmpty { return nil }
-        return self.documents.index(of: element.id)
+        return self.documents.firstIndex(of: element.id)
     }
 
     public var first: Element? {
@@ -337,7 +357,7 @@ extension DataSource: Collection {
     }
 
     public func remove(_ member: Element) {
-        if let index: Int = self.documents.index(of: member) {
+        if let index: Int = self.documents.firstIndex(of: member) {
             self.documents.remove(at: index)
         }
     }

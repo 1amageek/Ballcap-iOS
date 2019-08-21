@@ -70,11 +70,11 @@ class ViewController: UIViewController {
                     done(item!)
                 }
             })
-            .onChanged({ (snapshot, changes) in
+            .onChanged({ (snapshot, dataSourceSnapshot) in
                 var snapshot: NSDiffableDataSourceSnapshot<Section, DocumentProxy<Item>> = self.tableViewDataSource.snapshot()
-                snapshot.appendItems(changes.insertions.map { DocumentProxy(document: $0)})
-                snapshot.deleteItems(changes.deletions.map { DocumentProxy(document: $0)})
-                snapshot.reloadItems(changes.modifications.map { DocumentProxy(document: $0)})
+                snapshot.appendItems(dataSourceSnapshot.changes.insertions.map { DocumentProxy(document: $0)})
+                snapshot.deleteItems(dataSourceSnapshot.changes.deletions.map { DocumentProxy(document: $0)})
+                snapshot.reloadItems(dataSourceSnapshot.changes.modifications.map { DocumentProxy(document: $0)})
                 self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
             })
             .listen()

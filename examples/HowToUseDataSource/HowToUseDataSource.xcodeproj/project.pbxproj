@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		123439FA230CFAFA00A999C9 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123439F9230CFAFA00A999C9 /* TableViewController.swift */; };
 		128F864C230A8977006C72A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F864B230A8977006C72A1 /* AppDelegate.swift */; };
 		128F864E230A8977006C72A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F864D230A8977006C72A1 /* SceneDelegate.swift */; };
 		128F8650230A8977006C72A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F864F230A8977006C72A1 /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		123439F9230CFAFA00A999C9 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		128F8648230A8977006C72A1 /* HowToUseDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HowToUseDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		128F864B230A8977006C72A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		128F864D230A8977006C72A1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				128F864D230A8977006C72A1 /* SceneDelegate.swift */,
 				128F8663230AACC4006C72A1 /* DataSource.swift */,
 				128F864F230A8977006C72A1 /* ViewController.swift */,
+				123439F9230CFAFA00A999C9 /* TableViewController.swift */,
 				128F8661230A8BC8006C72A1 /* Item.swift */,
 				128F865F230A8B3B006C72A1 /* GoogleService-Info.plist */,
 				128F8651230A8977006C72A1 /* Main.storyboard */,
@@ -218,6 +221,7 @@
 				128F8662230A8BC8006C72A1 /* Item.swift in Sources */,
 				128F8650230A8977006C72A1 /* ViewController.swift in Sources */,
 				128F864C230A8977006C72A1 /* AppDelegate.swift in Sources */,
+				123439FA230CFAFA00A999C9 /* TableViewController.swift in Sources */,
 				128F864E230A8977006C72A1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
