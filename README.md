@@ -240,6 +240,71 @@ batch.commit { error in
 }
 ```
 
+### DataSource
+
+Ballcap provides a DataSource for easy handling of Collections and SubCollections.
+
+##### DataSource initialize
+
+__from Document__
+
+```swift
+let dataSource: DataSource<Item> = Document<Item>.query.dataSource()
+```
+
+__from Collection Reference__
+
+```swift
+let query: DataSource<Document<Item>>.Query = DataSource.Query(Firestore.firestore().collectionGroup("items"))
+let dataSource = DataSource(reference: query)
+```
+
+__NSDiffableDataSourceSnapshot__
+
+```swift
+self.dataSource = Document<Item>.query
+    .order(by: "updatedAt", descending: true)
+    .limit(to: 3)
+    .dataSource()
+    .retrieve(from: { (snapshot, documentSnapshot, done) in
+        let document: Document<Item> = Document(documentSnapshot.reference)
+        document.get { (item, error) in
+            done(item!)
+        }
+    })
+    .onChanged({ (snapshot, dataSourceSnapshot) in
+        var snapshot: NSDiffableDataSourceSnapshot<Section, DocumentProxy<Item>> = self.tableViewDataSource.snapshot()
+        snapshot.appendItems(dataSourceSnapshot.changes.insertions.map { DocumentProxy(document: $0)})
+        snapshot.deleteItems(dataSourceSnapshot.changes.deletions.map { DocumentProxy(document: $0)})
+        snapshot.reloadItems(dataSourceSnapshot.changes.modifications.map { DocumentProxy(document: $0)})
+        self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
+    })
+    .listen()
+```
+
+__UITableViewDelegate, UITableViewDataSource__
+
+```swift
+self.dataSource = Document<Item>.query
+    .order(by: "updatedAt", descending: true)
+    .limit(to: 3)
+    .dataSource()
+    .retrieve(from: { (snapshot, documentSnapshot, done) in
+        let document: Document<Item> = Document(documentSnapshot.reference)
+        document.get { (item, error) in
+            done(item!)
+        }
+    })
+    .onChanged({ (snapshot, dataSourceSnapshot) in
+        self.tableView.performBatchUpdates({
+            self.tableView.insertRows(at: dataSourceSnapshot.changes.insertions.map { IndexPath(item: dataSourceSnapshot.after.firstIndex(of: $0)!, section: 0)}, with: .automatic)
+            self.tableView.deleteRows(at: dataSourceSnapshot.changes.deletions.map { IndexPath(item: dataSourceSnapshot.before.firstIndex(of: $0)!, section: 0)}, with: .automatic)
+            self.tableView.reloadRows(at: dataSourceSnapshot.changes.modifications.map { IndexPath(item: dataSourceSnapshot.after.firstIndex(of: $0)!, section: 0)}, with: .automatic)
+        }, completion: nil)
+    })
+    .listen()
+```
+
 ## Migrate from [Pring](https://github.com/1amageek/Pring)
 
 ### Overview
