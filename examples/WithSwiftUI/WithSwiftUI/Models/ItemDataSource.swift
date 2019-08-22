@@ -13,14 +13,16 @@ import Combine
 
 class ItemDatabase: ObservableObject {
 
-
     @Published var  _dataSource: DataSource<Document<Item>> = []
     @Published var items: [Document<Item>] = []
 
     init() {
-        _dataSource = DataSource<Document<Item>>.Query(Document<Item>.collectionReference).dataSource()
-            .onCompleted({ [weak self] (_, items) in
-                self?.items = items
-            }).listen()
+        _dataSource = DataSource<Document<Item>>.Query(Document<Item>.collectionReference)
+            .dataSource()
+            .sorted(by: { $0.createdAt < $1.createdAt })
+            .onChanged({ (_, snapshot) in
+                self.items = snapshot.after
+            })
+           .listen()
     }
 }

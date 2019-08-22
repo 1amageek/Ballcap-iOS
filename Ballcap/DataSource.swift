@@ -91,8 +91,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
      this will normally only be the main thread.
 
      - parameter reference: Set DatabaseDeference
-     - parameter options: DataSource Options
-     - parameter block: A block which is called to process Firebase change evnet.
+     - parameter option: DataSource Option
      */
     public init(reference: Query, option: Option = Option()) {
         self.query = reference
@@ -126,6 +125,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     @discardableResult
     public func sorted(by areInIncreasingOrder: @escaping (T, T) throws -> Bool) rethrows -> Self {
         self._sortedBlock = areInIncreasingOrder
+        self.documents = try self.documents.sorted(by: areInIncreasingOrder)
         return self
     }
 
@@ -164,10 +164,8 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
         let retrieveBlock: RetrieveBlock? = self._retrieveBlock
         let changedBlock: ChangedBlock? = self._changedBlock
 
-        let before: [Element] = self.documents
-        var documents: [Element] = self.documents
-
         self.fetchQueue.async {
+            var documents: [Element] = self.documents
             let group: DispatchGroup = DispatchGroup()
             var insertions: [Element] = []
             var modifications: [Element] = []
@@ -180,30 +178,36 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                         if let retrieveBlock = retrieveBlock {
                             group.enter()
                             retrieveBlock(snapshot, change.document, { element in
-                                insertions.append(element)
-                                documents.append(element)
+                                if !documents.keys.contains(id) {
+                                    insertions.append(element)
+                                    documents.append(element)
+                                }
                                 group.leave()
                             })
                         }
                     }
                 case .modified:
-                    if let index: Int = documents.keys.firstIndex(of: id) {
+                    if documents.keys.contains(id) {
                         if let retrieveBlock = retrieveBlock {
                             group.enter()
                             retrieveBlock(snapshot, change.document, { element in
-                                modifications.append(element)
-                                documents[index] = element
+                                if let index: Int = documents.keys.firstIndex(of: id) {
+                                    modifications.append(element)
+                                    documents[index] = element
+                                }
                                 group.leave()
                             })
                         }
                     }
                 case .removed:
-                    if let index: Int = documents.keys.firstIndex(of: id) {
+                    if documents.keys.contains(id) {
                         if let retrieveBlock = retrieveBlock {
                             group.enter()
                             retrieveBlock(snapshot, change.document, { element in
-                                deletions.append(element)
-                                documents.remove(at: index)
+                                if let index: Int = documents.keys.firstIndex(of: id) {
+                                    deletions.append(element)
+                                    documents.remove(at: index)
+                                }
                                 group.leave()
                             })
                         }
@@ -212,13 +216,15 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                     fatalError()
                 }
             }
-            group.notify(queue: DispatchQueue.main, execute: {
-                self.documents = try! documents.sorted(by: self._sortedBlock)
-                let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: self.documents, changes: (deletions: deletions, insertions: insertions, modifications: modifications))
-                changedBlock?(snapshot, dataSourceSnapshot)
-            })
             switch group.wait(timeout: .now() + .seconds(self.option.timeout)) {
-            case .success: break
+            case .success:
+                let before: [Element] = self.documents
+                self.documents = try! documents.sorted(by: self._sortedBlock)
+                let after = self.documents
+                let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: after, changes: (deletions: deletions, insertions: insertions, modifications: modifications))
+                DispatchQueue.main.async {
+                    changedBlock?(snapshot, dataSourceSnapshot)
+                }
             case .timedOut:
                 let error: DataSourceError = DataSourceError.timeout
                 errorBlock?(snapshot, error)

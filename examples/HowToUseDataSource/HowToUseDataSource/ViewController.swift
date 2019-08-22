@@ -47,12 +47,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
-
+        self.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add)),
+            UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextPage)),
+            UIBarButtonItem(title: "Reload", style: .plain, target: self, action: #selector(reload))
+        ]
+        
         self.tableViewDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { (tableView, indexPath, item) -> UITableViewCell? in
 
             let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
-            cell.textLabel?.text = item.id
+            cell.textLabel?.text = self.dataSource?[indexPath.item].data?.name
             return cell
         })
 
@@ -64,6 +68,7 @@ class ViewController: UIViewController {
             .order(by: "updatedAt", descending: true)
             .limit(to: 3)
             .dataSource()
+            .sorted(by: {$0.createdAt < $1.createdAt})
             .retrieve(from: { (snapshot, documentSnapshot, done) in
                 let document: Document<Item> = Document(documentSnapshot.reference)
                 document.get { (item, error) in
@@ -72,18 +77,31 @@ class ViewController: UIViewController {
             })
             .onChanged({ (snapshot, dataSourceSnapshot) in
                 var snapshot: NSDiffableDataSourceSnapshot<Section, DocumentProxy<Item>> = self.tableViewDataSource.snapshot()
-                snapshot.appendItems(dataSourceSnapshot.changes.insertions.map { DocumentProxy(document: $0)})
-                snapshot.deleteItems(dataSourceSnapshot.changes.deletions.map { DocumentProxy(document: $0)})
-                snapshot.reloadItems(dataSourceSnapshot.changes.modifications.map { DocumentProxy(document: $0)})
+                snapshot.deleteItems(dataSourceSnapshot.before.map { DocumentProxy(document: $0)})
+                snapshot.appendItems(dataSourceSnapshot.after.map { DocumentProxy(document: $0)})
+//                snapshot.appendItems(dataSourceSnapshot.changes.insertions.map { DocumentProxy(document: $0)})
+//                snapshot.deleteItems(dataSourceSnapshot.changes.deletions.map { DocumentProxy(document: $0)})
+//                snapshot.reloadItems(dataSourceSnapshot.changes.modifications.map { DocumentProxy(document: $0)})
                 self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
             })
             .listen()
     }
 
+    var index: Int = 0
+
     @objc func add() {
         let item: Document<Item> = Document()
-        item.data?.name = "\(Date())"
+        item.data?.name = "\(index)"
         item.save()
+        index += 1
+    }
+
+    @objc func nextPage() {
+        self.dataSource?.next()
+    }
+
+    @objc func reload() {
+        self.tableView.reloadData()
     }
 }
 

@@ -17,11 +17,15 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+        self.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add)),
+            UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextPage)),
+            UIBarButtonItem(title: "Reload", style: .plain, target: self, action: #selector(reload))
+        ]
 
         self.dataSource = Document<Item>.query
         .order(by: "updatedAt", descending: true)
-        .limit(to: 3)
+        .limit(to: 2)
         .dataSource()
         .retrieve(from: { (snapshot, documentSnapshot, done) in
             let document: Document<Item> = Document(documentSnapshot.reference)
@@ -31,6 +35,7 @@ class TableViewController: UITableViewController {
         })
         .onChanged({ (snapshot, dataSourceSnapshot) in
             self.tableView.performBatchUpdates({
+                print(dataSourceSnapshot)
                 self.tableView.insertRows(at: dataSourceSnapshot.changes.insertions.map { IndexPath(item: dataSourceSnapshot.after.firstIndex(of: $0)!, section: 0)}, with: .automatic)
                 self.tableView.deleteRows(at: dataSourceSnapshot.changes.deletions.map { IndexPath(item: dataSourceSnapshot.before.firstIndex(of: $0)!, section: 0)}, with: .automatic)
                 self.tableView.reloadRows(at: dataSourceSnapshot.changes.modifications.map { IndexPath(item: dataSourceSnapshot.after.firstIndex(of: $0)!, section: 0)}, with: .automatic)
@@ -49,9 +54,20 @@ class TableViewController: UITableViewController {
         return cell
     }
 
+    var index: Int = 0
+
     @objc func add() {
         let item: Document<Item> = Document()
-        item.data?.name = "\(Date())"
+        item.data?.name = "\(index)"
         item.save()
+        index += 1
+    }
+
+    @objc func nextPage() {
+        self.dataSource?.next()
+    }
+
+    @objc func reload() {
+        self.tableView.reloadData()
     }
 }

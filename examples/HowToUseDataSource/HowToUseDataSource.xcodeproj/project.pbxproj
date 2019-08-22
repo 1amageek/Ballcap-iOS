@@ -31,7 +31,6 @@
 		128F8659230A8979006C72A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		128F865F230A8B3B006C72A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../WithSwiftUI/WithSwiftUI/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		128F8661230A8BC8006C72A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		128F8663230AACC4006C72A1 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		2D20457A7A6125236C7C76F8 /* Pods_HowToUseDataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HowToUseDataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AAC84F9D9CE2E7C06159FAE /* Pods-HowToUseDataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HowToUseDataSource.debug.xcconfig"; path = "Target Support Files/Pods-HowToUseDataSource/Pods-HowToUseDataSource.debug.xcconfig"; sourceTree = "<group>"; };
 		9CDB5CD96917370DE72ED111 /* Pods-HowToUseDataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HowToUseDataSource.release.xcconfig"; path = "Target Support Files/Pods-HowToUseDataSource/Pods-HowToUseDataSource.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,7 +71,6 @@
 			children = (
 				128F864B230A8977006C72A1 /* AppDelegate.swift */,
 				128F864D230A8977006C72A1 /* SceneDelegate.swift */,
-				128F8663230AACC4006C72A1 /* DataSource.swift */,
 				128F864F230A8977006C72A1 /* ViewController.swift */,
 				123439F9230CFAFA00A999C9 /* TableViewController.swift */,
 				128F8661230A8BC8006C72A1 /* Item.swift */,

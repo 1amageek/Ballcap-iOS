@@ -29,7 +29,6 @@ struct ContentView : View {
                     item.save()
                 }))
         }
-
     }
 
     func delete(at offset: IndexSet) {
