@@ -18,6 +18,10 @@ internal final class DocumentCache {
         return cache
     }()
 
+    func get(reference: DocumentReference) -> [String: Any]? {
+        return self.cache.object(forKey: reference.path as NSString) as? [String: Any]
+    }
+
     func get<T: Document<U>, U: Modelable & Codable>(documentType: T.Type, reference: DocumentReference) -> T? {
         guard let data: [String: Any] = self.cache.object(forKey: reference.path as NSString) as? [String: Any] else { return nil }
         return Document<U>.init(id: reference.documentID, from: data) as? T
@@ -44,7 +48,9 @@ internal final class DocumentCache {
 
     func set<T: DataRepresentable & Documentable>(_ document: T, reference: DocumentReference? = nil) throws {
         do {
-            let data: [String: Any] = try Firestore.Encoder().encode(document.data)
+            var data: [String: Any] = try Firestore.Encoder().encode(document.data)
+            data["createdAt"] = document.createdAt
+            data["updatedAt"] = document.updatedAt
             let reference: DocumentReference = reference ?? document.documentReference
             self.set(key: reference.path, data: data)
         } catch (let error) {
