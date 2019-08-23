@@ -30,13 +30,33 @@ public extension DataCacheable where Self: Object {
 public extension DataCacheable where Self: Object, Self: DataRepresentable {
 
     func get(_ completion: @escaping (Self?, Error?) -> Void) {
-        if self.cache != nil {
-            self.data = self.cache
-            if Thread.isMainThread {
-                completion(self, nil)
-            } else {
-                DispatchQueue.main.async {
+        if let data: [String: Any] = DocumentCache.shared.get(reference: self.documentReference) {
+            do {
+                self.data = try Firestore.Decoder().decode(Model.self, from: data)
+                if data.keys.contains("createdAt") {
+                    self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+                }
+                if data.keys.contains("updatedAt") {
+                    self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+                }
+                if Thread.isMainThread {
                     completion(self, nil)
+                } else {
+                    DispatchQueue.main.async {
+                        completion(self, nil)
+                    }
+                }
+            } catch {
+                Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
+                    if let object: Self = object {
+                        self.data = object.data
+                        completion(object, error)
+                    } else {
+                        Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                            self.data = object?.data
+                            completion(object, error)
+                        }
+                    }
                 }
             }
         } else {
