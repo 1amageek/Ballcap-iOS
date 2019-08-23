@@ -72,7 +72,7 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
     public convenience init?(snapshot: DocumentSnapshot) {
         self.init(documentReference: snapshot.reference)
         self.snapshot = snapshot
-        guard let data: [String: Any] = snapshot.data() else {
+        guard let data: [String: Any] = snapshot.data(with: .estimate) else {
             self.snapshot = snapshot
             return
         }

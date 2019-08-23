@@ -8,6 +8,9 @@
 
 import FirebaseFirestore
 
+public enum DataCacheableError: Error {
+  case serverValueHasNotBeenDetermined
+}
 
 public protocol DataCacheable: class {
 
@@ -34,10 +37,18 @@ public extension DataCacheable where Self: Object, Self: DataRepresentable {
             do {
                 self.data = try Firestore.Decoder().decode(Model.self, from: data)
                 if data.keys.contains("createdAt") {
-                    self.createdAt = data["createdAt"] as? Timestamp ?? Timestamp(date: Date())
+                    if let createdAt: Timestamp = data["createdAt"] as? Timestamp {
+                        self.createdAt = createdAt
+                    } else {
+                        throw DataCacheableError.serverValueHasNotBeenDetermined
+                    }
                 }
                 if data.keys.contains("updatedAt") {
-                    self.updatedAt = data["updatedAt"] as? Timestamp ?? Timestamp(date: Date())
+                    if let updatedAt: Timestamp = data["updatedAt"] as? Timestamp {
+                        self.updatedAt = updatedAt
+                    } else {
+                        throw DataCacheableError.serverValueHasNotBeenDetermined
+                    }
                 }
                 if Thread.isMainThread {
                     completion(self, nil)
