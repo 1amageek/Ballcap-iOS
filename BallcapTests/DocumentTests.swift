@@ -120,6 +120,19 @@ class DocumentTests: XCTestCase {
         }
         let document: Document<Model> = Document(id: "a")
         XCTAssertEqual(document[\.path], "a")
+        document[\.path] = "b"
+        XCTAssertEqual(document[\.path], "b")
+    }
+
+    func testDocumentCopy() {
+        struct Model: Codable, Modelable, Equatable {
+            var path: String = "a"
+        }
+        let document: Document<Model> = Document(id: "a")
+        XCTAssertEqual(document[\.path], "a")
+        document[\.path] = "b"
+        let copy: Document<Model> = document.copy()
+        XCTAssertEqual(copy[\.path], "b")
     }
 
     func testDocumentSaveUpdateDelete() {

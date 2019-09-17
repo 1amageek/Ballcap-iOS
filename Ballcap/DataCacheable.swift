@@ -32,7 +32,8 @@ public extension DataCacheable where Self: Object {
 
 public extension DataCacheable where Self: Object, Self: DataRepresentable {
 
-    func get(_ completion: @escaping (Self?, Error?) -> Void) {
+    @discardableResult
+    func get(_ completion: ((Self?, Error?) -> Void)? = nil) -> Self {
         if let data: [String: Any] = DocumentCache.shared.get(reference: self.documentReference) {
             do {
                 self.data = try Firestore.Decoder().decode(Model.self, from: data)
@@ -51,21 +52,21 @@ public extension DataCacheable where Self: Object, Self: DataRepresentable {
                     }
                 }
                 if Thread.isMainThread {
-                    completion(self, nil)
+                    completion?(self, nil)
                 } else {
                     DispatchQueue.main.async {
-                        completion(self, nil)
+                        completion?(self, nil)
                     }
                 }
             } catch {
                 Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
                     if let object: Self = object {
                         self.data = object.data
-                        completion(object, error)
+                        completion?(object, error)
                     } else {
                         Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
                             self.data = object?.data
-                            completion(object, error)
+                            completion?(object, error)
                         }
                     }
                 }
@@ -74,14 +75,15 @@ public extension DataCacheable where Self: Object, Self: DataRepresentable {
             Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
                 if let object: Self = object {
                     self.data = object.data
-                    completion(object, error)
+                    completion?(object, error)
                 } else {
                     Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
                         self.data = object?.data
-                        completion(object, error)
+                        completion?(object, error)
                     }
                 }
             }
         }
+        return self
     }
 }
