@@ -20,6 +20,10 @@ Inspired by https://github.com/firebase/firebase-ios-sdk/tree/pb-codable3
 
 - Ballcap for TypeScript: https://github.com/1amageek/ballcap.ts
 
+__Sameple projects__
+
+- [Messagestore](https://github.com/1amageek/Messagestore)  Chat framework created by Cloud Firestore.
+
 ### Feature
 
 ☑️ Firestore's document schema with Swift Codable<br>
