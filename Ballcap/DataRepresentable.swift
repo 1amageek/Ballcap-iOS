@@ -111,12 +111,15 @@ public extension DataRepresentable where Self: Object {
         }
     }
 
-    subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T? {
+    subscript<T: Any>(keyPath: WritableKeyPath<Model, T>) -> T {
         get {
-            return self.data?[keyPath: keyPath]
+            guard let data = self.data else {
+                fatalError("[Ballcap: DataRepresentable] This object has not data.")
+            }
+            return data[keyPath: keyPath]
         }
         set {
-            self.data?[keyPath: keyPath] = newValue!
+            self.data![keyPath: keyPath] = newValue
         }
     }
 

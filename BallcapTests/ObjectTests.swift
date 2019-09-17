@@ -89,6 +89,8 @@ class ObjectTests: XCTestCase {
         }
         let o: Obj = Obj(id: "a")
         XCTAssertEqual(o[\.path], "a")
+        o[\.path] = "b"
+        XCTAssertEqual(o[\.path], "b")
     }
 
     func testObjectSaveUpdateDelete() {

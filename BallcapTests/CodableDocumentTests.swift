@@ -311,7 +311,7 @@ class CodableDocumentTests: XCTestCase {
             var ref: DocumentReference = Firestore.firestore().document("a/a")
         }
         let document: Document<Model> = Document()
-        XCTAssertEqual(document[\.ref]?.path, "a/a")
+        XCTAssertEqual(document[\.ref].path, "a/a")
     }
 
     func testDocumentSubScriptRefWrite() {
