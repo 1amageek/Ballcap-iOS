@@ -102,7 +102,7 @@ public extension DataRepresentable where Self: Object {
         }
     }
 
-    private func _set(snapshot: DocumentSnapshot) throws {
+    internal func _set(snapshot: DocumentSnapshot) throws {
         self.snapshot = snapshot
         guard let data: [String: Any] = snapshot.data() else {
             self.snapshot = snapshot

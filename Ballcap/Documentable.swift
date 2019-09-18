@@ -24,6 +24,8 @@ public protocol Documentable: class, Referencable & Equatable {
     var createdAt: Timestamp { get }
 
     var updatedAt: Timestamp { get }
+
+    init(_ documentReference: DocumentReference)
 }
 
 public extension Documentable {
