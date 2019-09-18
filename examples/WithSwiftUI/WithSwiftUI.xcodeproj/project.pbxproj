@@ -16,6 +16,9 @@
 		1261BEF522DB5A5700B89006 /* ItemDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261BEF322DB5A5700B89006 /* ItemDataSource.swift */; };
 		1261BEF622DB5A5700B89006 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261BEF422DB5A5700B89006 /* Item.swift */; };
 		1261BEFA22DB5BCF00B89006 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1261BEF922DB5BCF00B89006 /* GoogleService-Info.plist */; };
+		127E8E122332046C004D6D3B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E8E112332046C004D6D3B /* User.swift */; };
+		127E8E1623320697004D6D3B /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E8E1523320697004D6D3B /* UserView.swift */; };
+		127E8E1823320A19004D6D3B /* UserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E8E1723320A19004D6D3B /* UserEditView.swift */; };
 		353F9D7416E4053ED49793FA /* Pods_WithSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF5EB74A9D21694287A81206 /* Pods_WithSwiftUI.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +34,9 @@
 		1261BEF322DB5A5700B89006 /* ItemDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDataSource.swift; sourceTree = "<group>"; };
 		1261BEF422DB5A5700B89006 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		1261BEF922DB5BCF00B89006 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		127E8E112332046C004D6D3B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		127E8E1523320697004D6D3B /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		127E8E1723320A19004D6D3B /* UserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditView.swift; sourceTree = "<group>"; };
 		C9185DC89B9DC0FEB4F0E94F /* Pods-WithSwiftUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithSwiftUI.debug.xcconfig"; path = "Target Support Files/Pods-WithSwiftUI/Pods-WithSwiftUI.debug.xcconfig"; sourceTree = "<group>"; };
 		D4851A40C14AC1E2361D9ABC /* Pods-WithSwiftUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithSwiftUI.release.xcconfig"; path = "Target Support Files/Pods-WithSwiftUI/Pods-WithSwiftUI.release.xcconfig"; sourceTree = "<group>"; };
 		EF5EB74A9D21694287A81206 /* Pods_WithSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WithSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +79,8 @@
 				1261BEDF22DB570100B89006 /* AppDelegate.swift */,
 				1261BEE122DB570100B89006 /* SceneDelegate.swift */,
 				1261BEE322DB570100B89006 /* ContentView.swift */,
+				127E8E1523320697004D6D3B /* UserView.swift */,
+				127E8E1723320A19004D6D3B /* UserEditView.swift */,
 				1261BEF722DB5A6700B89006 /* Models */,
 				1261BEE522DB570400B89006 /* Assets.xcassets */,
 				1261BEEA22DB570400B89006 /* LaunchScreen.storyboard */,
@@ -95,6 +103,7 @@
 			children = (
 				1261BEF422DB5A5700B89006 /* Item.swift */,
 				1261BEF322DB5A5700B89006 /* ItemDataSource.swift */,
+				127E8E112332046C004D6D3B /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -234,9 +243,12 @@
 			files = (
 				1261BEF622DB5A5700B89006 /* Item.swift in Sources */,
 				1261BEE022DB570100B89006 /* AppDelegate.swift in Sources */,
+				127E8E122332046C004D6D3B /* User.swift in Sources */,
 				1261BEF522DB5A5700B89006 /* ItemDataSource.swift in Sources */,
 				1261BEE222DB570100B89006 /* SceneDelegate.swift in Sources */,
+				127E8E1823320A19004D6D3B /* UserEditView.swift in Sources */,
 				1261BEE422DB570100B89006 /* ContentView.swift in Sources */,
+				127E8E1623320697004D6D3B /* UserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,41 +12,41 @@ import Ballcap
 
 struct ContentView : View {
 
-    @ObservedObject (initialValue: ItemDatabase()) var dataSource: ItemDatabase
+    @State var users: [User] = []
+
+    var dataSource: DataSource<User> = User.query.dataSource()
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(self.dataSource.items, id: \.id) { item in
-                    ItemRow(item: item.data!)
+                ForEach(self.users) { user in
+                    NavigationLink(destination: UserView(user: user)) {
+                        HStack {
+                            Text(user[\.name])
+                        }
+                    }
                 }.onDelete(perform: delete)
             }
-            .navigationBarTitle(Text("Item"))
-                .navigationBarItems(trailing: Button("Add", action: {
-                    let item: Document<Item> = Document()
-                    item.data?.title = UUID().uuidString
-                    item.data?.body = "\(Date())"
-                    item.save()
-                }))
+            .navigationBarTitle(Text("Users"))
+            .navigationBarItems(trailing: Button("Add") {
+                let user: User = User()
+                user[\.name] = UUID().uuidString
+                user.save()
+            })
+        }.onAppear {
+            self.dataSource.retrieve { (_, snapshot, done) in
+                let user: User = User(snapshot: snapshot)!
+                done(user)
+            }.onChanged { (_, snapshot) in
+                self.users = snapshot.after
+            }.listen()
         }
     }
 
     func delete(at offset: IndexSet) {
         if let first = offset.first {
-            let item: Document<Item> = self.dataSource.items[first]
-            item.delete()
-        }
-    }
-}
-
-struct ItemRow : View {
-
-    var item: Item
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(item.title ?? "").bold()
-            Text(item.body ?? "")
+            let user: User = self.users[first]
+            user.delete()
         }
     }
 }

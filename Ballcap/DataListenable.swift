@@ -16,6 +16,7 @@ public protocol DataListenable: class {
 
 public extension DataListenable where Self: DataRepresentable, Self: Object {
 
+    @discardableResult
     func listen(includeMetadataChanges: Bool = true, completion: ((Self?, Error?) -> Void)? = nil) -> Self {
         self.listener = self.documentReference.addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { [weak self] (snapshot, error) in
             if let error = error {
