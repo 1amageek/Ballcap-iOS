@@ -368,3 +368,83 @@ let room: Room = Room()
 batch.save(room.transcripts, to: room.collection(path: .transcripts))
 batch.commit()
 ```
+
+
+## Using Ballcap with SwiftUI
+
+First, create an object that conforms to `ObservableObject`.
+`DataListenable` makes an Object observable.
+
+```swift
+final class User: Object, DataRepresentable, DataListenable, ObservableObject, Identifiable {
+
+    typealias ID = String
+
+    override class var name: String { "users" }
+
+    struct Model: Codable, Modelable {
+
+        var name: String = ""
+    }
+
+    @Published var data: User.Model?
+
+    var listener: ListenerRegistration?
+}
+```
+
+Next, create a `View` that displays this object.
+
+
+```swift
+struct UserView: View {
+
+    @ObservedObject var user: User
+
+    @State var isPresented: Bool = false
+
+    var body: some View {
+        VStack {
+            Text(user[\.name])
+        }
+        .navigationBarTitle(Text("User"))
+        .navigationBarItems(trailing: Button("Edit") {
+            self.isPresented.toggle()
+        })
+        .sheet(isPresented: $isPresented) {
+            UserEditView(user: self.user.copy(), isPresented: self.$isPresented)
+        }
+        .onAppear {
+            _ = self.user.listen()
+        }
+    }
+}
+```
+
+You can access the object data using `subscript`.
+
+```swift
+Text(user[\.name])
+```
+
+Start user observation with `onAppear`.
+
+```swift
+.onAppear {
+    _ = self.user.listen()
+}
+```
+
+### Copy object
+
+Pass a copy of Object to EditView before editing the data.
+
+```swift
+.sheet(isPresented: $isPresented) {
+    UserEditView(user: self.user.copy(), isPresented: self.$isPresented)
+}
+```
+
+Since the Object is being observed by the listener, changes can be caught automatically.
+
+
