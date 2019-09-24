@@ -447,4 +447,39 @@ Pass a copy of Object to EditView before editing the data.
 
 Since the Object is being observed by the listener, changes can be caught automatically.
 
+Finally, create a view that can update the object.
 
+```swift
+struct UserEditView: View {
+
+    @ObservedObject var user: User
+
+    @Binding var isPresented: Bool
+
+    var body: some View {
+
+        VStack {
+
+            Form {
+                Section(header: Text("Name")) {
+                    TextField("Name", text: $user[\.name])
+                }
+            }
+
+            Button("Save") {
+                self.user.update()
+                self.isPresented.toggle()
+            }
+        }.frame(height: 200)
+    }
+}
+```
+
+Updating an object is possible only with `update()`.
+
+```swift
+Button("Update") {
+    self.user.update()
+    self.isPresented.toggle()
+}
+```
