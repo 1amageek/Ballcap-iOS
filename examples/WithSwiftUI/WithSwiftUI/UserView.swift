@@ -12,7 +12,7 @@ struct UserView: View {
 
     @ObservedObject var user: User
 
-    @State var isPresenting: Bool = false
+    @State var isPresented: Bool = false
 
     var body: some View {
 
@@ -21,10 +21,10 @@ struct UserView: View {
         }
         .navigationBarTitle(Text("User"))
         .navigationBarItems(trailing: Button("Edit") {
-            self.isPresenting.toggle()
+            self.isPresented.toggle()
         })
-        .sheet(isPresented: $isPresenting) {
-            UserEditView(user: self.user.copy(), isPresented: self.$isPresenting)
+        .sheet(isPresented: $isPresented) {
+            UserEditView(user: self.user.copy(), isPresented: self.$isPresented)
         }
         .onAppear {
             _ = self.user.listen()

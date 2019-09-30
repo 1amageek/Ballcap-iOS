@@ -10,7 +10,7 @@ import Ballcap
 import Firebase
 import SwiftUI
 
-final class User: Object, DataRepresentable, DataListenable, ObservableObject,  Identifiable {
+final class User: Object, DataRepresentable, DataListenable, ObservableObject, Identifiable {
 
     typealias ID = String
 

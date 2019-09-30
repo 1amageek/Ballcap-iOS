@@ -143,11 +143,10 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
             guard let snapshot: QuerySnapshot = snapshot else {
                 return
             }
-            guard let lastSnapshot = snapshot.documents.last else {
-                return
-            }
             if !snapshot.metadata.hasPendingWrites {
-                self.query = self.query.start(afterDocument: lastSnapshot)
+                if let lastSnapshot = snapshot.documents.last {
+                    self.query = self.query.start(afterDocument: lastSnapshot)
+                }
             }
             self._execute(snapshot: snapshot)
         })
@@ -184,6 +183,12 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                                 }
                                 group.leave()
                             })
+                        } else {
+                            let element: Element = Element(snapshot: change.document)!
+                            if !documents.keys.contains(id) {
+                                insertions.append(element)
+                                documents.append(element)
+                            }
                         }
                     }
                 case .modified:
@@ -197,6 +202,12 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                                 }
                                 group.leave()
                             })
+                        } else {
+                            let element: Element = Element(snapshot: change.document)!
+                            if let index: Int = documents.keys.firstIndex(of: id) {
+                                modifications.append(element)
+                                documents[index] = element
+                            }
                         }
                     }
                 case .removed:
@@ -210,6 +221,12 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                                 }
                                 group.leave()
                             })
+                        } else {
+                            let element: Element = Element(snapshot: change.document)!
+                            if let index: Int = documents.keys.firstIndex(of: id) {
+                                deletions.append(element)
+                                documents.remove(at: index)
+                            }
                         }
                     }
                 @unknown default:
