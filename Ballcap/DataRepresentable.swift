@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-public protocol DataRepresentable: class {
+public protocol DataRepresentable: class, Hashable {
 
     associatedtype Model: Modelable & Codable
 

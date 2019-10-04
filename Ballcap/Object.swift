@@ -49,15 +49,7 @@ public enum DocumentError: Error {
     }
 }
 
-open class Object: Documentable, Hashable {
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.path)
-    }
-
-    public static func == (lhs: Object, rhs: Object) -> Bool {
-        return lhs.hashValue == rhs.hashValue
-    }
+open class Object: Documentable {
 
     open class var name: String {
         return String(describing: Mirror(reflecting: self).subjectType).components(separatedBy: ".").first!.lowercased()
@@ -81,6 +73,34 @@ open class Object: Documentable, Hashable {
 
     public func set(documentReference: DocumentReference) {
         self.documentReference = documentReference
+    }
+}
+
+extension Equatable where Self: Object {
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.path == rhs.path
+    }
+}
+
+extension Hashable where Self: Object {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.path)
+    }
+}
+
+public extension DataRepresentable where Self: Equatable, Self: Object {
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.path == rhs.path
+    }
+}
+
+public extension DataRepresentable where Self: Equatable, Self.Model: Equatable, Self: Object {
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.path == rhs.path && lhs.data == rhs.data
     }
 }
 
