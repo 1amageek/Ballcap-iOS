@@ -97,6 +97,16 @@ public extension DataRepresentable where Self: Equatable, Self: Object {
     }
 }
 
+public extension DataRepresentable where Self: Hashable, Self.Model: Hashable, Self: Object {
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.path)
+        if let data: Self.Model = self.data {
+            hasher.combine(data)
+        }
+    }
+}
+
 public extension DataRepresentable where Self: Object {
 
     static var query: DataSource<Self>.Query {
