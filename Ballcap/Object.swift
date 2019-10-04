@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseStorage
 
-public protocol Modelable: Referencable, CustomDebugStringConvertible {
+public protocol Modelable: Referencable, Equatable, CustomDebugStringConvertible {
     init()
 }
 
@@ -91,13 +91,6 @@ extension Hashable where Self: Object {
 }
 
 public extension DataRepresentable where Self: Equatable, Self: Object {
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.path == rhs.path
-    }
-}
-
-public extension DataRepresentable where Self: Equatable, Self.Model: Equatable, Self: Object {
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.path == rhs.path && lhs.data == rhs.data
