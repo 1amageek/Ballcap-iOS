@@ -34,10 +34,7 @@ struct ContentView : View {
                 user.save()
             })
         }.onAppear {
-            self.dataSource.retrieve { (_, snapshot, done) in
-                let user: User = User(snapshot: snapshot)!
-                done(user)
-            }.onChanged { (_, snapshot) in
+            self.dataSource.onChanged { (_, snapshot) in
                 self.users = snapshot.after
             }.listen()
         }

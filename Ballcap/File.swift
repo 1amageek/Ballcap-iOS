@@ -23,7 +23,9 @@ public enum FileError: Error {
 }
 
 public final class File: Hashable {
-    
+
+    // MARK: - MIMEType
+
     public enum MIMEType: Codable, Equatable {
         
         public init(from decoder: Decoder) throws {
@@ -138,7 +140,8 @@ public final class File: Hashable {
 
     }
 
-    private(set) var storageReference: StorageReference
+    /// StorageReference fullpath
+    public private(set) var storageReference: StorageReference
 
     public var path: String
 
@@ -147,6 +150,11 @@ public final class File: Hashable {
 
     /// Save data
     public var data: Data?
+
+    /// Cache data
+    public var cache: Data? {
+        return StorageCache.shared.get(self.storageReference)
+    }
 
     /// File download URL
     public var url: URL?
@@ -179,10 +187,10 @@ public final class File: Hashable {
     public var additionalData: [String: String] = [:]
 
     /// Firebase uploading task
-    private(set) weak var uploadTask: StorageUploadTask?
+    public private(set) weak var uploadTask: StorageUploadTask?
 
     /// Firebase downloading task
-    private(set) weak var downloadTask: StorageDownloadTask?
+    public private(set) weak var downloadTask: StorageDownloadTask?
 
     // MARK: - Initialize
 
@@ -341,7 +349,7 @@ public final class File: Hashable {
 
     // MARK: -
 
-    public var description: String {
+    public var debugDescription: String {
         let base: String =
             "      path: \(self.path)\n" +
             "      name: \(self.name)\n" +

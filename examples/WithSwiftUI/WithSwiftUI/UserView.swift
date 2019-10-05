@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Ballcap
 
 struct UserView: View {
 
@@ -17,6 +18,14 @@ struct UserView: View {
     var body: some View {
 
         VStack {
+            (user[\.profileImage] ?? File(user.storageReference))
+                .resizable()
+                .renderingMode(.original)
+                .frame(width: 120, height: 120)
+                .background(Color.gray)
+                .clipShape(Circle())
+                .padding()
+
             Text(user[\.name])
         }
         .navigationBarTitle(Text("User"))
@@ -27,7 +36,8 @@ struct UserView: View {
             UserEditView(user: self.user.copy(), isPresented: self.$isPresented)
         }
         .onAppear {
-            _ = self.user.listen()
+            self.user.listen()
+            self.user.load(keyPath: \.profileImage)
         }
     }
 }

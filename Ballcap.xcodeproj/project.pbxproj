@@ -43,6 +43,7 @@
 		123140AF22598D1C00E7BD00 /* DocumentCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AE22598D1C00E7BD00 /* DocumentCacheTests.swift */; };
 		123140B022598E1700E7BD00 /* DocumentCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AA225988D800E7BD00 /* DocumentCache.swift */; };
 		123140B1225A39BE00E7BD00 /* DataCacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123140AC22598AC900E7BD00 /* DataCacheable.swift */; };
+		12334F752347E1FD00B11009 /* FileCacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12334F742347E1FD00B11009 /* FileCacheable.swift */; };
 		127E8E0F2331FA93004D6D3B /* DataListenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E8E0E2331FA93004D6D3B /* DataListenable.swift */; };
 		127E8E102331FEE4004D6D3B /* DataListenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E8E0E2331FA93004D6D3B /* DataListenable.swift */; };
 		128075DC228078B5009ECF74 /* BallcapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128075DB228078B5009ECF74 /* BallcapApp.swift */; };
@@ -117,6 +118,7 @@
 		123140AA225988D800E7BD00 /* DocumentCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCache.swift; sourceTree = "<group>"; };
 		123140AC22598AC900E7BD00 /* DataCacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCacheable.swift; sourceTree = "<group>"; };
 		123140AE22598D1C00E7BD00 /* DocumentCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCacheTests.swift; sourceTree = "<group>"; };
+		12334F742347E1FD00B11009 /* FileCacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCacheable.swift; sourceTree = "<group>"; };
 		127E8E0E2331FA93004D6D3B /* DataListenable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataListenable.swift; sourceTree = "<group>"; };
 		128075DB228078B5009ECF74 /* BallcapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallcapApp.swift; sourceTree = "<group>"; };
 		12839419224B6A31000383EB /* Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,6 +223,7 @@
 				12F8BD6A22574F29004F7D52 /* DataRepresentable.swift */,
 				123140AC22598AC900E7BD00 /* DataCacheable.swift */,
 				127E8E0E2331FA93004D6D3B /* DataListenable.swift */,
+				12334F742347E1FD00B11009 /* FileCacheable.swift */,
 				12F8BD6C22574F44004F7D52 /* HierarchicalStructurable.swift */,
 				12D75C9B225369F9004D1AC4 /* ServerTimestamp.swift */,
 				12D75C9E22536CD2004D1AC4 /* IncrementableNumber.swift */,
@@ -507,6 +510,7 @@
 				127E8E0F2331FA93004D6D3B /* DataListenable.swift in Sources */,
 				1283943F224B6AA5000383EB /* CodableErrors.swift in Sources */,
 				1207AB31225A46E900578D29 /* StorageCache.swift in Sources */,
+				12334F752347E1FD00B11009 /* FileCacheable.swift in Sources */,
 				123140AD22598AC900E7BD00 /* DataCacheable.swift in Sources */,
 				12F8BD6D22574F44004F7D52 /* HierarchicalStructurable.swift in Sources */,
 				1231408B22575BA800E7BD00 /* Query.swift in Sources */,
