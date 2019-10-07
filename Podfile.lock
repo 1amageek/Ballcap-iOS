@@ -40,6 +40,8 @@ PODS:
     - leveldb-library (~> 1.22)
     - nanopb (~> 0.3.901)
     - Protobuf (~> 3.1)
+  - FirebaseFirestoreSwift (0.1):
+    - FirebaseFirestore (>= 0.10.0)
   - FirebaseStorage (3.4.1):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
@@ -48,8 +50,8 @@ PODS:
   - GoogleDataTransportCCTSupport (1.1.0):
     - GoogleDataTransport (~> 2.0)
     - nanopb
-  - GoogleUtilities/Environment (6.3.0)
-  - GoogleUtilities/Logger (6.3.0):
+  - GoogleUtilities/Environment (6.3.1)
+  - GoogleUtilities/Logger (6.3.1):
     - GoogleUtilities/Environment
   - "gRPC-C++ (0.0.9)":
     - "gRPC-C++/Implementation (= 0.0.9)"
@@ -74,11 +76,12 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
-  - Protobuf (3.9.2)
+  - Protobuf (3.10.0)
 
 DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Storage
+  - FirebaseFirestoreSwift (from `https://github.com/firebase/firebase-ios-sdk.git`, branch `master`)
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
@@ -100,6 +103,16 @@ SPEC REPOS:
     - nanopb
     - Protobuf
 
+EXTERNAL SOURCES:
+  FirebaseFirestoreSwift:
+    :branch: master
+    :git: https://github.com/firebase/firebase-ios-sdk.git
+
+CHECKOUT OPTIONS:
+  FirebaseFirestoreSwift:
+    :commit: 51b94c314d869968643d123136cb08a90ed623e8
+    :git: https://github.com/firebase/firebase-ios-sdk.git
+
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   Firebase: 2d750c54cda57d5a6ae31212cfe5cc813c6be7e4
@@ -108,17 +121,18 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: be4f7a09d02ab305f18de59a470412caddb64c2a
   FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
   FirebaseFirestore: 5ee8bdb959541f0d55352f2d681efb03b9742a43
+  FirebaseFirestoreSwift: 5d7734b9baa23a6d93d3ed89d81025f321c79ab0
   FirebaseStorage: b7c6d00997bc21d4465453bdcc5cc65513110fed
   GoogleDataTransport: c8617c00e4f3eb9418e42ac0e8ac5241a9d555dd
   GoogleDataTransportCCTSupport: 9f352523e8785a71f6754f51eeff09f49ec19268
-  GoogleUtilities: 9c2c544202301110b29f7974a82e77fdcf12bf51
+  GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  Protobuf: 67fb42ba613def994e61854de2b3164f13790cc4
+  Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
 
-PODFILE CHECKSUM: 0ec68658479ab41eb308ab9e6bba30d8a4aafb17
+PODFILE CHECKSUM: 67dfe2fd6825703dd77f9832d981033be30039d2
 
 COCOAPODS: 1.8.1

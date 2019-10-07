@@ -9,6 +9,7 @@
 
 import FirebaseFirestore
 import FirebaseStorage
+import FirebaseFirestoreSwift
 
 public enum DataSourceError: Error {
     case timeout

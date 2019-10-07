@@ -13,8 +13,40 @@ import FirebaseFirestore
 
 class ModelableTests: XCTestCase {
 
+    func testDecode() {
+        struct Model: Modelable, Codable, Equatable {
+
+
+            var s: String = ""
+
+            enum Keys: String, CodingKey {
+                case s
+            }
+
+            init() {
+                self.s = ""
+            }
+
+            init(s: String) {
+                self.s = s
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: Keys.self)
+                var s: String = "initialValue"
+                do {
+                    s = try container.decode(String.self, forKey: .s)
+                } catch _ { }
+                self.init(s: s)
+            }
+        }
+
+        let data: Model = try! Firestore.Decoder().decode(Model.self, from: ["s": NSNull()])
+        XCTAssertEqual(data.s, "initialValue")
+    }
+
     func testModelName() {
-        struct Model: Modelable & Codable & Equatable {
+        struct Model: Modelable, Codable, Equatable {
             static var name: String {
                 return "name"
             }
@@ -23,7 +55,7 @@ class ModelableTests: XCTestCase {
     }
 
     func testDebugDescription() {
-        struct Model: Modelable & Codable & Equatable {
+        struct Model: Modelable, Codable, Equatable {
             init() {
                 s = "abc"
                 d = 123

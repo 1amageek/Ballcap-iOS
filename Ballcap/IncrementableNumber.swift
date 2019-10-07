@@ -7,6 +7,7 @@
 //
 
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 public enum IncrementableInt: Codable, Hashable, ExpressibleByIntegerLiteral, RawRepresentable {
 
