@@ -10,6 +10,7 @@ import Foundation
 
 public protocol FileCacheable {
 
+//    var downloadFiles: [PartialKeyPath<Model>: File] = [:]
 }
 
 public extension FileCacheable where Self: DataRepresentable, Self: Object {

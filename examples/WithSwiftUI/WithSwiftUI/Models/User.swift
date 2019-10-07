@@ -29,6 +29,8 @@ final class User: Object, DataRepresentable, DataListenable, ObservableObject, I
 
     var files: [File] = []
 
+    @Published var downloadFiles: [PartialKeyPath<Model>: File] = [:]
+
     func load(keyPath: WritableKeyPath<Model, File?>) {
         print("load")
         if let file: File = self.data?[keyPath: keyPath] {

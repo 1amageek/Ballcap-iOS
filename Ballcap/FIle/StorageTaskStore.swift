@@ -19,13 +19,13 @@ internal final class StorageTaskStore {
 
     // MARK: UPLOAD
 
-    func set(upload path: String, task: StorageUploadTask) {
+    func set(upload path: String, task: StorageUploadTask?) {
         self.uploadTaskStorage[path] = task
         let deleteTask: (StorageTaskSnapshot) -> Void = { [weak self] (snapshot) in
             self?.uploadTaskStorage.removeValue(forKey: path)
         }
-        task.observe(.success, handler: deleteTask)
-        task.observe(.failure, handler: deleteTask)
+        task?.observe(.success, handler: deleteTask)
+        task?.observe(.failure, handler: deleteTask)
     }
 
     func get(upload path: String) -> StorageUploadTask? {
@@ -34,13 +34,13 @@ internal final class StorageTaskStore {
 
     // MARK: DOWNLOAD
 
-    func set(download path: String, task: StorageDownloadTask) {
+    func set(download path: String, task: StorageDownloadTask?) {
         self.downloadTaskStorage[path] = task
         let deleteTask: (StorageTaskSnapshot) -> Void = { [weak self] (snapshot) in
             self?.downloadTaskStorage.removeValue(forKey: path)
         }
-        task.observe(.success, handler: deleteTask)
-        task.observe(.failure, handler: deleteTask)
+        task?.observe(.success, handler: deleteTask)
+        task?.observe(.failure, handler: deleteTask)
     }
 
     func get(download path: String) -> StorageDownloadTask? {
