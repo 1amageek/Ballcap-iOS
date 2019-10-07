@@ -1,5 +1,5 @@
 //
-//  StorageCache.swift
+//  FileCache.swift
 //  Ballcap
 //
 //  Created by 1amageek on 2019/04/07.
@@ -8,9 +8,9 @@
 
 import FirebaseStorage
 
-internal final class StorageCache {
+internal final class FileCache {
 
-    static let shared: StorageCache = StorageCache()
+    static let shared: FileCache = FileCache()
 
     lazy var cache: NSCache<NSString, NSData> = {
         let cache: NSCache<NSString, NSData> = NSCache()

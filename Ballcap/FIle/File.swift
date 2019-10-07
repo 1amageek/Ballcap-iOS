@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseStorage
 
 public enum FileError: Error {
-    case invalidData(File)
+    case invalidData(Storable)
     case timeout
 
     public var description: String {
@@ -22,10 +22,127 @@ public enum FileError: Error {
     }
 }
 
-public final class File: Hashable {
-    
+public protocol Storable {
+
+    var storageReference: StorageReference { get set }
+
+    var path: String { get set }
+
+    var url: URL? { get set }
+
+    var mimeType: File.MIMEType { get set }
+
+    var additionalData: [String: String] { get set }
+}
+
+public class File: Storable {
+
+    /// Cloud Storage,  StroageReference
+    public var storageReference: StorageReference
+
+    /// Cloud Storage, StorageReference fullPath
+    public var path: String
+
+    /// StorageReference metadata
+    public var metadata: StorageMetadata?
+
+    /// Download URL
+    public var url: URL?
+
+    /// File mimeType
+    public var mimeType: MIMEType = .octetStream(nil)
+
+    /// Additional data, metadata
+    public var additionalData: [String: String] = [:]
+
+    /// Local filePath
+    public var originalURL: URL?
+
+    private var _data: Data?
+
+    // MARK: - Initialize
+
+    public init(_ storageReference: StorageReference,
+                data: Data? = nil,
+                mimeType: MIMEType? = nil,
+                additionalData: [String: String] = [:]
+    ) {
+        let (name, mimeType) = File.generateFileName(storageReference.name, mimeType: mimeType)
+        if let parent = storageReference.parent() {
+            self.storageReference = parent.child(name)
+        } else {
+            self.storageReference = Storage.storage().reference(withPath: name)
+        }
+        self.path = self.storageReference.fullPath
+        self.mimeType = mimeType
+        self.additionalData = additionalData
+        FileManager.shared.set(data, storageReference: self.storageReference)
+    }
+
+    public convenience init<T: Documentable>(_ object: T,
+                                 name: String? = nil,
+                                 data: Data? = nil,
+                                 mimeType: MIMEType? = nil,
+                                 additionalData: [String: String] = [:]
+    ) {
+        let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
+        let reference: StorageReference = object.storageReference.child(fileName)
+        self.init(reference, data: data, mimeType: mimeType, additionalData: additionalData)
+    }
+
+    required internal convenience init(path: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]) {
+        let storageReference: StorageReference = Storage.storage().reference().child(path)
+        self.init(storageReference)
+        self.url = url
+        self.mimeType = mimeType
+        self.additionalData = additionalData
+    }
+
+    static func generateFileName(_ name: String, mimeType: MIMEType?) -> (String, MIMEType) {
+        var fileName: String = name
+        let nameURL: URL = URL(string: name)!
+        if let mimeType: MIMEType = mimeType {
+            fileName = nameURL.pathExtension.isEmpty ? nameURL.appendingPathExtension(mimeType.fileExtension).absoluteString : name
+            return (fileName, mimeType)
+        }
+        guard !nameURL.pathExtension.isEmpty else {
+            return (fileName, .octetStream(nil))
+        }
+        guard let mimeType: MIMEType = MIMEType(ext: nameURL.pathExtension) else {
+            fatalError("This file has invalid extension.")
+        }
+        return (fileName, mimeType)
+    }
+
+    static func mimeType(for ext: String) -> MIMEType? {
+        return MIMEType(ext: ext)
+    }
+}
+
+extension File {
+
+    public var name: String {
+        return self.storageReference.name
+    }
+
+    public var debugDescription: String {
+        let base: String =
+            "      path: \(self.path)\n" +
+            "      name: \(self.name)\n" +
+            "      url: \(self.url?.absoluteString ?? "")\n" +
+            "      mimeType: \(self.mimeType.rawValue)\n" +
+            "      additionalData: \(self.additionalData)\n" +
+        "    "
+        return "\n    File {\n\(base)}"
+    }
+}
+
+extension File {
+
+    // MARK: - MIMEType
+
     public enum MIMEType: Codable, Equatable {
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
             let mimeType: String = try container.decode(String.self)
@@ -135,109 +252,16 @@ public final class File: Hashable {
             default:            self = .custom("", ext)
             }
         }
-
     }
+}
 
-    private(set) var storageReference: StorageReference
-
-    public var path: String
-
-    /// ConentType
-    public var mimeType: MIMEType = .octetStream(nil)
-
-    /// Save data
-    public var data: Data?
-
-    /// File download URL
-    public var url: URL?
-
-    private var originalURL: URL?
-
-    /// File name
-    public var name: String {
-        get {
-            return self.storageReference.name
-        }
-        set {
-            if let parent = self.storageReference.parent() {
-                self.storageReference = parent.child(newValue)
-            } else {
-                self.storageReference = Storage.storage().reference(withPath: newValue)
-            }
-        }
-    }
-
-    /// File metadata
-    public private(set) var metadata: StorageMetadata?
-
-    /// File uploaded
-    public var isUploaded: Bool {
-        return self.metadata?.updated != nil || self.url != nil
-    }
-
-    /// Additinal Data
-    public var additionalData: [String: String] = [:]
-
-    /// Firebase uploading task
-    private(set) weak var uploadTask: StorageUploadTask?
-
-    /// Firebase downloading task
-    private(set) weak var downloadTask: StorageDownloadTask?
-
-    // MARK: - Initialize
-
-    public init(_ storageReference: StorageReference, data: Data? = nil, mimeType: MIMEType? = nil) {
-        let (name, mimeType) = File.generateFileName(storageReference.name, mimeType: mimeType)
-        if let parent = storageReference.parent() {
-            self.storageReference = parent.child(name)
-        } else {
-            self.storageReference = Storage.storage().reference(withPath: name)
-        }
-        self.path = self.storageReference.fullPath
-        self.mimeType = mimeType
-        self.data = data
-        self.uploadTask = StorageTaskStore.shared.get(upload: storageReference.fullPath)
-        self.downloadTask = StorageTaskStore.shared.get(download: storageReference.fullPath)
-    }
-
-    public convenience init<T: Documentable>(_ object: T,
-                                             name: String? = nil,
-                                             data: Data? = nil,
-                                             mimeType: MIMEType? = nil) {
-        let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
-        let reference: StorageReference = object.storageReference.child(fileName)
-        self.init(reference, data: data, mimeType: mimeType)
-    }
-
-    internal convenience init(path: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]) {
-        let storageReference: StorageReference = Storage.storage().reference().child(path)
-        self.init(storageReference)
-        self.url = url
-        self.mimeType = mimeType
-        self.additionalData = additionalData
-    }
-
-    class func generateFileName(_ name: String, mimeType: MIMEType?) -> (String, MIMEType) {
-        var fileName: String = name
-        let nameURL: URL = URL(string: name)!
-        if let mimeType: MIMEType = mimeType {
-            fileName = nameURL.pathExtension.isEmpty ? nameURL.appendingPathExtension(mimeType.fileExtension).absoluteString : name
-            return (fileName, mimeType)
-        }
-        guard !nameURL.pathExtension.isEmpty else {
-            return (fileName, .octetStream(nil))
-        }
-        guard let mimeType: MIMEType = MIMEType(ext: nameURL.pathExtension) else {
-            fatalError("This file has invalid extension.")
-        }
-        return (fileName, mimeType)
-    }
-
-    class func mimeType(for ext: String) -> MIMEType? {
-        return MIMEType(ext: ext)
-    }
+extension File {
 
     // MARK: - SAVE
+
+    public var isUploaded: Bool {
+        return self.metadata != nil
+    }
 
     @discardableResult
     public func save(_ completion: ((StorageMetadata?, Error?) -> Void)?) -> StorageUploadTask? {
@@ -253,7 +277,7 @@ public final class File: Hashable {
                     completion?(metadata, error)
                     return
                 }
-                StorageCache.shared.set(data, reference: reference)
+                FileCache.shared.set(data, reference: reference)
                 reference.downloadURL(completion: { (url, error) in
                     if let error = error {
                         completion?(metadata, error)
@@ -264,7 +288,6 @@ public final class File: Hashable {
                 })
             }
             StorageTaskStore.shared.set(upload: self.path, task: task)
-            self.uploadTask = task
             return self.uploadTask
         } else if let url: URL = self.originalURL {
             let task: StorageUploadTask = reference.putFile(from: url, metadata: metadata) { (metadata, error) in
@@ -283,7 +306,6 @@ public final class File: Hashable {
                 })
             }
             StorageTaskStore.shared.set(upload: self.path, task: task)
-            self.uploadTask = task
             return self.uploadTask
         } else {
             let error: FileError = .invalidData(self)
@@ -298,8 +320,7 @@ public final class File: Hashable {
         self.storageReference.delete { (error) in
             self.metadata = nil
             self.url = nil
-            self.data = nil
-            StorageCache.shared.delete(reference: self.storageReference)
+            FileCache.shared.delete(reference: self.storageReference)
             completion?(error)
         }
     }
@@ -314,12 +335,10 @@ public final class File: Hashable {
             completion(data, nil)
             return nil
         }
-        guard let data: Data = StorageCache.shared.get(self.storageReference) else {
+        guard let data: Data = FileCache.shared.get(self.storageReference) else {
             let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (data, error) in
-                self.data = data
-                self.downloadTask = nil
                 if let data = data {
-                    StorageCache.shared.set(data, reference: self.storageReference)
+                    FileCache.shared.set(data, reference: self.storageReference)
                 }
                 completion(data, error as Error?)
             })
@@ -327,36 +346,70 @@ public final class File: Hashable {
         }
         completion(data, nil)
         let task: StorageDownloadTask = self.storageReference.getData(maxSize: size, completion: { (networkData, error) in
-            self.downloadTask = nil
             if let networkData = networkData, data != networkData {
-                self.data = networkData
-                StorageCache.shared.set(networkData, reference: self.storageReference)
+                FileCache.shared.set(networkData, reference: self.storageReference)
                 completion(data, error as Error?)
             }
         })
         StorageTaskStore.shared.set(download: self.path, task: task)
-        self.downloadTask = task
         return task
     }
+}
 
-    // MARK: -
-
-    public var description: String {
-        let base: String =
-            "      path: \(self.path)\n" +
-            "      name: \(self.name)\n" +
-            "      url: \(self.url?.absoluteString ?? "")\n" +
-            "      mimeType: \(self.mimeType.rawValue)\n" +
-            "      additionalData: \(self.additionalData)\n" +
-        "    "
-        return "\n    File {\n\(base)}"
-    }
+extension File: Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.path)
     }
 
     public static func == (lhs: File, rhs: File) -> Bool {
-        return lhs.name == rhs.name && lhs.url == rhs.url && lhs.mimeType == rhs.mimeType
+        return lhs.path == rhs.path && lhs.mimeType == rhs.mimeType
+    }
+}
+
+extension Storable {
+
+    /// Save data
+    public var data: Data? {
+        get {
+            return FileManager.shared.get(storageReference: self.storageReference)
+        }
+        set {
+            FileManager.shared.set(newValue, storageReference: self.storageReference)
+        }
+    }
+
+    /// Firebase uploading task
+    public internal(set) var uploadTask: StorageUploadTask? {
+        get {
+            StorageTaskStore.shared.get(upload: self.path)
+        }
+        set {
+            StorageTaskStore.shared.set(upload: self.path, task: newValue)
+        }
+    }
+
+    /// Firebase downloading task
+    public internal(set) weak var downloadTask: StorageDownloadTask? {
+        get {
+            StorageTaskStore.shared.get(download: self.path)
+        }
+        set {
+            StorageTaskStore.shared.set(download: self.path, task: newValue)
+        }
+    }
+}
+
+extension File {
+
+    /// Save data
+    public var data: Data? {
+        get {
+            return self._data ?? FileManager.shared.get(storageReference: self.storageReference)
+        }
+        set {
+            self._data = newValue
+            FileManager.shared.set(newValue, storageReference: self.storageReference)
+        }
     }
 }

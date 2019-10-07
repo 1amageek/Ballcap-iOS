@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12334F712347815A00B11009 /* File+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12334F702347815A00B11009 /* File+View.swift */; };
+		12334F7323478AAD00B11009 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12334F7223478AAD00B11009 /* ImagePicker.swift */; };
 		1261BEE022DB570100B89006 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261BEDF22DB570100B89006 /* AppDelegate.swift */; };
 		1261BEE222DB570100B89006 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261BEE122DB570100B89006 /* SceneDelegate.swift */; };
 		1261BEE422DB570100B89006 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261BEE322DB570100B89006 /* ContentView.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		12334F702347815A00B11009 /* File+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+View.swift"; sourceTree = "<group>"; };
+		12334F7223478AAD00B11009 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		1261BEDC22DB570100B89006 /* WithSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WithSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1261BEDF22DB570100B89006 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1261BEE122DB570100B89006 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 				1261BEE322DB570100B89006 /* ContentView.swift */,
 				127E8E1523320697004D6D3B /* UserView.swift */,
 				127E8E1723320A19004D6D3B /* UserEditView.swift */,
+				12334F7223478AAD00B11009 /* ImagePicker.swift */,
+				12334F702347815A00B11009 /* File+View.swift */,
 				1261BEF722DB5A6700B89006 /* Models */,
 				1261BEE522DB570400B89006 /* Assets.xcassets */,
 				1261BEEA22DB570400B89006 /* LaunchScreen.storyboard */,
@@ -248,7 +254,9 @@
 				1261BEE222DB570100B89006 /* SceneDelegate.swift in Sources */,
 				127E8E1823320A19004D6D3B /* UserEditView.swift in Sources */,
 				1261BEE422DB570100B89006 /* ContentView.swift in Sources */,
+				12334F7323478AAD00B11009 /* ImagePicker.swift in Sources */,
 				127E8E1623320697004D6D3B /* UserView.swift in Sources */,
+				12334F712347815A00B11009 /* File+View.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

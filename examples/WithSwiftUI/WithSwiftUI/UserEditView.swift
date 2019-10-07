@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Ballcap
 
 struct UserEditView: View {
 
@@ -14,9 +15,23 @@ struct UserEditView: View {
 
     @Binding var isPresented: Bool
 
+    @State var isPresenting: Bool = false
+
     var body: some View {
 
         VStack {
+
+            Button(action: {
+                self.isPresenting.toggle()
+            }) {
+                (user[\.profileImage] ?? File(user.storageReference))
+                    .resizable()
+                    .renderingMode(.original)
+                    .frame(width: 120, height: 120)
+                    .background(Color.gray)
+                    .clipShape(Circle())
+                    .padding()
+            }
 
             Form {
                 Section(header: Text("Name")) {
@@ -25,10 +40,32 @@ struct UserEditView: View {
             }
 
             Button("Save") {
-                self.user.update()
-                self.isPresented.toggle()
+
+                if self.user.files.isEmpty {
+                    self.user.update()
+                    self.isPresented.toggle()
+                } else {
+                    let storageBatch: StorageBatch = StorageBatch()
+                    storageBatch.save(self.user.files)
+                    storageBatch.commit { (error) in
+                        if let error = error {
+                            print(error)
+                            return
+                        }
+                        self.user.files = []
+                        self.user.update()
+                        self.isPresented.toggle()
+                    }
+                }
             }
-        }.frame(height: 200)
+        }
+        .sheet(isPresented: self.$isPresenting) {
+            ImagePicker { data in
+                let file: File = File(self.user.storageReference, data: data, mimeType: .jpeg)
+                self.user.files.append(file)
+                self.user.data?.profileImage = file
+            }
+        }
     }
 }
 
