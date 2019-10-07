@@ -35,7 +35,7 @@ public protocol Storable {
     var additionalData: [String: String] { get set }
 }
 
-public class File: Storable {
+public final class File: Storable {
 
     /// Cloud Storage,  StroageReference
     public var storageReference: StorageReference

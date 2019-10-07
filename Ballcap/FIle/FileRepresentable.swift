@@ -38,7 +38,7 @@ public extension FileRepresentable {
 
     /// Default 100MB
     @discardableResult
-    func load(_ size: Int64 = Int64(10e8), completion: @escaping (File?, Error?) -> Void) -> StorageDownloadTask? {
+    func load(_ size: Int64 = Int64(10e8), completion: ((File?, Error?) -> Void)? = nil) -> StorageDownloadTask? {
         self.downloadTask?.cancel()
         guard let _ = file.data else {
             let storageReference: StorageReference = file.storageReference
@@ -46,12 +46,12 @@ public extension FileRepresentable {
                 if let data = data {
                     self.file.data = data
                 }
-                completion(self.file, error as Error?)
+                completion?(self.file, error as Error?)
             })
             StorageTaskStore.shared.set(download: file.path, task: task)
             return task
         }
-        completion(file, nil)
+        completion?(file, nil)
         return nil
     }
 
