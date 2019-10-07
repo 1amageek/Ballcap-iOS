@@ -13,10 +13,7 @@ internal final class FileManager {
     static let shared: FileManager = FileManager()
 
     func get(storageReference: StorageReference) -> Data? {
-        if let data: Data = FileCache.shared.get(storageReference) {
-            return data
-        }
-        return nil
+        return FileCache.shared.get(storageReference)
     }
 
     func set(_ data: Data?, storageReference: StorageReference) {
