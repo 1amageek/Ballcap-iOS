@@ -30,3 +30,13 @@ extension File: View, ObservableObject {
         self.body.renderingMode(renderingMode)
     }
 }
+
+struct FileView: View, FileRepresentable {
+    public var body: Image {
+        if self.data != nil {
+            return Image(uiImage: UIImage(data: self.data!)!)
+        } else {
+            return Image(uiImage: UIImage())
+        }
+    }
+}
