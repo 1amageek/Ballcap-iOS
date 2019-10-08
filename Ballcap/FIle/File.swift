@@ -77,7 +77,9 @@ public final class File: Storable {
         self.mimeType = mimeType
         self.additionalData = additionalData
         self._data = data
-        FileManager.shared.set(data, storageReference: self.storageReference)
+        if let data: Data = data {
+            FileManager.shared.set(storageReference: self.storageReference, data: data)
+        }
     }
 
     public convenience init<T: Documentable>(_ object: T,
@@ -377,7 +379,9 @@ extension Storable {
             return FileManager.shared.get(storageReference: self.storageReference)
         }
         set {
-            FileManager.shared.set(newValue, storageReference: self.storageReference)
+            if let data: Data = newValue {
+                FileManager.shared.set(storageReference: self.storageReference, data: data)
+            }
         }
     }
 
@@ -407,11 +411,21 @@ extension File {
     /// Save data
     public var data: Data? {
         get {
-            return self._data ?? FileManager.shared.get(storageReference: self.storageReference)
+            if let data: Data = self._data {
+                return data
+            } else if let url: URL = self.url {
+                return FileManager.shared.get(key: url.absoluteString)
+            }
+            return FileManager.shared.get(storageReference: self.storageReference)
         }
         set {
             self._data = newValue
-            FileManager.shared.set(newValue, storageReference: self.storageReference)
+            if let data: Data = newValue {
+                if let url: URL = self.url {
+                    FileManager.shared.set(key: url.absoluteString, data: data)
+                }
+                FileManager.shared.set(storageReference: self.storageReference, data: data)
+            }
         }
     }
 }

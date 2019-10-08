@@ -8,17 +8,31 @@
 
 import FirebaseStorage
 
-internal final class FileManager {
+public final class FileManager {
 
-    static let shared: FileManager = FileManager()
+    public static let shared: FileManager = FileManager()
 
-    func get(storageReference: StorageReference) -> Data? {
+    public func get(storageReference: StorageReference) -> Data? {
         return FileCache.shared.get(storageReference)
     }
 
-    func set(_ data: Data?, storageReference: StorageReference) {
-        if let data: Data = data {
-            FileCache.shared.set(data, reference: storageReference)
-        }
+    public func get(key: String) -> Data? {
+        return FileCache.shared.get(key)
+    }
+
+    public func set(storageReference: StorageReference, data: Data) {
+        FileCache.shared.set(data, reference: storageReference)
+    }
+
+    public func set(key: String, data: Data) {
+        FileCache.shared.set(key: key, data: data)
+    }
+
+    public func delete(reference: StorageReference) {
+        FileCache.shared.delete(reference: reference)
+    }
+
+    public func delete(key: String) {
+        FileCache.shared.delete(key: key)
     }
 }
