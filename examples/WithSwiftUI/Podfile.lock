@@ -1,5 +1,5 @@
 PODS:
-  - Ballcap (0.10.9):
+  - Ballcap (0.10.10):
     - Firebase
     - Firebase/Firestore
     - Firebase/Storage
@@ -120,7 +120,7 @@ PODS:
   - Protobuf (3.10.0)
 
 DEPENDENCIES:
-  - Ballcap
+  - Ballcap (= 0.10.10)
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
@@ -147,7 +147,7 @@ SPEC REPOS:
     - Protobuf
 
 SPEC CHECKSUMS:
-  Ballcap: daa24f0959086cdba65e804d3b007d1e51df60fa
+  Ballcap: 1309a05bf1f949920bdd11c433183e04666e05e6
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   Firebase: 2d750c54cda57d5a6ae31212cfe5cc813c6be7e4
   FirebaseAnalytics: 5d9ccbf46ed25d3ec9304d263f85bddf1e93e2d2
@@ -169,6 +169,6 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
 
-PODFILE CHECKSUM: 57aa01a67b44cca2d4fe5f7099ba575b6bbc8aac
+PODFILE CHECKSUM: f2792cf6adfb56366f80a569904ff84deac6266f
 
 COCOAPODS: 1.8.1

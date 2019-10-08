@@ -76,6 +76,7 @@ public final class File: Storable {
         self.path = self.storageReference.fullPath
         self.mimeType = mimeType
         self.additionalData = additionalData
+        self._data = data
         FileManager.shared.set(data, storageReference: self.storageReference)
     }
 
@@ -360,10 +361,11 @@ extension File: Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.path)
+        hasher.combine(self.data.hashValue)
     }
 
     public static func == (lhs: File, rhs: File) -> Bool {
-        return lhs.path == rhs.path && lhs.mimeType == rhs.mimeType
+        return lhs.path == rhs.path && lhs.mimeType == rhs.mimeType && lhs.data == rhs.data
     }
 }
 

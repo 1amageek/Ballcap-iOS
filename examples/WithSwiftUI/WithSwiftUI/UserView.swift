@@ -18,6 +18,7 @@ struct UserView: View {
     var body: some View {
 
         VStack {
+            
             (user[\.profileImage] ?? File(user.storageReference))
                 .resizable()
                 .renderingMode(.original)
@@ -37,7 +38,6 @@ struct UserView: View {
         }
         .onAppear {
             self.user.listen()
-            self.user.load(keyPath: \.profileImage)
         }
     }
 }

@@ -28,32 +28,4 @@ final class User: Object, DataRepresentable, DataListenable, ObservableObject, I
     var listener: ListenerRegistration?
 
     var files: [File] = []
-
-    @Published var downloadFiles: [PartialKeyPath<Model>: File] = [:]
-
-    func load(keyPath: WritableKeyPath<Model, File?>) {
-        print("load")
-        if let file: File = self.data?[keyPath: keyPath] {
-            if file.data == nil {
-                print("no data")
-                if file.downloadTask == nil {
-                    print("get")
-                    file.getData { (data, error) in
-                        print("data", data)
-                        self[keyPath] = file
-                    }
-                }
-            } else {
-                print("have data")
-                self[keyPath] = file
-            }
-
-        }
-    }
-
-    func cancel(_ keyPath: WritableKeyPath<Model, File?>) {
-        if let file: File = self.data?[keyPath: keyPath] {
-            file.downloadTask?.cancel()
-        }
-    }
 }

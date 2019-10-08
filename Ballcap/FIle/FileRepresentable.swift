@@ -8,9 +8,9 @@
 
 import FirebaseStorage
 
-public protocol FileRepresentable {
+public protocol FileRepresentable: class {
 
-    var file: File { get }
+    var file: File { get set }
 
 }
 
@@ -42,9 +42,11 @@ public extension FileRepresentable {
         self.downloadTask?.cancel()
         guard let _ = file.data else {
             let storageReference: StorageReference = file.storageReference
+            let mimeType: File.MIMEType = file.mimeType
+            let additionalData: [String: String] = file.additionalData
             let task: StorageDownloadTask = storageReference.getData(maxSize: size, completion: { (data, error) in
                 if let data = data {
-                    self.file.data = data
+                    self.file = File(storageReference, data: data, mimeType: mimeType, additionalData: additionalData)
                 }
                 completion?(self.file, error as Error?)
             })

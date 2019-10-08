@@ -16,34 +16,68 @@ extension File: View {
     }
 }
 
-public struct FileView: View, FileRepresentable {
+public class FileLoader: FileRepresentable, ObservableObject {
 
-    @State public var file: File
+    @Published public var file: File
 
-    var configurations: [(Image) -> Image] = []
-
-    public var body: some View {
-        let image: Image
-        if file.data != nil {
-            image = Image(uiImage: UIImage(data: file.data!)!)
-        } else {
-            image = Image(uiImage: UIImage())
-        }
-        return configurations.reduce(image) { (previous, configuration) in
-            configuration(previous)
-        }
-        .onAppear {
-            self.load { (_, _) in
-
-            }
-        }
-        .onDisappear {
-            self.cancel()
+    init(_ file: File) {
+        self.file = file
+        if file.data == nil {
+            self.load()
         }
     }
 }
 
+public struct FileView: View {
+
+    @ObservedObject public var fileLoader: FileLoader
+
+    init(file: File) {
+        self.fileLoader = FileLoader(file)
+    }
+
+    var configurations: [(Image) -> Image] = []
+
+    public var body: some View {
+        print("body")
+        let image: Image
+        if fileLoader.file.data != nil {
+            print("wwwww")
+            image = Image(uiImage: UIImage(data: fileLoader.file.data!)!)
+        } else {
+            print("aaaaa")
+            image = Image(uiImage: UIImage())
+        }
+        return configurations.reduce(image) { (previous, configuration) in
+                configuration(previous)
+            }
+            .onDisappear {
+                self.fileLoader.cancel()
+        }
+
+    }
+}
+
+extension File {
+    /// Configurate this view's image with the specified cap insets and options.
+    /// - Parameter capInsets: The values to use for the cap insets.
+    /// - Parameter resizingMode: The resizing mode
+    public func resizable(
+        capInsets: EdgeInsets = EdgeInsets(),
+        resizingMode: Image.ResizingMode = .stretch) -> FileView
+    {
+        return self.body.resizable(capInsets: capInsets, resizingMode: resizingMode)
+    }
+
+    /// Configurate this view's rendering mode.
+    /// - Parameter renderingMode: The resizing mode
+    public func renderingMode(_ renderingMode: Image.TemplateRenderingMode?) -> FileView {
+        return self.body.renderingMode(renderingMode)
+    }
+}
+
 extension FileView {
+
     func configure(_ block: @escaping (Image) -> Image) -> FileView {
         var result = self
         result.configurations.append(block)
