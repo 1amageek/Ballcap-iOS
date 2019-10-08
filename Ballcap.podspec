@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "Ballcap"
-s.version      = "0.10.12"
+s.version      = "0.10.13"
 s.summary      = "Firestore design framework"
 s.swift_version = "5"
 s.description  = <<-DESC
