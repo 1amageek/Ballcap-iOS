@@ -1,5 +1,5 @@
 PODS:
-  - Ballcap (0.10.11):
+  - Ballcap (0.10.13):
     - Firebase
     - Firebase/Firestore
     - Firebase/Storage
@@ -147,7 +147,7 @@ SPEC REPOS:
     - Protobuf
 
 SPEC CHECKSUMS:
-  Ballcap: d73938693cce2f7c8ae9160929d770b757ba1224
+  Ballcap: 5fbff83e94d06b8d6730694337b4d3398ee7ed47
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   Firebase: 2d750c54cda57d5a6ae31212cfe5cc813c6be7e4
   FirebaseAnalytics: 5d9ccbf46ed25d3ec9304d263f85bddf1e93e2d2

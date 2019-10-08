@@ -22,6 +22,13 @@ struct ContentView : View {
                 ForEach(self.users) { user in
                     NavigationLink(destination: UserView(user: user)) {
                         HStack {
+                            (user[\.profileImage] ?? File(user.storageReference))
+                                .resizable()
+                                .renderingMode(.original)
+                                .frame(width: 60, height: 60)
+                                .background(Color.gray)
+                                .clipShape(Circle())
+                                .padding()
                             Text(user[\.name])
                         }
                     }
@@ -36,7 +43,7 @@ struct ContentView : View {
         }.onAppear {
             self.dataSource.onChanged { (_, snapshot) in
                 self.users = snapshot.after
-            }.listen()
+            }.get()
         }
     }
 

@@ -19,7 +19,7 @@ struct UserView: View {
 
         VStack {
             
-            (user[\.profileImage] ?? File(user.storageReference))
+            user[\.profileImage]?
                 .resizable()
                 .renderingMode(.original)
                 .frame(width: 120, height: 120)
@@ -37,6 +37,7 @@ struct UserView: View {
             UserEditView(user: self.user.copy(), isPresented: self.$isPresented)
         }
         .onAppear {
+            print("UserView")
             self.user.listen()
         }
     }

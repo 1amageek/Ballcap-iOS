@@ -65,6 +65,7 @@ public final class File: Storable {
     public init(_ storageReference: StorageReference,
                 data: Data? = nil,
                 mimeType: MIMEType? = nil,
+                url: URL? = nil,
                 additionalData: [String: String] = [:]
     ) {
         let (name, mimeType) = File.generateFileName(storageReference.name, mimeType: mimeType)
@@ -75,6 +76,7 @@ public final class File: Storable {
         }
         self.path = self.storageReference.fullPath
         self.mimeType = mimeType
+        self.url = url
         self.additionalData = additionalData
         self._data = data
         if let data: Data = data {
@@ -411,19 +413,11 @@ extension File {
     /// Save data
     public var data: Data? {
         get {
-            if let data: Data = self._data {
-                return data
-            } else if let url: URL = self.url {
-                return FileManager.shared.get(key: url.absoluteString)
-            }
-            return FileManager.shared.get(storageReference: self.storageReference)
+            return self._data ?? FileManager.shared.get(storageReference: self.storageReference)
         }
         set {
             self._data = newValue
             if let data: Data = newValue {
-                if let url: URL = self.url {
-                    FileManager.shared.set(key: url.absoluteString, data: data)
-                }
                 FileManager.shared.set(storageReference: self.storageReference, data: data)
             }
         }

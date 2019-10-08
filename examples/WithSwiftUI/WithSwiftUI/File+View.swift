@@ -22,7 +22,6 @@ public class FileLoader: FileRepresentable, ObservableObject {
 
     init(_ file: File) {
         self.file = file
-        print("!!!!!!", FileCache.shared.get(file.storageReference))
         if file.data == nil {
             self.load()
         }
@@ -43,10 +42,10 @@ public struct FileView: View {
         print("body")
         let image: Image
         if fileLoader.file.data != nil {
-            print("wwwww")
+            print("data: ", fileLoader.file.data, fileLoader.file.path, fileLoader.file.url)
             image = Image(uiImage: UIImage(data: fileLoader.file.data!)!)
         } else {
-            print("aaaaa")
+            print("data: nil", fileLoader.file.path, fileLoader.file.url)
             image = Image(uiImage: UIImage())
         }
         return configurations.reduce(image) { (previous, configuration) in

@@ -11,7 +11,6 @@ import FirebaseStorage
 public protocol FileRepresentable: class {
 
     var file: File { get set }
-
 }
 
 public extension FileRepresentable {
@@ -44,9 +43,10 @@ public extension FileRepresentable {
             let storageReference: StorageReference = file.storageReference
             let mimeType: File.MIMEType = file.mimeType
             let additionalData: [String: String] = file.additionalData
+            let url: URL? = file.url
             let task: StorageDownloadTask = storageReference.getData(maxSize: size, completion: { (data, error) in
                 if let data = data {
-                    self.file = File(storageReference, data: data, mimeType: mimeType, additionalData: additionalData)
+                    self.file = File(storageReference, data: data, mimeType: mimeType, url: url, additionalData: additionalData)
                 }
                 completion?(self.file, error as Error?)
             })
