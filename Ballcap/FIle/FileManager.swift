@@ -19,8 +19,6 @@ internal final class FileManager {
     func set(_ data: Data?, storageReference: StorageReference) {
         if let data: Data = data {
             FileCache.shared.set(data, reference: storageReference)
-        } else {
-            FileCache.shared.delete(reference: storageReference)
         }
     }
 }

@@ -22,6 +22,7 @@ public class FileLoader: FileRepresentable, ObservableObject {
 
     init(_ file: File) {
         self.file = file
+        print("!!!!!!", FileCache.shared.get(file.storageReference))
         if file.data == nil {
             self.load()
         }
