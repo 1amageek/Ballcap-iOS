@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-public enum OperableArray<Element: Codable>: Codable & ExpressibleByArrayLiteral & RawRepresentable {
+public enum OperableArray<Element: Codable>: Codable, ExpressibleByArrayLiteral, RawRepresentable {
 
     case value([Element])
     case arrayRemove([Element])

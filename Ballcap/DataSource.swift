@@ -68,7 +68,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 
     private let fetchQueue: DispatchQueue = DispatchQueue(label: "ballcap.datasource.fetch.queue")
 
-    private var listenr: ListenerRegistration?
+    private var listener: ListenerRegistration?
 
     /// Holds the Key previously sent to Firebase.
     private var previousLastKey: String?
@@ -138,7 +138,10 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     /// Start monitoring data source.
     @discardableResult
     public func listen() -> Self {
-        self.listenr = self.query.listen(includeMetadataChanges: true, listener: { [weak self] (snapshot, error) in
+        if listener != nil {
+            return self
+        }
+        self.listener = self.query.listen(includeMetadataChanges: true, listener: { [weak self] (snapshot, error) in
             guard let `self` = self else { return }
             guard let snapshot: QuerySnapshot = snapshot else {
                 return
@@ -155,7 +158,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 
     /// Stop monitoring the data source.
     public func stop() {
-        self.listenr?.remove()
+        self.listener?.remove()
     }
 
     private func _execute(snapshot: QuerySnapshot) {
@@ -277,7 +280,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     // MARK: - deinit
 
     deinit {
-        self.listenr?.remove()
+        self.listener?.remove()
     }
 }
 

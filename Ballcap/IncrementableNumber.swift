@@ -47,7 +47,7 @@ public enum IncrementableInt: Codable, Hashable, ExpressibleByIntegerLiteral, Ra
     }
 }
 
-public enum IncrementableDouble: Codable, Hashable, ExpressibleByFloatLiteral {
+public enum IncrementableDouble: Codable, Hashable, ExpressibleByFloatLiteral, RawRepresentable {
 
     case increment(Double)
     case value(Double)

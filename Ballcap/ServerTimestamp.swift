@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-public enum ServerTimestamp: Codable, Equatable, Hashable, RawRepresentable {
+public enum ServerTimestamp: Codable, Hashable, RawRepresentable {
 
     case pending
     case resolved(Timestamp)
