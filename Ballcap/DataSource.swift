@@ -159,6 +159,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     /// Stop monitoring the data source.
     public func stop() {
         self.listener?.remove()
+        self.listener = nil
     }
 
     private func _execute(snapshot: QuerySnapshot) {
