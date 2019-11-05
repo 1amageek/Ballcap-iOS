@@ -46,7 +46,6 @@ struct ContentView : View {
                     self.users = snapshot.after
                 }
                 .sorted(by: { $0.createdAt > $1.createdAt })
-                .get()
                 .listen()
         }
     }
