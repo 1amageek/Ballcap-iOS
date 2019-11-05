@@ -41,9 +41,12 @@ struct ContentView : View {
                 user.save()
             })
         }.onAppear {
-            self.dataSource.onChanged { (_, snapshot) in
-                self.users = snapshot.after
-            }.get()
+            self.dataSource
+                .onChanged { (_, snapshot) in
+                    self.users = snapshot.after
+                }
+                .sorted(by: { $0.createdAt > $1.createdAt })
+                .listen()
         }
     }
 
