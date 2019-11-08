@@ -115,7 +115,7 @@ public extension DataRepresentable where Self: Object {
     static func `where`(_ field: String, in: [Any]) -> DataSource<Self>.Query {
         return DataSource.Query(self.collectionReference.whereField(field, in: `in`), reference: self.collectionReference)
     }
-    static func `where`(_ field: String, arrayContainsAny: [Any]) -> DataSource<Self>.Query  {
+    static func `where`(_ field: String, arrayContainsAny: [Any]) -> DataSource<Self>.Query {
         return DataSource.Query(self.collectionReference.whereField(field, arrayContainsAny: arrayContainsAny), reference: self.collectionReference)
     }
 
