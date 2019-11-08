@@ -57,6 +57,14 @@ public extension DataSource {
         public func `where`(_ keyPath: String, arrayContains: Any) -> Query {
             return Query(query.whereField(keyPath, arrayContains: arrayContains), reference: self._originalQuery)
         }
+        
+        public func `where`(_ keyPath: String, in: [Any]) -> Query {
+            return Query(query.whereField(keyPath, in: `in`), reference: self._originalQuery)
+        }
+        
+        public func `where`(_ keyPath: String, arrayContainsAny: [Any]) -> Query {
+            return Query(query.whereField(keyPath, arrayContainsAny: arrayContainsAny), reference: self._originalQuery)
+        }
 
         public func order(by: String) -> Query {
             return Query(query.order(by: by), reference: self._originalQuery)

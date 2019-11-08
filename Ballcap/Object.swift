@@ -138,6 +138,13 @@ public extension DataRepresentable where Self: Object {
     static func `where`(_ field: String, arrayContains: Any) -> DataSource<Self>.Query {
         return DataSource.Query(self.collectionReference.whereField(field, arrayContains: arrayContains), reference: self.collectionReference)
     }
+    
+    static func `where`(_ field: String, in: [Any]) -> DataSource<Self>.Query {
+        return DataSource.Query(self.collectionReference.whereField(field, in: `in`), reference: self.collectionReference)
+    }
+    static func `where`(_ field: String, arrayContainsAny: [Any]) -> DataSource<Self>.Query {
+        return DataSource.Query(self.collectionReference.whereField(field, arrayContainsAny: arrayContainsAny), reference: self.collectionReference)
+    }
 
     static func order(by: String) -> DataSource<Self>.Query {
         return DataSource.Query(self.collectionReference.order(by: by), reference: self.collectionReference)
