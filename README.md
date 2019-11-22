@@ -309,6 +309,23 @@ self.dataSource = Document<Item>.query
     .listen()
 ```
 
+## Relationship between Document and Object
+
+`Document` is a `class` that inherits Object. For simple operations, it is enough to use `Document`.
+
+```swift
+public final class Document<Model: Modelable & Codable>: Object, DataRepresentable, DataCacheable {
+
+    public var data: Model?
+    
+}
+```
+
+You can perform complex operations by extending `Object` and defining your own class.
+Use examples are explained in [Using Ballcap with SwiftUI](https://github.com/1amageek/Ballcap-iOS#using-ballcap-with-swiftui)
+
+
+
 ## Migrate from [Pring](https://github.com/1amageek/Pring)
 
 ### Overview
