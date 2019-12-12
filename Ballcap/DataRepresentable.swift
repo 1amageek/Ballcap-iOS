@@ -17,6 +17,14 @@ public protocol DataRepresentable: class, Hashable {
     init()
 }
 
+public enum CachePolicy {
+    case cacheOnly
+    case serverOnly
+    case cacheElseServer
+    case serverElseCache
+    case cacheThenServer
+}
+
 public extension DataRepresentable where Self: Object {
 
     init() {
@@ -195,6 +203,50 @@ public extension DataRepresentable where Self: Object {
 // MARK: -
 
 public extension DataRepresentable where Self: Object {
+    
+    func get(_ cachePolicy: CachePolicy = .cacheElseServer, completion: ((Self?, Error?) -> Void)? = nil) -> Self {
+        switch cachePolicy {
+        case .cacheOnly:
+            Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
+                self.data = object?.data
+                completion?(object, error)
+            }
+        case .serverOnly:
+            Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                self.data = object?.data
+                completion?(object, error)
+            }
+        case .cacheElseServer:
+            Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
+                if let object: Self = object {
+                    self.data = object.data
+                    completion?(object, error)
+                } else {
+                    Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                        self.data = object?.data
+                        completion?(object, error)
+                    }
+                }
+            }
+        case .serverElseCache:
+            Self.get(documentReference: self.documentReference, source: .default) { (object, error) in
+                self.data = object?.data
+                completion?(object, error)
+            }
+        case .cacheThenServer:
+            Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
+                self.data = object?.data
+                completion?(object, error)
+            }
+            Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                self.data = object?.data
+                completion?(object, error)
+            }
+        }
+        return self
+    }
+    
+    // MARK: -
 
     static func get(documentReference: DocumentReference, source: FirestoreSource = FirestoreSource.default, completion: @escaping ((Self?, Error?) -> Void)) {
         documentReference.getDocument(source: source) { (snapshot, error) in

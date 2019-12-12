@@ -193,7 +193,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		12334F7623488F5600B11009 /* FIle */ = {
+		12334F7623488F5600B11009 /* File */ = {
 			isa = PBXGroup;
 			children = (
 				12074319224F18A500C26AD3 /* File.swift */,
@@ -202,7 +202,7 @@
 				12D75C8622530F58004D1AC4 /* StorageTaskStore.swift */,
 				12A97928234B3D77000002CF /* FileRepresentable.swift */,
 			);
-			path = FIle;
+			path = File;
 			sourceTree = "<group>";
 		};
 		1283940F224B6A31000383EB = {
@@ -245,7 +245,7 @@
 				12074317224F16D600C26AD3 /* Disposer.swift */,
 				12D75C822252169D004D1AC4 /* Batch.swift */,
 				128CDD4B225F00BE005926E7 /* StorageBatch.swift */,
-				12334F7623488F5600B11009 /* FIle */,
+				12334F7623488F5600B11009 /* File */,
 				12D75C8A22533296004D1AC4 /* DataSource.swift */,
 				12D75C8922533296004D1AC4 /* Query.swift */,
 				123140AA225988D800E7BD00 /* DocumentCache.swift */,
