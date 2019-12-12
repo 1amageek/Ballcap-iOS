@@ -63,6 +63,7 @@ The document is initialized as follows:
 
 ```swift
 
+// use auto id
 let document: Document<Model> = Document()
 
 print(document.data?.number) // 0
@@ -71,6 +72,31 @@ print(document.data?.string) // "Ballcap"
 // KeyPath
 print(document[\.number]) // 0
 print(document[\.string]) // "Ballcap"
+
+
+// Use your specified ID
+let document: Document<Model> = Document(id: "YOUR_ID")
+
+print(document.data?.number) // 0
+print(document.data?.string) // "Ballcap"
+
+// KeyPath
+print(document[\.number]) // 0
+print(document[\.string]) // "Ballcap"
+
+
+// Use your specified DocumentReference
+let documentReference: DocumentReference = Firestore.firestore().document("collection/document")
+// note: If DocumentReference is specified, data is initialized with nil. 
+let document: Document<Model> = Document(documentReference) 
+
+print(document.data?.number) // nil
+print(document.data?.string) // nil
+
+// KeyPath
+print(document[\.number]) // fail
+print(document[\.string]) // fail
+
 ```
 
 ### RootReference
@@ -258,9 +284,27 @@ let dataSource: DataSource<Item> = Document<Item>.query.dataSource()
 
 __from Collection Reference__
 
+#### CollectionReference
+```swift
+let query: DataSource<Document<Item>>.Query = DataSource.Query(Firestore.firestore().collection("items"))
+let dataSource = DataSource(reference: query)
+```
+
+#### CollectionGroup
 ```swift
 let query: DataSource<Document<Item>>.Query = DataSource.Query(Firestore.firestore().collectionGroup("items"))
 let dataSource = DataSource(reference: query)
+```
+
+#### Your custom object
+
+```swift
+// from Custom class
+let dataSource: DataSource<Item> = Item.query.dataSource()
+
+// from CollectionReference
+let query: DataSource<Item>.Query = DataSource.Query(Item.collectionReference)
+let dataSource: DataSource<Item> = query.dataSource()
 ```
 
 __NSDiffableDataSourceSnapshot__
@@ -308,6 +352,23 @@ self.dataSource = Document<Item>.query
     })
     .listen()
 ```
+
+## Relationship between Document and Object
+
+`Document` is a `class` that inherits Object. For simple operations, it is enough to use `Document`.
+
+```swift
+public final class Document<Model: Modelable & Codable>: Object, DataRepresentable, DataCacheable {
+
+    public var data: Model?
+    
+}
+```
+
+You can perform complex operations by extending `Object` and defining your own class.
+Use examples are explained in [Using Ballcap with SwiftUI](https://github.com/1amageek/Ballcap-iOS#using-ballcap-with-swiftui)
+
+
 
 ## Migrate from [Pring](https://github.com/1amageek/Pring)
 
