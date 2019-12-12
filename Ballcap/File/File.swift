@@ -323,6 +323,7 @@ extension File {
 
     public func delete(_ completion: ((Error?) -> Void)?) {
         self.storageReference.delete { (error) in
+            self.data = nil
             self.metadata = nil
             self.url = nil
             FileCache.shared.delete(reference: self.storageReference)
