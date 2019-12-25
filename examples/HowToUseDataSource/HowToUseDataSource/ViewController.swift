@@ -10,29 +10,7 @@ import UIKit
 import Ballcap
 import Firebase
 
-struct DocumentProxy<Model: Modelable & Codable>: Hashable {
-
-    var id: String {
-        document.id
-    }
-
-    var createdAt: Timestamp {
-        document.createdAt
-    }
-
-    var updatedAt: Timestamp {
-        document.updatedAt
-    }
-
-    var document: Document<Model>
-
-    init(document: Document<Model>) {
-        self.document = document
-    }
-
-}
-
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDelegate {
 
     enum Section: CaseIterable {
         case main
@@ -42,11 +20,11 @@ class ViewController: UIViewController {
 
     var dataSource: DataSource<Document<Item>>?
 
-    var tableViewDataSource: UITableViewDiffableDataSource<Section, DocumentProxy<Item>>!
+    var tableViewDataSource: UITableViewDiffableDataSource<Section, Document<Item>>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.tableView.delegate = self
         self.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add)),
             UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextPage)),
@@ -60,34 +38,30 @@ class ViewController: UIViewController {
             return cell
         })
 
-        var snapshot: NSDiffableDataSourceSnapshot<Section, DocumentProxy<Item>> = NSDiffableDataSourceSnapshot()
+        var snapshot: NSDiffableDataSourceSnapshot<Section, Document<Item>> = NSDiffableDataSourceSnapshot()
         snapshot.appendSections([.main])
         self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
 
         self.dataSource = Document<Item>.query
             .order(by: "updatedAt", descending: true)
-            .limit(to: 3)
+            .limit(to: 10)
             .dataSource()
-            .sorted(by: {$0.createdAt < $1.createdAt})
-            .retrieve(from: { (snapshot, documentSnapshot, done) in
-                let document: Document<Item> = Document(documentSnapshot.reference)
-                document.get { (item, error) in
-                    done(item!)
-                }
-            })
+            .sorted(by: {$0.updatedAt < $1.updatedAt})
             .onChanged({ (snapshot, dataSourceSnapshot) in
-                var snapshot: NSDiffableDataSourceSnapshot<Section, DocumentProxy<Item>> = self.tableViewDataSource.snapshot()
-                snapshot.deleteItems(dataSourceSnapshot.before.map { DocumentProxy(document: $0)})
-                snapshot.appendItems(dataSourceSnapshot.after.map { DocumentProxy(document: $0)})
-//                snapshot.appendItems(dataSourceSnapshot.changes.insertions.map { DocumentProxy(document: $0)})
-//                snapshot.deleteItems(dataSourceSnapshot.changes.deletions.map { DocumentProxy(document: $0)})
-//                snapshot.reloadItems(dataSourceSnapshot.changes.modifications.map { DocumentProxy(document: $0)})
+                var snapshot: NSDiffableDataSourceSnapshot<Section, Document<Item>> = self.tableViewDataSource.snapshot()
+                snapshot.deleteItems(dataSourceSnapshot.before.map { $0 })
+                snapshot.appendItems(dataSourceSnapshot.after.map { $0 })
                 self.tableViewDataSource.apply(snapshot, animatingDifferences: true)
             })
             .listen()
     }
 
     var index: Int = 0
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let item: Document<Item> = self.dataSource?[indexPath.item] else { return }
+        item.update()
+    }
 
     @objc func add() {
         let item: Document<Item> = Document()
