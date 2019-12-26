@@ -208,38 +208,52 @@ public extension DataRepresentable where Self: Object {
         switch cachePolicy {
         case .cacheOnly:
             Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
-                self.data = object?.data
+                if self.data != object?.data {
+                    self.data = object?.data
+                }
                 completion?(object, error)
             }
         case .serverOnly:
             Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
-                self.data = object?.data
+                if self.data != object?.data {
+                    self.data = object?.data
+                }
                 completion?(object, error)
             }
         case .cacheElseServer:
             Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
                 if let object: Self = object {
-                    self.data = object.data
+                    if self.data != object.data {
+                        self.data = object.data
+                    }
                     completion?(object, error)
                 } else {
                     Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
-                        self.data = object?.data
+                        if self.data != object?.data {
+                            self.data = object?.data
+                        }
                         completion?(object, error)
                     }
                 }
             }
         case .serverElseCache:
             Self.get(documentReference: self.documentReference, source: .default) { (object, error) in
-                self.data = object?.data
+                if self.data != object?.data {
+                    self.data = object?.data
+                }
                 completion?(object, error)
             }
         case .cacheThenServer:
             Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
-                self.data = object?.data
+                if self.data != object?.data {
+                    self.data = object?.data
+                }
                 completion?(object, error)
             }
             Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
-                self.data = object?.data
+                if self.data != object?.data {
+                    self.data = object?.data
+                }
                 completion?(object, error)
             }
         }
