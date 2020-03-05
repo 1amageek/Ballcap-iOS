@@ -72,13 +72,13 @@ class ObjectTests: XCTestCase {
         let o: Obj = Obj(id: "a", from: [:], collectionReference: Firestore.firestore().collection("a"))!
         XCTAssertEqual(o.documentReference.path, "a/a")
     }
-//
-//    func testObjectIDFromModelOtherCollectionReference() {
-//        struct Model: Codable, Modelable, Equatable {}
-//        let d: Object<Model> = Object(id: "a", from: Model(), collectionReference: Firestore.firestore().collection("a"))
-//        XCTAssertEqual(d.documentReference.path, "a/a")
-//    }
-//
+    //
+    //    func testObjectIDFromModelOtherCollectionReference() {
+    //        struct Model: Codable, Modelable, Equatable {}
+    //        let d: Object<Model> = Object(id: "a", from: Model(), collectionReference: Firestore.firestore().collection("a"))
+    //        XCTAssertEqual(d.documentReference.path, "a/a")
+    //    }
+    //
     func testObjectKeyPath() {
         class Obj: Object, DataRepresentable {
             struct Model: Modelable & Codable & Equatable {
@@ -93,7 +93,7 @@ class ObjectTests: XCTestCase {
     }
 
     func testDocumentCopy() {
-                class Obj: Object, DataRepresentable {
+        class Obj: Object, DataRepresentable {
             struct Model: Modelable & Codable & Equatable {
                 var path: String = "a"
             }
@@ -198,7 +198,7 @@ class ObjectTests: XCTestCase {
         obj.createdAt = Timestamp.init(seconds: 0, nanoseconds: 0)
         obj.updatedAt = Timestamp.init(seconds: 0, nanoseconds: 0)
         XCTAssertEqual(obj.description,
-"""
+                       """
 obj {
   path: a/a
   createdAt: <FIRTimestamp: seconds=0 nanoseconds=0> (1970-01-01 00:00:00 +0000)
