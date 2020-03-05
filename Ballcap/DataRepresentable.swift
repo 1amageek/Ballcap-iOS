@@ -199,6 +199,13 @@ public extension DataRepresentable where Self: Object {
         batch.delete(self, reference: reference)
         batch.commit(completion)
     }
+
+    func merge(reference: DocumentReference? = nil, data: [String: Any], completion: ((Error?) -> Void)? = nil) {
+        let reference: DocumentReference = reference ?? self.documentReference
+        let batch: Batch = Batch()
+        batch.set(data, reference: reference)
+        batch.commit(completion)
+    }
 }
 
 // MARK: -
