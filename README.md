@@ -99,16 +99,6 @@ print(document[\.string]) // fail
 
 ```
 
-### RootReference
-
-Considering the extensibility of DB, it is recommended to provide a method of version control.
-
-```swift
-// in AppDelegate
-FirebaseApp.configure()
-BallcapApp.configure(Firestore.firestore().document("version/1"))
-```
-
 ### CRUD
 
 Ballcap has a cache internally.When using the cache, use `Batch` instead of `WriteBatch`.
