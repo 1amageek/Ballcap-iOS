@@ -42,11 +42,11 @@ public extension FileRepresentable {
         guard let _ = file.data else {
             let storageReference: StorageReference = file.storageReference
             let mimeType: File.MIMEType = file.mimeType
-            let additionalData: [String: String] = file.additionalData
+            let metadata: [String: String] = file.metadata
             let url: URL? = file.url
             let task: StorageDownloadTask = storageReference.getData(maxSize: size, completion: { (data, error) in
                 if let data = data {
-                    self.file = File(storageReference, data: data, mimeType: mimeType, url: url, additionalData: additionalData)
+                    self.file = File(storageReference, data: data, mimeType: mimeType, url: url, metadata: metadata)
                 }
                 completion?(self.file, error as Error?)
             })

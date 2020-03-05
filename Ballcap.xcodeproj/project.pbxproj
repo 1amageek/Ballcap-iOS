@@ -46,8 +46,6 @@
 		12334F782348918F00B11009 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12334F772348918F00B11009 /* FileManager.swift */; };
 		127E8E0F2331FA93004D6D3B /* DataListenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E8E0E2331FA93004D6D3B /* DataListenable.swift */; };
 		127E8E102331FEE4004D6D3B /* DataListenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E8E0E2331FA93004D6D3B /* DataListenable.swift */; };
-		128075DC228078B5009ECF74 /* BallcapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128075DB228078B5009ECF74 /* BallcapApp.swift */; };
-		128075DD22807963009ECF74 /* BallcapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128075DB228078B5009ECF74 /* BallcapApp.swift */; };
 		12839423224B6A31000383EB /* Ballcap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12839419224B6A31000383EB /* Ballcap.framework */; };
 		12839428224B6A31000383EB /* BallcapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839427224B6A31000383EB /* BallcapTests.swift */; };
 		1283942A224B6A31000383EB /* Ballcap.h in Headers */ = {isa = PBXBuildFile; fileRef = 1283941C224B6A31000383EB /* Ballcap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -122,7 +120,6 @@
 		123140AE22598D1C00E7BD00 /* DocumentCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCacheTests.swift; sourceTree = "<group>"; };
 		12334F772348918F00B11009 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		127E8E0E2331FA93004D6D3B /* DataListenable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataListenable.swift; sourceTree = "<group>"; };
-		128075DB228078B5009ECF74 /* BallcapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallcapApp.swift; sourceTree = "<group>"; };
 		12839419224B6A31000383EB /* Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1283941C224B6A31000383EB /* Ballcap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ballcap.h; sourceTree = "<group>"; };
 		1283941D224B6A31000383EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -231,7 +228,6 @@
 			children = (
 				1283941C224B6A31000383EB /* Ballcap.h */,
 				12839445224B6B5B000383EB /* Referencable.swift */,
-				128075DB228078B5009ECF74 /* BallcapApp.swift */,
 				12F8BD6722574D85004F7D52 /* Documentable.swift */,
 				12839443224B6AC4000383EB /* Object.swift */,
 				123140982257624F00E7BD00 /* Document.swift */,
@@ -503,7 +499,6 @@
 				1231408922575B9000E7BD00 /* DataSource.swift in Sources */,
 				12F8BD6922574E67004F7D52 /* Referencable.swift in Sources */,
 				12F8BD6822574D85004F7D52 /* Documentable.swift in Sources */,
-				128075DC228078B5009ECF74 /* BallcapApp.swift in Sources */,
 				12F8BD6B22574F29004F7D52 /* DataRepresentable.swift in Sources */,
 				1283943B224B6AA5000383EB /* DocumentReference+Codable.swift in Sources */,
 				12839441224B6AA5000383EB /* FirestoreEncoder.swift in Sources */,
@@ -556,7 +551,6 @@
 				123140A72258E14600E7BD00 /* CodableFileTests.swift in Sources */,
 				123140A122576E9800E7BD00 /* ObjectTests.swift in Sources */,
 				123140962257601A00E7BD00 /* OperableArray.swift in Sources */,
-				128075DD22807963009ECF74 /* BallcapApp.swift in Sources */,
 				12D75C752251FF95004D1AC4 /* Codable+.swift in Sources */,
 				127E8E102331FEE4004D6D3B /* DataListenable.swift in Sources */,
 				1207AB2F225A43BD00578D29 /* FileTests.swift in Sources */,

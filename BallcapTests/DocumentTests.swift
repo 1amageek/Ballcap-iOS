@@ -17,7 +17,6 @@ class DocumentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
-        BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
     func testDocumentModelName() {
@@ -38,59 +37,59 @@ class DocumentTests: XCTestCase {
     func testDocumentCollectionReference() {
         do {
             struct Model: Codable, Modelable, Equatable {}
-            XCTAssertEqual(Document<Model>.collectionReference.path, "version/1/model")
+            XCTAssertEqual(Document<Model>.collectionReference.path, "model")
         }
         do {
             struct aModel: Codable, Modelable, Equatable {}
-            XCTAssertEqual(Document<aModel>.collectionReference.path, "version/1/amodel")
+            XCTAssertEqual(Document<aModel>.collectionReference.path, "amodel")
         }
         do {
             struct Na: Codable, Modelable, Equatable {}
-            XCTAssertEqual(Document<Na>.collectionReference.path, "version/1/na")
+            XCTAssertEqual(Document<Na>.collectionReference.path, "na")
         }
     }
 
     func testDocumentAutoID() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document()
-        XCTAssertEqual(d.documentReference.parent.path, "version/1/model")
-        XCTAssertEqual(d.documentReference.path, "version/1/model/\(d.id)")
-        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/\(d.id)")
+        XCTAssertEqual(d.documentReference.parent.path, "model")
+        XCTAssertEqual(d.documentReference.path, "model/\(d.id)")
+        XCTAssertEqual(d.storageReference.fullPath, "model/\(d.id)")
     }
 
     func testDocumentID() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a")
-        XCTAssertEqual(d.documentReference.path, "version/1/model/a")
-        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
+        XCTAssertEqual(d.documentReference.path, "model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "model/a")
     }
 
     func testDocumentTypeInference() {
         struct Model: Codable, Modelable, Equatable {}
         let d = Document<Model>(id: "a")
-        XCTAssertEqual(d.documentReference.path, "version/1/model/a")
-        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
+        XCTAssertEqual(d.documentReference.path, "model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "model/a")
     }
 
     func testDocumentIDFromData() {
         struct Model: Codable, Modelable, Equatable {}
-        let d: Document<Model> = Document(documentReference: Firestore.firestore().document("version/1/model/a"), from: [:])!
-        XCTAssertEqual(d.documentReference.path, "version/1/model/a")
-        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
+        let d: Document<Model> = Document(documentReference: Firestore.firestore().document("model/a"), from: [:])!
+        XCTAssertEqual(d.documentReference.path, "model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "model/a")
     }
 
     func testDocumentReferenceFromData() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: [:])!
-        XCTAssertEqual(d.documentReference.path, "version/1/model/a")
-        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
+        XCTAssertEqual(d.documentReference.path, "model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "model/a")
     }
 
     func testDocumentIDFromModel() {
         struct Model: Codable, Modelable, Equatable {}
         let d: Document<Model> = Document(id: "a", from: Model())
-        XCTAssertEqual(d.documentReference.path, "version/1/model/a")
-        XCTAssertEqual(d.storageReference.fullPath, "version/1/model/a")
+        XCTAssertEqual(d.documentReference.path, "model/a")
+        XCTAssertEqual(d.storageReference.fullPath, "model/a")
     }
 
     func testDocumentIDOtherCollectionReference() {

@@ -134,7 +134,7 @@ class CodableFileTests: XCTestCase {
         let ref: StorageReference = Storage.storage().reference().child("/a/n.txt")
         let data: Data = "test".data(using: .utf8)!
         let file: File = File(ref, data: data, mimeType: .plain)
-        let dict = ["path": "a/n.txt", "mimeType": "text/plain", "url": nil, "additionalData": [:]] as [String : Any?]
+        let dict = ["path": "a/n.txt", "mimeType": "text/plain", "url": nil, "metadata": [:]] as [String : Any?]
         assertRoundTrip(model: file, encoded: dict as [String : Any])
     }
     
@@ -142,8 +142,8 @@ class CodableFileTests: XCTestCase {
         let ref: StorageReference = Storage.storage().reference().child("/a/n")
         let data: Data = "test".data(using: .utf8)!
         let file: File = File(ref, data: data, mimeType: .plain)
-        file.additionalData = ["foo": "foo"]
-        let dict = ["path": "a/n.txt", "mimeType": "text/plain", "url": nil, "additionalData": ["foo": "foo"]] as [String : Any?]
+        file.metadata = ["foo": "foo"]
+        let dict = ["path": "a/n.txt", "mimeType": "text/plain", "url": nil, "metadata": ["foo": "foo"]] as [String : Any?]
         assertRoundTrip(model: file, encoded: dict as [String : Any])
     }
     

@@ -32,7 +32,7 @@ public protocol Storable {
 
     var mimeType: File.MIMEType { get set }
 
-    var additionalData: [String: String] { get set }
+    var metadata: [String: String] { get set }
 }
 
 public final class File: Storable {
@@ -44,7 +44,7 @@ public final class File: Storable {
     public var path: String
 
     /// StorageReference metadata
-    public var metadata: StorageMetadata?
+    public var storageMetadata: StorageMetadata?
 
     /// Download URL
     public var url: URL?
@@ -52,8 +52,8 @@ public final class File: Storable {
     /// File mimeType
     public var mimeType: MIMEType = .octetStream(nil)
 
-    /// Additional data, metadata
-    public var additionalData: [String: String] = [:]
+    /// metadata
+    public var metadata: [String: String] = [:]
 
     /// Local filePath
     public var originalURL: URL?
@@ -66,7 +66,7 @@ public final class File: Storable {
                 data: Data? = nil,
                 mimeType: MIMEType? = nil,
                 url: URL? = nil,
-                additionalData: [String: String] = [:]
+                metadata: [String: String] = [:]
     ) {
         let (name, mimeType) = File.generateFileName(storageReference.name, mimeType: mimeType)
         if let parent = storageReference.parent() {
@@ -77,7 +77,7 @@ public final class File: Storable {
         self.path = self.storageReference.fullPath
         self.mimeType = mimeType
         self.url = url
-        self.additionalData = additionalData
+        self.metadata = metadata
         self._data = data
         if let data: Data = data {
             FileManager.shared.set(storageReference: self.storageReference, data: data)
@@ -88,19 +88,19 @@ public final class File: Storable {
                                  name: String? = nil,
                                  data: Data? = nil,
                                  mimeType: MIMEType? = nil,
-                                 additionalData: [String: String] = [:]
+                                 metadata: [String: String] = [:]
     ) {
         let (fileName, mimeType) = File.generateFileName(name ?? "\(Int(Date().timeIntervalSince1970 * 1000))", mimeType: mimeType)
         let reference: StorageReference = object.storageReference.child(fileName)
-        self.init(reference, data: data, mimeType: mimeType, additionalData: additionalData)
+        self.init(reference, data: data, mimeType: mimeType, metadata: metadata)
     }
 
-    required internal convenience init(path: String, url: URL?, mimeType: File.MIMEType, additionalData: [String: String]) {
+    required internal convenience init(path: String, url: URL?, mimeType: File.MIMEType, metadata: [String: String]) {
         let storageReference: StorageReference = Storage.storage().reference().child(path)
         self.init(storageReference)
         self.url = url
         self.mimeType = mimeType
-        self.additionalData = additionalData
+        self.metadata = metadata
     }
 
     static func generateFileName(_ name: String, mimeType: MIMEType?) -> (String, MIMEType) {
@@ -136,7 +136,7 @@ extension File {
             "      name: \(self.name)\n" +
             "      url: \(self.url?.absoluteString ?? "")\n" +
             "      mimeType: \(self.mimeType.rawValue)\n" +
-            "      additionalData: \(self.additionalData)\n" +
+            "      metadata: \(self.metadata)\n" +
         "    "
         return "\n    File {\n\(base)}"
     }
@@ -265,7 +265,7 @@ extension File {
     // MARK: - SAVE
 
     public var isUploaded: Bool {
-        return self.metadata != nil
+        return self.storageMetadata != nil
     }
 
     @discardableResult
@@ -277,7 +277,7 @@ extension File {
 
         if let data: Data = self.data {
             let task: StorageUploadTask = reference.putData(data, metadata: metadata) { (metadata, error) in
-                self.metadata = metadata
+                self.storageMetadata = metadata
                 if let error = error {
                     completion?(metadata, error)
                     return
@@ -296,7 +296,7 @@ extension File {
             return self.uploadTask
         } else if let url: URL = self.originalURL {
             let task: StorageUploadTask = reference.putFile(from: url, metadata: metadata) { (metadata, error) in
-                self.metadata = metadata
+                self.storageMetadata = metadata
                 if let error = error {
                     completion?(metadata, error)
                     return
@@ -324,7 +324,7 @@ extension File {
     public func delete(_ completion: ((Error?) -> Void)?) {
         self.storageReference.delete { (error) in
             self.data = nil
-            self.metadata = nil
+            self.storageMetadata = nil
             self.url = nil
             FileCache.shared.delete(reference: self.storageReference)
             completion?(error)

@@ -233,8 +233,6 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                             }
                         }
                     }
-                @unknown default:
-                    fatalError()
                 }
             }
             switch group.wait(timeout: .now() + .seconds(self.option.timeout)) {
@@ -343,7 +341,7 @@ public extension Array where Element: Documentable {
 /**
  DataSource conforms to Collection
  */
-extension DataSource: Collection {
+extension DataSource: RandomAccessCollection {
 
     public var startIndex: Int {
         return 0
@@ -353,6 +351,10 @@ extension DataSource: Collection {
         return self.documents.count
     }
 
+    public func index(before i: Int) -> Int {
+        return i - 1
+    }
+    
     public func index(after i: Int) -> Int {
         return i + 1
     }

@@ -16,7 +16,6 @@ class ObjectTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
-        BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
     func testObjectAutoID() {
@@ -25,8 +24,8 @@ class ObjectTests: XCTestCase {
             var data: Model?
         }
         let o: Obj = Obj()
-        XCTAssertEqual(o.documentReference.parent.path, "version/1/obj")
-        XCTAssertEqual(o.documentReference.path, "version/1/obj/\(o.id)")
+        XCTAssertEqual(o.documentReference.parent.path, "obj")
+        XCTAssertEqual(o.documentReference.path, "obj/\(o.id)")
     }
 
     func testObjectID() {
@@ -35,7 +34,7 @@ class ObjectTests: XCTestCase {
             var data: Model?
         }
         let o: Obj = Obj(id: "a")
-        XCTAssertEqual(o.documentReference.path, "version/1/obj/a")
+        XCTAssertEqual(o.documentReference.path, "obj/a")
     }
 
     func testObjectIDFromData() {
@@ -44,7 +43,7 @@ class ObjectTests: XCTestCase {
             var data: Model?
         }
         let o: Obj = Obj(id: "a", from: [:])!
-        XCTAssertEqual(o.documentReference.path, "version/1/obj/a")
+        XCTAssertEqual(o.documentReference.path, "obj/a")
     }
 
     func testObjectReferenceFromData() {
@@ -52,8 +51,8 @@ class ObjectTests: XCTestCase {
             struct Model: Modelable & Codable { }
             var data: Model?
         }
-        let o: Obj = Obj(documentReference: Firestore.firestore().document("version/1/obj/a"), from: [:])!
-        XCTAssertEqual(o.documentReference.path, "version/1/obj/a")
+        let o: Obj = Obj(documentReference: Firestore.firestore().document("obj/a"), from: [:])!
+        XCTAssertEqual(o.documentReference.path, "obj/a")
     }
 
     func testObjectIDOtherCollectionReference() {

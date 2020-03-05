@@ -24,7 +24,7 @@ public extension Modelable {
     }
 
     static var collectionReference: CollectionReference {
-        return BallcapApp.default.rootReference?.collection(self.name) ?? Firestore.firestore().collection(self.name)
+        return Firestore.firestore().collection(self.name)
     }
 
     var debugDescription: String {

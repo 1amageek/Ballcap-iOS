@@ -15,7 +15,6 @@ class StorageBatchTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
-        BallcapApp.configure()
     }
 
     func testBatchSaveDelete() {

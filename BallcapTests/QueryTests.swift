@@ -21,7 +21,7 @@ class QueryTests: XCTestCase {
 //        struct Model: Codable, Modelable {}
 //        let document: Document<Model> = Document()
 //        Document<Model>.query
-//        XCTAssertEqual(Model.collectionReference.path, "version/1/model")
+//        XCTAssertEqual(Model.collectionReference.path, "model")
 //    }
 
     // TODO: Query tests

@@ -15,7 +15,6 @@ class FileTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
-        BallcapApp.configure()
     }
 
     func testReferencePath() {

@@ -15,7 +15,6 @@ class HierarchicalStructurableTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = FirebaseTest.shared
-        BallcapApp.configure(Firestore.firestore().document("version/1"))
     }
 
     func testDataRepresentableHierarchicalStructurable() {
@@ -33,7 +32,7 @@ class HierarchicalStructurableTests: XCTestCase {
         let b: Obj = Obj(id: "a")
         XCTAssertNotNil(a.data)
         XCTAssertNotNil(b.data)
-        XCTAssertEqual(b.collection(path: .subCollectionPath).path, "version/1/obj/a/subCollectionPath")
+        XCTAssertEqual(b.collection(path: .subCollectionPath).path, "obj/a/subCollectionPath")
     }
 
     func testHierarchicalStructurable() {
@@ -44,7 +43,7 @@ class HierarchicalStructurableTests: XCTestCase {
             }
         }
         let obj: Obj = Obj(id: "a")
-        XCTAssertEqual(obj.collection(path: .subCollectionPath).path, "version/1/obj/a/subCollectionPath")
+        XCTAssertEqual(obj.collection(path: .subCollectionPath).path, "obj/a/subCollectionPath")
     }
 
 //    func testHierarchicalStructurableDataSource() {
@@ -60,7 +59,7 @@ class HierarchicalStructurableTests: XCTestCase {
 //        }
 //        let obj: Obj = Obj(id: "a")
 //        let d: DataSource<Obj>.Query = obj.collection(path: .subCollectionPath)
-//        XCTAssertEqual(d.query.path, "version/1/obj/a/subCollectionPath")
+//        XCTAssertEqual(d.query.path, "obj/a/subCollectionPath")
 //    }
 
     func testNestedStructurable() {
@@ -77,8 +76,8 @@ class HierarchicalStructurableTests: XCTestCase {
         }
         let parent: Parent = Parent(id: "a")
         let child: Child = parent.collection(path: .child).child(id: "b", type: Child.self)
-        XCTAssertEqual(child.documentReference.path, "version/1/parent/a/child/b")
-        XCTAssertEqual(child.collection(path: .subCollectionPath).path, "version/1/parent/a/child/b/subCollectionPath")
+        XCTAssertEqual(child.documentReference.path, "parent/a/child/b")
+        XCTAssertEqual(child.collection(path: .subCollectionPath).path, "parent/a/child/b/subCollectionPath")
     }
 
     // TODO: Query tests
