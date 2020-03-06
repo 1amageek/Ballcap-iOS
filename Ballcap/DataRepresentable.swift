@@ -68,7 +68,7 @@ public extension DataRepresentable where Self: Object {
         self.data = data
     }
 
-    init?(documentReference: DocumentReference, from data: [String: Any]) {
+    init(documentReference: DocumentReference, from data: [String: Any]) throws {
         self.init(documentReference)
         do {
             self.data = try Firestore.Decoder().decode(Model.self, from: data)
@@ -80,7 +80,7 @@ public extension DataRepresentable where Self: Object {
             }
         } catch (let error) {
             print(error)
-            return nil
+            throw error
         }
     }
 
@@ -89,7 +89,7 @@ public extension DataRepresentable where Self: Object {
         self.data = data
     }
 
-    init?(snapshot: DocumentSnapshot) {
+    init(snapshot: DocumentSnapshot) throws {
         self.init(snapshot.reference)
         self.snapshot = snapshot
         guard let data: [String: Any] = snapshot.data(with: .estimate) else {
@@ -107,7 +107,7 @@ public extension DataRepresentable where Self: Object {
             DocumentCache.shared.set(key: snapshot.reference.path, data: data)
         } catch (let error) {
             print(error)
-            return nil
+            throw error
         }
     }
 
@@ -152,8 +152,8 @@ public extension DataRepresentable where Self: Object {
     var description: String {
         let base: String =
             "  path: \(self.path)\n" +
-            "  createdAt: \(self.createdAt) (\(self.createdAt.dateValue()))\n" +
-            "  updatedAt: \(self.updatedAt) (\(self.updatedAt.dateValue()))\n"
+                "  createdAt: \(self.createdAt) (\(self.createdAt.dateValue()))\n" +
+        "  updatedAt: \(self.updatedAt) (\(self.updatedAt.dateValue()))\n"
 
         if let data = self.data {
             let mirror = Mirror(reflecting: data)
@@ -214,55 +214,68 @@ public extension DataRepresentable where Self: Object {
     
     func get(_ cachePolicy: CachePolicy = .cacheElseServer, completion: ((Self?, Error?) -> Void)? = nil) -> Self {
         switch cachePolicy {
-        case .cacheOnly:
-            Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
-                if self.data != object?.data {
-                    self.data = object?.data
-                }
-                completion?(object, error)
-            }
-        case .serverOnly:
-            Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
-                if self.data != object?.data {
-                    self.data = object?.data
-                }
-                completion?(object, error)
-            }
-        case .cacheElseServer:
-            Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
-                if let object: Self = object {
-                    if self.data != object.data {
-                        self.data = object.data
+            case .cacheOnly:
+                Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
+                    if self.data != object?.data {
+                        self.data = object?.data
                     }
                     completion?(object, error)
-                } else {
-                    Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
-                        if self.data != object?.data {
-                            self.data = object?.data
+            }
+            case .serverOnly:
+                Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                    if self.data != object?.data {
+                        self.data = object?.data
+                    }
+                    completion?(object, error)
+            }
+            case .cacheElseServer:
+                Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
+
+                    // Decoding Error Handling
+                    // Schema may be changed and coding with cached data may not be possible.
+                    if let _ = error as? DecodingError {
+                        Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                            if self.data != object?.data {
+                                self.data = object?.data
+                            }
+                            completion?(object, error)
+                        }
+                        return
+                    }
+
+                    if let object: Self = object {
+                        if self.data != object.data {
+                            self.data = object.data
                         }
                         completion?(object, error)
+                    } else {
+                        Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                            if self.data != object?.data {
+                                self.data = object?.data
+                            }
+                            completion?(object, error)
+                        }
                     }
-                }
             }
-        case .serverElseCache:
-            Self.get(documentReference: self.documentReference, source: .default) { (object, error) in
-                if self.data != object?.data {
-                    self.data = object?.data
-                }
-                completion?(object, error)
+            case .serverElseCache:
+                Self.get(documentReference: self.documentReference, source: .default) { (object, error) in
+                    if self.data != object?.data {
+                        self.data = object?.data
+                    }
+                    completion?(object, error)
             }
-        case .cacheThenServer:
-            Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
-                if self.data != object?.data {
-                    self.data = object?.data
+            case .cacheThenServer:
+                Self.get(documentReference: self.documentReference, source: .cache) { (object, error) in
+                    if self.data != object?.data {
+                        self.data = object?.data
+                    }
+                    completion?(object, error)
                 }
-                completion?(object, error)
-            }
-            Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
-                if self.data != object?.data {
-                    self.data = object?.data
-                }
-                completion?(object, error)
+                Self.get(documentReference: self.documentReference, source: .server) { (object, error) in
+                    if self.data != object?.data {
+                        self.data = object?.data
+                    }
+                    completion?(object, error)
             }
         }
         return self
@@ -280,11 +293,12 @@ public extension DataRepresentable where Self: Object {
                 completion(nil, nil)
                 return
             }
-            guard let document: Self = Self(snapshot: snapshot) else {
-                completion(nil, DocumentError.invalidData(snapshot.data()))
-                return
+            do {
+                let document: Self = try Self(snapshot: snapshot)
+                completion(document, nil)
+            } catch(let error) {
+                completion(nil, error)
             }
-            completion(document, nil)
         }
     }
 
@@ -303,11 +317,12 @@ public extension DataRepresentable where Self: Object {
                 completion(nil, nil)
                 return
             }
-            guard let document: Self = Self(snapshot: snapshot) else {
-                completion(nil, DocumentError.invalidData(snapshot.data()))
-                return
+            do {
+                let document: Self = try Self(snapshot: snapshot)
+                completion(document, nil)
+            } catch(let error) {
+                completion(nil, error)
             }
-            completion(document, nil)
         }
         return Disposer(.value(listenr))
     }
@@ -330,8 +345,8 @@ public extension DataRepresentable where Self: Object {
                 try self?._set(snapshot: snapshot)
                 guard let self = self else { return }
                 completion(self, nil)
-            } catch {
-                completion(nil, DocumentError.invalidData(snapshot.data()))
+            } catch (let error) {
+                completion(nil, error)
             }
         }
         return Disposer(.value(listenr))

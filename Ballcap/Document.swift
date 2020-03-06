@@ -41,11 +41,12 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
                 completion(nil, nil)
                 return
             }
-            guard let document: Document = Document(snapshot: snapshot) else {
-                completion(nil, DocumentError.invalidData(snapshot.data()))
-                return
+            do {
+                let document: Document = try Document(snapshot: snapshot)
+                completion(document, nil)
+            } catch(let error) {
+                completion(nil, error)
             }
-            completion(document, nil)
         }
     }
 
@@ -64,11 +65,12 @@ public final class Document<Model: Modelable & Codable>: Object, DataRepresentab
                 completion(nil, nil)
                 return
             }
-            guard let document: Document = Document(snapshot: snapshot) else {
-                completion(nil, DocumentError.invalidData(snapshot.data()))
-                return
+            do {
+                let document: Document = try Document(snapshot: snapshot)
+                completion(document, nil)
+            } catch(let error) {
+                completion(nil, error)
             }
-            completion(document, nil)
         }
         return Disposer(.value(listenr))
     }

@@ -34,8 +34,8 @@ public extension DataListenable where Self: DataRepresentable, Self: Object {
                 try self?._set(snapshot: snapshot)
                 guard let self = self else { return }
                 completion?(self, nil)
-            } catch {
-                completion?(nil, DocumentError.invalidData(snapshot.data()))
+            } catch (let error) {
+                completion?(nil, error)
             }
         }
         return self

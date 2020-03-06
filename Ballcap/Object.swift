@@ -37,18 +37,6 @@ public extension Modelable {
     }
 }
 
-public enum DocumentError: Error {
-    case invalidData([String: Any]?)
-    case timeout
-
-    public var description: String {
-        switch self {
-        case .invalidData(let data): return "[Ballcap: Document] Invalid data. \(data ?? [:])"
-        case .timeout: return "[Ballcap: Document] DataSource fetch has timed out."
-        }
-    }
-}
-
 open class Object: Documentable {
 
     open class var name: String {

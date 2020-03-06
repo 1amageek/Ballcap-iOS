@@ -51,8 +51,10 @@ class ObjectTests: XCTestCase {
             struct Model: Modelable & Codable { }
             var data: Model?
         }
-        let o: Obj = Obj(documentReference: Firestore.firestore().document("obj/a"), from: [:])!
-        XCTAssertEqual(o.documentReference.path, "obj/a")
+        do {
+            let o: Obj = try Obj(documentReference: Firestore.firestore().document("obj/a"), from: [:])
+            XCTAssertEqual(o.documentReference.path, "obj/a")
+        } catch (_) {}
     }
 
     func testObjectIDOtherCollectionReference() {
