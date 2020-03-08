@@ -28,7 +28,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 
     public typealias Element = ArrayLiteralElement
 
-    public typealias RetrieveBlock = (QuerySnapshot?, QueryDocumentSnapshot, @escaping ((Element) -> Void)) -> Void
+    public typealias RetrieveBlock = (QuerySnapshot?, QueryDocumentSnapshot, @escaping ((Element?) -> Void)) -> Void
 
     public typealias ChangedBlock = (QuerySnapshot?, Snapshot) -> Void
 
@@ -181,9 +181,11 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                         if let retrieveBlock = retrieveBlock {
                             group.enter()
                             retrieveBlock(snapshot, change.document, { element in
-                                if !documents.keys.contains(id) {
-                                    insertions.append(element)
-                                    documents.append(element)
+                                if let element = element {
+                                    if !documents.keys.contains(id) {
+                                        insertions.append(element)
+                                        documents.append(element)
+                                    }
                                 }
                                 group.leave()
                             })
@@ -204,9 +206,11 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                         if let retrieveBlock = retrieveBlock {
                             group.enter()
                             retrieveBlock(snapshot, change.document, { element in
-                                if let index: Int = documents.keys.firstIndex(of: id) {
-                                    modifications.append(element)
-                                    documents[index] = element
+                                if let element = element {
+                                    if let index: Int = documents.keys.firstIndex(of: id) {
+                                        modifications.append(element)
+                                        documents[index] = element
+                                    }
                                 }
                                 group.leave()
                             })
@@ -227,9 +231,11 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
                         if let retrieveBlock = retrieveBlock {
                             group.enter()
                             retrieveBlock(snapshot, change.document, { element in
-                                if let index: Int = documents.keys.firstIndex(of: id) {
-                                    deletions.append(element)
-                                    documents.remove(at: index)
+                                if let element = element {
+                                    if let index: Int = documents.keys.firstIndex(of: id) {
+                                        deletions.append(element)
+                                        documents.remove(at: index)
+                                    }
                                 }
                                 group.leave()
                             })
