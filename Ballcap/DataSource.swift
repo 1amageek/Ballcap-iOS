@@ -63,6 +63,8 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     /// Reference of element
     public private(set) var query: Query
 
+    private var originalQuery: Query
+
     /// DataSource Option
     public private(set) var option: Option
 
@@ -94,6 +96,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
      - parameter option: DataSource Option
      */
     public init(reference: Query, option: Option = Option()) {
+        self.originalQuery = reference
         self.query = reference
         self.option = option
     }
@@ -105,6 +108,7 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
 
     /// Initializing the DataSource
     public init(_ documents: [Element]) {
+        self.originalQuery = Element.query
         self.query = Element.query
         self.option = Option()
         self.documents = documents
@@ -270,8 +274,22 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     }
 
     @discardableResult
-    public func get() -> Self {
-        self.next()
+    public func get(_ block: ((Bool) -> Void)? = nil) -> Self {
+        let changedBlock: ChangedBlock? = self._changedBlock
+        let before: [Element] = self.documents
+        self.originalQuery.get { (snapshot, error) in
+            guard let lastSnapshot = snapshot?.documents.last else {
+                // The collection is empty.
+                self.isLast = true
+                block?(true)
+                let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: before, changes: (deletions: [], insertions: [], modifications: []))
+                changedBlock?(nil, dataSourceSnapshot)
+                return
+            }
+            self.query = self.query.start(afterDocument: lastSnapshot)
+            block?(false)
+            self._execute(snapshot: snapshot!)
+        }
         return self
     }
 
@@ -280,11 +298,15 @@ public final class DataSource<T: Object & DataRepresentable>: ExpressibleByArray
     ///     - block: It returns `isLast` as an argument.
     @discardableResult
     public func next(_ block: ((Bool) -> Void)? = nil) -> Self {
+        let changedBlock: ChangedBlock? = self._changedBlock
+        let before: [Element] = self.documents
         self.query.get { (snapshot, error) in
             guard let lastSnapshot = snapshot?.documents.last else {
                 // The collection is empty.
                 self.isLast = true
                 block?(true)
+                let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: before, changes: (deletions: [], insertions: [], modifications: []))
+                changedBlock?(nil, dataSourceSnapshot)
                 return
             }
             self.query = self.query.start(afterDocument: lastSnapshot)
