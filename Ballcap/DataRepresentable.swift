@@ -332,7 +332,8 @@ public extension DataRepresentable where Self: Object {
     }
 
     func listen(includeMetadataChanges: Bool = true, completion: @escaping ((Self?, Error?) -> Void)) -> Disposer {
-        let listenr: ListenerRegistration = self.documentReference.addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { [weak self] (snapshot, error) in
+        let document: Self = self
+        let listenr: ListenerRegistration = self.documentReference.addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { (snapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
@@ -342,9 +343,8 @@ public extension DataRepresentable where Self: Object {
                 return
             }
             do {
-                try self?._set(snapshot: snapshot)
-                guard let self = self else { return }
-                completion(self, nil)
+                try document._set(snapshot: snapshot)
+                completion(document, nil)
             } catch (let error) {
                 completion(nil, error)
             }
