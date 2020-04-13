@@ -29,7 +29,7 @@ public final class Batch {
     // MARK: -
 
     @discardableResult
-    public func save<T: Documentable>(_ document: T, reference: DocumentReference? = nil) -> Self where T: DataRepresentable {
+    public func save<T: Documentable>(_ document: T, reference: DocumentReference? = nil, merge: Bool = false) -> Self where T: DataRepresentable {
         let reference: DocumentReference = reference ?? document.documentReference
         do {
             var data: [String: Any] = try Firestore.Encoder().encode(document.data!)
@@ -37,7 +37,7 @@ public final class Batch {
                 data["createdAt"] = FieldValue.serverTimestamp()
                 data["updatedAt"] = FieldValue.serverTimestamp()
             }
-            self._writeBatch.setData(data, forDocument: reference)
+            self._writeBatch.setData(data, forDocument: reference, merge: merge)
             self._updateCacheStorage[reference.path] = data
             return self
         } catch let error {
@@ -131,4 +131,3 @@ public final class Batch {
         }
     }
 }
-
