@@ -30,7 +30,7 @@ extension CodableFile {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: FileKeys.self)
         let path = try container.decode(String.self, forKey: .path)
-        let url = try container.decode(URL?.self, forKey: .url)
+        let url: URL? = try container.decode(String?.self, forKey: .url).flatMap { URL(string: $0) }
         let mimeType = try container.decode(File.MIMEType.self, forKey: .mimeType)
         let metadata = try container.decode([String: String].self, forKey: .metadata)
         self.init(path: path, url: url, mimeType: mimeType, metadata: metadata)
