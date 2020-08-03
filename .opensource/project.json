@@ -1,0 +1,8 @@
+{
+    "name": "Ballcap-iOS",
+    "platforms": ["iOS"],
+    "content": "README.md",
+    "pages" : [],
+    "related": ["1amageek/ballcap.ts"],
+    "tabs": ["CloudFirestore", "Firebase"]
+  }
