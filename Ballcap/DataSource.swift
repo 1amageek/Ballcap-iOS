@@ -341,9 +341,8 @@ public extension DataSource {
     func remove(document: Element) {
         let changedBlock: ChangedBlock? = self._changedBlock
         let before: [Element] = self.documents
-        var documents: [Element] = self.documents
         if let index: Int = self.documents.firstIndex(of: document.id) {
-            documents.remove(at: index)
+            self.documents.remove(at: index)
             let dataSourceSnapshot: Snapshot = Snapshot(before: before, after: self.documents, changes: (deletions: [document], insertions: [], modifications: []))
             changedBlock?(nil, dataSourceSnapshot)
         }
