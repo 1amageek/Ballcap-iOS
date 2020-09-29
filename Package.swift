@@ -23,7 +23,8 @@ let package = Package(
                .product(name: "FirebaseFirestore", package: "Firebase"),
                .product(name: "FirebaseStorage", package: "Firebase"),
                .product(name: "FirebaseFirestoreSwift", package: "Firebase"),
-            ]),
+            ],
+            path: "Ballcap"),
         .testTarget(
             name: "Ballcap-iOSTests",
             dependencies: [
@@ -31,6 +32,7 @@ let package = Package(
                .product(name: "FirebaseFirestore", package: "Firebase"),
                .product(name: "FirebaseStorage", package: "Firebase"),
                .product(name: "FirebaseFirestoreSwift", package: "Firebase"),
-            ]),
+            ],
+            path: "BallcapTests"),
     ]
 )

@@ -9,6 +9,7 @@
 import XCTest
 import FirebaseFirestore
 import FirebaseStorage
+@testable import Ballcap_iOS
 
 class StorageBatchTests: XCTestCase {
 

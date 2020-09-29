@@ -10,7 +10,7 @@ import XCTest
 import Firebase
 import FirebaseFirestore
 import FirebaseStorage
-//@testable import Ballcap
+@testable import Ballcap_iOS
 
 class FirebaseTest {
 
