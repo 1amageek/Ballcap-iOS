@@ -9,6 +9,7 @@
 import XCTest
 import FirebaseFirestore
 import FirebaseStorage
+@testable import Ballcap_iOS
 
 func assertRoundTrip<X: Equatable & Codable>(model: X, encoded: [String: Any]) -> Void {
     let enc = assertEncodes(model, encoded: encoded)

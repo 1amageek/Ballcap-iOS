@@ -8,7 +8,7 @@
 
 import XCTest
 import FirebaseFirestore
-//@testable import Ballcap
+@testable import Ballcap_iOS
 
 
 class CodableDocumentTests: XCTestCase {
