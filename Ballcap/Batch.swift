@@ -72,9 +72,9 @@ public final class Batch {
     // MARK: -
 
     @discardableResult
-    public func save<T: Documentable>(_ document: T, to collectionReference: CollectionReference) -> Self where T: DataRepresentable {
+    public func save<T: Documentable>(_ document: T, to collectionReference: CollectionReference, merge: Bool = false) -> Self where T: DataRepresentable {
         let reference: DocumentReference = collectionReference.document(document.id)
-        self.save(document, reference: reference)
+        self.save(document, reference: reference, merge: merge)
         return self
     }
 
@@ -93,10 +93,10 @@ public final class Batch {
     }
 
     @discardableResult
-    public func save<T: Documentable>(_ documents: [T], to collectionReference: CollectionReference) -> Self where T: DataRepresentable {
+    public func save<T: Documentable>(_ documents: [T], to collectionReference: CollectionReference, merge: Bool = false) -> Self where T: DataRepresentable {
         documents.forEach { (document) in
             let reference: DocumentReference = collectionReference.document(document.id)
-            self.save(document, reference: reference)
+            self.save(document, reference: reference, merge: merge)
         }
         return self
     }
