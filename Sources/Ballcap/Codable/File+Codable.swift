@@ -18,12 +18,7 @@ private protocol CodableFile: Codable {
     init(path: String, url: URL?, mimeType: File.MIMEType, metadata: [String: String])
 }
 
-private enum FileKeys: String, CodingKey {
-    case path
-    case url
-    case mimeType
-    case metadata
-}
+
 
 extension CodableFile {
 

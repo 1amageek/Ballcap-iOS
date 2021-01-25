@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,8 @@
 		1207AB2F225A43BD00578D29 /* FileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207AB2E225A43BD00578D29 /* FileTests.swift */; };
 		1207AB31225A46E900578D29 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207AB30225A46E900578D29 /* FileCache.swift */; };
 		1207AB32225A4D2B00578D29 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1207AB30225A46E900578D29 /* FileCache.swift */; };
+		122E0FE7257F745F00A42612 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 122E0FE6257F745F00A42612 /* FirebaseFirestore */; };
+		122E0FE9257F745F00A42612 /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 122E0FE8257F745F00A42612 /* FirebaseFirestoreSwift-Beta */; };
 		12314085225758E200E7BD00 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
 		12314086225758E200E7BD00 /* Batch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C822252169D004D1AC4 /* Batch.swift */; };
 		1231408722575ADF00E7BD00 /* Disposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12074317224F16D600C26AD3 /* Disposer.swift */; };
@@ -65,6 +67,8 @@
 		12D75C8122520147004D1AC4 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D75C7F22520147004D1AC4 /* TestHelper.swift */; };
 		12D75CA522538CE5004D1AC4 /* Ballcap.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 12D75CA422538CE5004D1AC4 /* Ballcap.podspec */; };
 		12D75CA622538CE5004D1AC4 /* Ballcap.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 12D75CA422538CE5004D1AC4 /* Ballcap.podspec */; };
+		12EA1590257F6CD400EB2050 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EA158F257F6CD400EB2050 /* Package.swift */; };
+		12EA1591257F6CD400EB2050 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EA158F257F6CD400EB2050 /* Package.swift */; };
 		12F45C74228A9409008FB73E /* ModelableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F45C73228A9409008FB73E /* ModelableTests.swift */; };
 		12F8BD6822574D85004F7D52 /* Documentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8BD6722574D85004F7D52 /* Documentable.swift */; };
 		12F8BD6922574E67004F7D52 /* Referencable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12839445224B6B5B000383EB /* Referencable.swift */; };
@@ -107,7 +111,6 @@
 		127E8E0E2331FA93004D6D3B /* DataListenable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataListenable.swift; sourceTree = "<group>"; };
 		12839419224B6A31000383EB /* Ballcap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ballcap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1283941C224B6A31000383EB /* Ballcap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ballcap.h; sourceTree = "<group>"; };
-		1283941D224B6A31000383EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12839422224B6A31000383EB /* BallcapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BallcapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		12839427224B6A31000383EB /* BallcapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallcapTests.swift; sourceTree = "<group>"; };
 		12839429224B6A31000383EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -132,6 +135,7 @@
 		12D75CA422538CE5004D1AC4 /* Ballcap.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ballcap.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		12D75CF1225484BF004D1AC4 /* DocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		12E25B1822565AB40046CB1C /* OperableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperableArray.swift; sourceTree = "<group>"; };
+		12EA158F257F6CD400EB2050 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		12F45C73228A9409008FB73E /* ModelableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelableTests.swift; sourceTree = "<group>"; };
 		12F8BD6722574D85004F7D52 /* Documentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documentable.swift; sourceTree = "<group>"; };
 		12F8BD6A22574F29004F7D52 /* DataRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepresentable.swift; sourceTree = "<group>"; };
@@ -150,7 +154,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				122E0FE9257F745F00A42612 /* FirebaseFirestoreSwift-Beta in Frameworks */,
 				F67696CBBA5B1BBD7C18AA2C /* Pods_Ballcap.framework in Frameworks */,
+				122E0FE7257F745F00A42612 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,7 +188,8 @@
 			isa = PBXGroup;
 			children = (
 				12D75CA422538CE5004D1AC4 /* Ballcap.podspec */,
-				1283941B224B6A31000383EB /* Ballcap */,
+				12EA158F257F6CD400EB2050 /* Package.swift */,
+				12EA158E257F68BD00EB2050 /* Sources */,
 				12839426224B6A31000383EB /* BallcapTests */,
 				1283941A224B6A31000383EB /* Products */,
 				D44FFD108684D3059315383A /* Pods */,
@@ -223,7 +230,6 @@
 				12D75C8922533296004D1AC4 /* Query.swift */,
 				123140AA225988D800E7BD00 /* DocumentCache.swift */,
 				12D75C85225300AB004D1AC4 /* Codable */,
-				1283941D224B6A31000383EB /* Info.plist */,
 			);
 			path = Ballcap;
 			sourceTree = "<group>";
@@ -257,6 +263,14 @@
 				1207431B224F23CC00C26AD3 /* File+Codable.swift */,
 			);
 			path = Codable;
+			sourceTree = "<group>";
+		};
+		12EA158E257F68BD00EB2050 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1283941B224B6A31000383EB /* Ballcap */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		9C527F98ECEAF05B7C3B4F39 /* Frameworks */ = {
@@ -311,6 +325,10 @@
 			dependencies = (
 			);
 			name = Ballcap;
+			packageProductDependencies = (
+				122E0FE6257F745F00A42612 /* FirebaseFirestore */,
+				122E0FE8257F745F00A42612 /* FirebaseFirestoreSwift-Beta */,
+			);
 			productName = Ballcap;
 			productReference = 12839419224B6A31000383EB /* Ballcap.framework */;
 			productType = "com.apple.product-type.framework";
@@ -364,6 +382,9 @@
 				Base,
 			);
 			mainGroup = 1283940F224B6A31000383EB;
+			packageReferences = (
+				122E0FE5257F745F00A42612 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 1283941A224B6A31000383EB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -465,6 +486,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1231408922575B9000E7BD00 /* DataSource.swift in Sources */,
+				12EA1590257F6CD400EB2050 /* Package.swift in Sources */,
 				12F8BD6922574E67004F7D52 /* Referencable.swift in Sources */,
 				12F8BD6822574D85004F7D52 /* Documentable.swift in Sources */,
 				12F8BD6B22574F29004F7D52 /* DataRepresentable.swift in Sources */,
@@ -499,6 +521,7 @@
 				12314086225758E200E7BD00 /* Batch.swift in Sources */,
 				1207AB32225A4D2B00578D29 /* FileCache.swift in Sources */,
 				1231409D22576B3500E7BD00 /* DocumentTests.swift in Sources */,
+				12EA1591257F6CD400EB2050 /* Package.swift in Sources */,
 				12D75C7C2251FF95004D1AC4 /* File+Codable.swift in Sources */,
 				12F8BD6F225750FC004F7D52 /* File.swift in Sources */,
 				123140AF22598D1C00E7BD00 /* DocumentCacheTests.swift in Sources */,
@@ -799,6 +822,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		122E0FE5257F745F00A42612 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		122E0FE6257F745F00A42612 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 122E0FE5257F745F00A42612 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		122E0FE8257F745F00A42612 /* FirebaseFirestoreSwift-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 122E0FE5257F745F00A42612 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreSwift-Beta";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 12839410224B6A31000383EB /* Project object */;
 }

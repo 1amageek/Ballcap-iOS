@@ -3,36 +3,33 @@
 import PackageDescription
 
 let package = Package(
-    name: "Ballcap-iOS",
-    platforms: [.iOS(.v11), .macOS(.v10_15)],
+    name: "Ballcap",
+    platforms: [.iOS(.v11), .macOS(.v10_12)],
     products: [
         .library(
-            name: "Ballcap-iOS",
-            targets: ["Ballcap-iOS"]),
+            name: "Ballcap",
+            targets: ["Ballcap"]),
     ],
     dependencies: [
-        .package(
-          name: "Firebase",
-          url: "https://github.com/firebase/firebase-ios-sdk.git",
-          .branch("6.33-spm-beta")),
+        .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "7.4.0"))
     ],
     targets: [
         .target(
-            name: "Ballcap-iOS",
+            name: "Ballcap",
             dependencies: [
-               .product(name: "FirebaseFirestore", package: "Firebase"),
-               .product(name: "FirebaseStorage", package: "Firebase"),
-               .product(name: "FirebaseFirestoreSwift", package: "Firebase"),
-            ],
-            path: "Ballcap"),
+                .product(name: "FirebaseFirestore", package: "Firebase"),
+                .product(name: "FirebaseStorage", package: "Firebase"),
+                .product(name: "FirebaseFirestoreSwift", package: "Firebase")
+            ]
+        ),
         .testTarget(
-            name: "Ballcap-iOSTests",
+            name: "BallcapTests",
             dependencies: [
-              "Ballcap-iOS",
-               .product(name: "FirebaseFirestore", package: "Firebase"),
-               .product(name: "FirebaseStorage", package: "Firebase"),
-               .product(name: "FirebaseFirestoreSwift", package: "Firebase"),
-            ],
-            path: "BallcapTests"),
+                "Ballcap",
+                .product(name: "FirebaseFirestore", package: "Firebase"),
+                .product(name: "FirebaseStorage", package: "Firebase"),
+                .product(name: "FirebaseFirestoreSwift", package: "Firebase")
+            ]
+        )
     ]
 )
