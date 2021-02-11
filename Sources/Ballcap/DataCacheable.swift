@@ -12,7 +12,7 @@ public enum DataCacheableError: Error {
   case serverValueHasNotBeenDetermined
 }
 
-public protocol DataCacheable: class {
+public protocol DataCacheable: AnyObject {
 
     associatedtype Model: Modelable & Codable
 

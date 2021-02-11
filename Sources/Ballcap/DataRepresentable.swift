@@ -9,7 +9,7 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-public protocol DataRepresentable: class, Hashable {
+public protocol DataRepresentable: AnyObject, Hashable {
 
     associatedtype Model: Modelable & Codable
 

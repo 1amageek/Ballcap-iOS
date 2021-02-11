@@ -8,7 +8,7 @@
 
 import FirebaseStorage
 
-public protocol FileRepresentable: class {
+public protocol FileRepresentable: AnyObject {
 
     var file: File { get set }
 }

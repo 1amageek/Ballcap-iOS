@@ -9,7 +9,7 @@
 import FirebaseFirestore
 
 
-public protocol DataListenable: class {
+public protocol DataListenable: AnyObject {
 
     var listener: ListenerRegistration? { get set }
 }

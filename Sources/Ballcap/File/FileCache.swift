@@ -14,7 +14,7 @@ internal final class FileCache {
 
     lazy var cache: NSCache<NSString, NSData> = {
         let cache: NSCache<NSString, NSData> = NSCache()
-        cache.totalCostLimit = Int(4e9) // 0.5GB
+        cache.totalCostLimit = 256 * 1024 * 1024 // 256MB
         return cache
     }()
 
